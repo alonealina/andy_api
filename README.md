@@ -29,6 +29,12 @@ php artisan key:gene
 php artisan migrate
 php artisan db:seed
 ````
+Out workspace, visit WineBarSys Project and config .env
+````
+cp .env.example .env
+vi .env
+````
+`Config Database Connection`
 ## For Developer
 Create Controller
 ````
