@@ -28,6 +28,7 @@ composer dump-autoload
 php artisan key:gene
 php artisan migrate
 php artisan db:seed
+php artisan jwt:secret
 ````
 Out workspace, visit WineBarSys Project and config .env
 ````
