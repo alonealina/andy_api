@@ -15,5 +15,7 @@ class DatabaseSeeder extends Seeder
     {
          \App\Models\Store::factory(10)->create();
          \App\Models\User::factory(10)->create();
+        $this->call(FoodSeeder::class);
+
     }
 }
