@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-require_once __DIR__.'/auth.php';
-
 Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
-    Route::resources([
-        'users' => UserController::class
-    ]);
+    Route::get('/login', [AuthController::class, 'login']);
+
+    Route::group(['middleware:auth'], function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/refresh', [AuthController::class, 'refresh']);
+        Route::get('/user-profile', [AuthController::class, 'userProfile']);
+    });
 });
