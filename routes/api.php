@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\StoreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 require_once __DIR__.'/auth.php';
 
-Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => 'v1'], function () {
     Route::resources([
-        'users' => UserController::class
+        'users' => UserController::class,
+        'stores' => StoreController::class
     ]);
 });

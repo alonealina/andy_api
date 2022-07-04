@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Store;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -15,8 +16,9 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $storeIds = Store::pluck('id')->toArray();
         return [
-            'store_id' => rand(1, 9),
+            'store_id' => array_rand($storeIds),
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'number_phone' => '0' . $this->faker->numberBetween(11111111, 99999999),
