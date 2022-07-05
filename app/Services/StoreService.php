@@ -55,16 +55,35 @@ class StoreService
     /**
      * @param array $data
      * @param Store $store
-     * @return array|null
+     * @return Store|null
      */
-    public function update(array $data, Store $store): ?array
+    public function update(array $data, Store $store): ?Store
     {
         DB::beginTransaction();
         try {
             $store->update($data);
             // TODO Save images upload
             DB::commit();
-            return $store->toArray();
+            return $store;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return null;
+        }
+    }
+
+    /**
+     * @param Store $store
+     * @return Store|null
+     */
+    public function destroy(Store $store): ?Store
+    {
+        DB::beginTransaction();
+        try {
+            $store->delete();
+            // TODO Delete images upload
+            DB::commit();
+            return $store;
         } catch (\Exception $exception) {
             report($exception);
             DB::rollBack();

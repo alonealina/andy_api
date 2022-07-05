@@ -44,7 +44,7 @@ class StoreController extends Controller
      * @param StoreRequest $request
      * @return JsonResponse
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResponse
     {
         if ($newRecord = $this->storeService->store($request->validated())) {
             return response()->json([
@@ -95,10 +95,18 @@ class StoreController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Store $store
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function destroy(Store $store)
+    public function destroy(Store $store): JsonResponse
     {
-        //
+        if ($deleteRecord = $this->storeService->destroy($store)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $deleteRecord
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 }
