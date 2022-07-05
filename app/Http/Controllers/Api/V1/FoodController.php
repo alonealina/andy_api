@@ -121,6 +121,14 @@ class FoodController extends Controller
      */
     public function destroy(Food $food): JsonResponse
     {
-       //
+        if ($record = $this->foodService->destroy($food)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $record
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 }
