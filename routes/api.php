@@ -23,5 +23,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1'], function () {
         'users' => UserController::class,
         'stores' => StoreController::class,
         'foods' => FoodController::class
+    ], [
+        'only' => ['index', 'store', 'update', 'show', 'destroy'],
+        'missing' => 'responseDataNotFound'
     ]);
 });
