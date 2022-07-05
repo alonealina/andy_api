@@ -21,7 +21,7 @@ class StoreFactory extends Factory
             'address' => $this->faker->address(),
             'start_time' => $this->faker->time('H:i'),
             'end_time' => $this->faker->time('H:i'),
-            'payment_method' => json_encode(array_rand(PaymentMethod::getValues(), rand(1, 4))),
+            'payment_method' => array_rand(PaymentMethod::getValues(), rand(1, 4)),
             'counter_count' => rand(1, 10),
             'table_count' => rand(1, 10),
             'room_count' => rand(1, 10),

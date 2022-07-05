@@ -8,7 +8,6 @@ use App\Http\Requests\StoreRequest;
 use App\Models\Store;
 use App\Services\StoreService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
@@ -61,23 +60,15 @@ class StoreController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
+     * @param Store $store
+     * @return JsonResponse
      */
-    public function show(Store $store)
+    public function show(Store $store): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Store $store)
-    {
-        //
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $store
+        ]);
     }
 
     /**
@@ -103,7 +94,7 @@ class StoreController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Store  $store
+     * @param Store $store
      * @return \Illuminate\Http\Response
      */
     public function destroy(Store $store)
