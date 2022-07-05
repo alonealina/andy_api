@@ -40,16 +40,6 @@ class StoreController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param StoreRequest $request
@@ -93,13 +83,21 @@ class StoreController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
+     * @param StoreRequest $request
+     * @param Store $store
+     * @return JsonResponse
      */
-    public function update(Request $request, Store $store)
+    public function update(StoreRequest $request, Store $store): JsonResponse
     {
-        //
+        if ($updateRecord = $this->storeService->update($request->validated(), $store)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $updateRecord
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 
     /**
