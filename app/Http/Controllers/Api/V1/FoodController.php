@@ -75,7 +75,7 @@ class FoodController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Food $food
+     * @param Food $food
      * @return Response
      */
     public function show(Food $food)
@@ -86,7 +86,7 @@ class FoodController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Food $food
+     * @param Food $food
      * @return Response
      */
     public function edit(Food $food)
@@ -98,7 +98,7 @@ class FoodController extends Controller
      * Update the specified resource in storage.
      *
      * @param \App\Http\Requests\UpdateFoodRequest $request
-     * @param \App\Models\Food $food
+     * @param Food $food
      * @return Response
      */
     public function update(UpdateFoodRequest $request, Food $food)
@@ -109,11 +109,19 @@ class FoodController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Food $food
-     * @return Response
+     * @param Food $food
+     * @return JsonResponse
      */
-    public function destroy(Food $food)
+    public function destroy(Food $food): JsonResponse
     {
-        //
+        if ($record = $this->foodService->destroy($food)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $record
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 }

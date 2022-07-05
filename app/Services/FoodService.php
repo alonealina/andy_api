@@ -54,4 +54,19 @@ class FoodService
             return null;
         }
     }
+
+    public function destroy($food)
+    {
+        DB::beginTransaction();
+        try {
+            $deleteRecord = $food->delete();
+            // TODO Save upload images
+            DB::commit();
+            return $deleteRecord;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return null;
+        }
+    }
 }
