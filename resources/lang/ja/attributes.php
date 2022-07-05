@@ -25,5 +25,12 @@ return [
         'price' => '価格',
         'image' => '画像',
         'description' => '説明'
+    ],
+    'drinks' => [
+        'type' => 'タイプ',
+        'name' => '名前',
+        'price' => '価格',
+        'image' => '画像',
+        'description' => '説明'
     ]
 ];
