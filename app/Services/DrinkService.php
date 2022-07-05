@@ -21,6 +21,10 @@ class DrinkService
         $this->drinkRepository = $drinkRepository;
     }
 
+    /**
+     * @param $params
+     * @return mixed|null
+     */
     public function store($params)
     {
         DB::beginTransaction();
@@ -35,5 +39,13 @@ class DrinkService
             DB::rollBack();
             return null;
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getList()
+    {
+        return $this->drinkRepository->getList();
     }
 }
