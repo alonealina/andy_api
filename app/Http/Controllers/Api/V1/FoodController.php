@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FoodRequest;
 use App\Http\Requests\UpdateFoodRequest;
@@ -10,6 +11,7 @@ use App\Services\FoodService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
+
 class FoodController extends Controller
 {
     /**
@@ -33,12 +35,11 @@ class FoodController extends Controller
      * @param Request $request
      * @return array|JsonResponse
      */
-    public function index(Request $request)
+    public function index()
     {
-        $data = $this->foodService->getList($request->all());
         return response()->json([
-            'message' => 'success',
-            'data' => $data,
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->foodService->getList(),
         ]);
     }
 
@@ -56,16 +57,19 @@ class FoodController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\FoodRequest $request
-     * @return Response
+     * @return JsonResponse|Response
      */
     public function store(FoodRequest $request)
     {
-        $result = $this->foodService->store($request);
-        return [
-            'code' => 200,
-            'message' => 'success',
-            'data' => $result,
-        ];
+        if ($newRecord = $this->foodService->store($request->validated())) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $newRecord
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 
     /**
