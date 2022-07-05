@@ -12,6 +12,9 @@ class Food extends Model
     use HasFactory;
     use SoftDeletes;
 
+    /**
+     * @var mixed
+     */
     protected $fillable = [
         'store_id',
         'name',

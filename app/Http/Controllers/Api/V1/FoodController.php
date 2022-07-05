@@ -32,10 +32,9 @@ class FoodController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
-     * @return array|JsonResponse
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
@@ -46,7 +45,7 @@ class FoodController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return void
      */
     public function create()
     {
@@ -56,10 +55,11 @@ class FoodController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\FoodRequest $request
-     * @return JsonResponse|Response
+     * @param FoodRequest $request
+     * @return JsonResponse
+     * @throws \Exception
      */
-    public function store(FoodRequest $request)
+    public function store(FoodRequest $request): JsonResponse
     {
         if ($newRecord = $this->foodService->store($request->validated())) {
             return response()->json([
@@ -75,8 +75,8 @@ class FoodController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Food $food
-     * @return Response
+     * @param Food $food
+     * @return void
      */
     public function show(Food $food)
     {
@@ -86,8 +86,8 @@ class FoodController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Food $food
-     * @return Response
+     * @param Food $food
+     * @return void
      */
     public function edit(Food $food)
     {
@@ -95,25 +95,32 @@ class FoodController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateFoodRequest $request
-     * @param \App\Models\Food $food
-     * @return Response
+     * @param FoodRequest $request
+     * @param Food $food
+     * @return JsonResponse
      */
-    public function update(UpdateFoodRequest $request, Food $food)
+    public function update(FoodRequest $request, Food $food): JsonResponse
     {
-        $result = $this->foodService->update($request, $food->id);
+        if ($updateRecord = $this->foodService->update($request->validated(), $food)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $updateRecord
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Food $food
-     * @return Response
+     * @param Food $food
+     * @return JsonResponse
      */
-    public function destroy(Food $food)
+    public function destroy(Food $food): JsonResponse
     {
-        //
+       //
     }
 }

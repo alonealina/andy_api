@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Food;
 use App\Repositories\FoodRepository;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class FoodService
 {
@@ -26,7 +25,6 @@ class FoodService
     }
 
     /**
-     * @param $params
      * @return mixed
      */
     public function getList()
@@ -35,9 +33,8 @@ class FoodService
     }
 
     /**
-     * @param $request
+     * @param $data
      * @return bool
-     * @throws \Exception
      */
     public function store($data)
     {
@@ -48,6 +45,27 @@ class FoodService
 
             DB::commit();
             return $newRecord;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return null;
+        }
+    }
+
+    /**
+     * @param $data
+     * @param $id
+     * @return false|mixed|null
+     */
+    public function update($data, Food $food)
+    {
+        DB::beginTransaction();
+        try {
+            $food->update($data);
+            // TODO Save upload images
+
+            DB::commit();
+            return $food;
         } catch (\Exception $exception) {
             report($exception);
             DB::rollBack();
