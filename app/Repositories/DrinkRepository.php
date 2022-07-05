@@ -3,11 +3,23 @@
 namespace App\Repositories;
 
 use App\Models\Drink;
+use Illuminate\Support\Facades\Auth;
 
 class DrinkRepository extends BaseRepository
 {
-    public function model()
+    /**
+     * @return string
+     */
+    public function model(): string
     {
         return Drink::class;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getList()
+    {
+        return Auth::user()->store->drinks->toArray();
     }
 }

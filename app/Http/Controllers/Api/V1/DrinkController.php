@@ -25,13 +25,14 @@ class DrinkController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->drinkService->getList()
+        ]);
     }
 
     /**
@@ -40,7 +41,7 @@ class DrinkController extends Controller
      * @param DrinkRequest $request
      * @return JsonResponse
      */
-    public function store(DrinkRequest $request)
+    public function store(DrinkRequest $request): JsonResponse
     {
         if ($newRecord = $this->drinkService->store($request->validated())) {
             return response()->json([
