@@ -72,4 +72,24 @@ class FoodService
             return null;
         }
     }
+
+    /**
+     * @param $food
+     * @return mixed|null
+     */
+    public function destroy(Food $food)
+    {
+        DB::beginTransaction();
+        try {
+            $food->delete();
+            // TODO Save upload images
+
+            DB::commit();
+            return $food;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return null;
+        }
+    }
 }
