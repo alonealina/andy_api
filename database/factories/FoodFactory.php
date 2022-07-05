@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Store;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FoodFactory extends Factory
@@ -13,8 +14,9 @@ class FoodFactory extends Factory
      */
     public function definition()
     {
+        $storeIds = Store::pluck('id')->toArray();
         return [
-            'store_id' => $this->faker->randomNumber(),
+            'store_id' => array_rand($storeIds),
             'name' => $this->faker->name(),
             'price' => $this->faker->randomDigit(),
             'image' => $this->faker->imageUrl($width = 200, $height = 200),

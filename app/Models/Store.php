@@ -40,4 +40,12 @@ class Store extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    /**
+     * @return HasMany
+     */
+    public function foods(): HasMany
+    {
+        return $this->hasMany(Food::class);
+    }
 }

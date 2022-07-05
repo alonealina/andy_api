@@ -3,6 +3,10 @@
 namespace App\Services;
 
 use App\Repositories\FoodRepository;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class FoodService
 {
@@ -25,9 +29,29 @@ class FoodService
      * @param $params
      * @return mixed
      */
-    public function getList($params)
+    public function getList()
     {
-        return $this->foodRepository->getList($params);
+        return $this->foodRepository->getList();
     }
 
+    /**
+     * @param $request
+     * @return bool
+     * @throws \Exception
+     */
+    public function store($data)
+    {
+        DB::beginTransaction();
+        try {
+            $newRecord = $this->foodRepository->store(array_merge($data, ['store_id' => Auth::user()->store_id]));
+            // TODO Save upload images
+
+            DB::commit();
+            return $newRecord;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return null;
+        }
+    }
 }

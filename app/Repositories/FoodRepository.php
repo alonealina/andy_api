@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Food;
+use Illuminate\Support\Facades\Auth;
 
 class FoodRepository extends BaseRepository
 {
@@ -19,11 +20,8 @@ class FoodRepository extends BaseRepository
      * @param $params
      * @return mixed
      */
-    public function getList($params)
+    public function getList()
     {
-        return $this->model->when(isset($params['store_id']), function ($query) use ($params) {
-            $query->where('store_id', $params['store_id']);
-        })->get()->toArray();
+        return Auth::user()->store->foods->toArray();
     }
-
 }

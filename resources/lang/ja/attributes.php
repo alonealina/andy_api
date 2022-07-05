@@ -3,7 +3,7 @@ return [
     'users' => [
         'email' => '電子メール',
         'number_phone' => 'ナンバーフォン',
-        'password' => 'パスワード',
+        'password' => 'パスワード'
     ],
     'stores' => [
         'name' => 'お店の名前',
@@ -18,6 +18,12 @@ return [
         'room_count' => '個室',
         'stand_count' => 'スタンド',
         'hotline' => 'お問い合わせ',
-        'homepage_url' => 'ホームページURL',
+        'homepage_url' => 'ホームページURL'
+    ],
+    'foods' => [
+        'name' => '名前',
+        'price' => '価格',
+        'image' => '画像',
+        'description' => '説明'
     ]
 ];
