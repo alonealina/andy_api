@@ -18,6 +18,7 @@ class CreateStoresTable extends Migration
             $table->string('name', 100);
             $table->string('post_code_1', 100)->nullable();
             $table->string('post_code_2', 100)->nullable();
+            $table->string('address', 100)->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
             $table->string('payment_method')->default('[1]');

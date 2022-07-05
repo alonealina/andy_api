@@ -15,6 +15,7 @@ class Store extends Model
         'name',
         'post_code_1',
         'post_code_2',
+        'address',
         'start_time',
         'end_time',
         'payment_method',
@@ -26,16 +27,9 @@ class Store extends Model
         'homepage_url'
     ];
 
-    /**
-     * Accessors payment_method
-     *
-     * @param $value
-     * @return mixed
-     */
-    public function getPaymentMethodAttribute($value)
-    {
-        return json_decode($value);
-    }
+    protected $casts = [
+        'payment_method' => 'array',
+    ];
 
     /**
      * Relationship to user table

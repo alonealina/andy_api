@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\StoreRepository;
+use Illuminate\Support\Facades\DB;
 
 class StoreService
 {
@@ -29,5 +30,24 @@ class StoreService
     public function getList(): array
     {
         return $this->storeRepository->getAll()->toArray();
+    }
+
+    /**
+     * @param array $data
+     * @return mixed|null
+     */
+    public function store(array $data)
+    {
+        DB::beginTransaction();
+        try {
+            $newRecord = $this->storeRepository->store($data);
+            // TODO Save images upload
+            DB::commit();
+            return $newRecord;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return null;
+        }
     }
 }
