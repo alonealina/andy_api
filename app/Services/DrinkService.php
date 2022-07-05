@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Drink;
 use App\Repositories\DrinkRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -47,5 +48,26 @@ class DrinkService
     public function getList()
     {
         return $this->drinkRepository->getList();
+    }
+
+    /**
+     * @param $params
+     * @param Drink $drink
+     * @return Drink|null
+     */
+    public function update($params, Drink $drink)
+    {
+        DB::beginTransaction();
+        try {
+            $drink->update($params);
+            // TODO Save upload images
+
+            DB::commit();
+            return $drink;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB:rollback();
+            return null;
+        }
     }
 }

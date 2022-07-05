@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DrinkRequest;
+use App\Models\Drink;
 use App\Services\DrinkService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -66,15 +67,21 @@ class DrinkController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param DrinkRequest $request
+     * @param Drink $drink
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(DrinkRequest $request, Drink $drink)
     {
-        //
+        if ($record = $this->drinkService->update($request->validated(), $drink)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $record
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 
     /**
