@@ -71,7 +71,7 @@ class DrinkController extends Controller
      * @param Drink $drink
      * @return JsonResponse
      */
-    public function update(DrinkRequest $request, Drink $drink)
+    public function update(DrinkRequest $request, Drink $drink): JsonResponse
     {
         if ($record = $this->drinkService->update($request->validated(), $drink)) {
             return response()->json([
@@ -85,13 +85,19 @@ class DrinkController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Drink $drink
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Drink $drink): JsonResponse
     {
-        //
+        if ($record = $this->drinkService->delete($drink)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $record
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 }
