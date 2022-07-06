@@ -76,16 +76,15 @@ class FoodService
     }
 
     /**
-     * @param $food
-     * @return mixed|null
+     * @param Food $food
+     * @return Food|null
      */
-    public function destroy(Food $food)
+    public function destroy(Food $food): ?Food
     {
         DB::beginTransaction();
         try {
             $food->delete();
-            // TODO Save upload images
-
+            $this->deleteImages($food);
             DB::commit();
             return $food;
         } catch (\Exception $exception) {

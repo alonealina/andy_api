@@ -22,13 +22,14 @@ trait SaveImagesUpload
     }
 
     /**
-     * @param $fileNames
+     * @param $model
      * @return void
      */
-    public function deleteImages($fileNames)
+    public function deleteImages($model)
     {
-        foreach ($fileNames as $fileName) {
-            Storage::disk()->delete(IMAGES_PATH . '/' . $fileName);
+        foreach ($model->images as $image) {
+            Storage::disk()->delete(IMAGES_PATH . '/' . $image->file_name);
+            $image->forceDelete();
         }
     }
 
