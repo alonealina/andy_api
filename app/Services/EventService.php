@@ -3,22 +3,25 @@
 namespace App\Services;
 
 use App\Repositories\EventRepository;
+use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class EventService
 {
+    use SaveImagesUpload;
+
     /**
      * @var EventRepository
      */
-    protected $eventReposiory;
+    protected $eventRepository;
 
     /**
-     * @param EventRepository $eventReposiory
+     * @param EventRepository $eventRepository
      */
-    public function __construct(EventRepository $eventReposiory)
+    public function __construct(EventRepository $eventRepository)
     {
-        $this->eventReposiory = $eventReposiory;
+        $this->eventRepository = $eventRepository;
     }
 
     /**
@@ -26,7 +29,7 @@ class EventService
      */
     public function getList()
     {
-        return $this->eventReposiory->getList();
+        return $this->eventRepository->getList();
     }
 
     /**
@@ -37,9 +40,8 @@ class EventService
     {
         DB::beginTransaction();
         try {
-            $newRecord = $this->eventReposiory->store(array_merge($params, ['store_id' => Auth::user()->store_id]));
-            // TODO Save upload images
-
+            $newRecord = $this->eventRepository->store(array_merge($params, ['store_id' => Auth::user()->store_id]));
+            $newRecord->images()->createMany($this->storeImages($params['images']));
             DB::commit();
             return $newRecord;
         } catch (\Exception $exception) {

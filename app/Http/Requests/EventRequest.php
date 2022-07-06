@@ -35,6 +35,7 @@ class EventRequest extends FormRequest
     {
         return [
             'title' => 'required',
+            'images.*' => 'mimes:jpg,jpeg,png|max:5000'
         ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Store extends Model
@@ -31,6 +32,10 @@ class Store extends Model
         'payment_method' => 'array',
     ];
 
+    protected $with = [
+        'images'
+    ];
+
     /**
      * Relationship to user table
      *
@@ -42,6 +47,8 @@ class Store extends Model
     }
 
     /**
+     * Relationship to foods table
+     *
      * @return HasMany
      */
     public function foods(): HasMany
@@ -50,6 +57,8 @@ class Store extends Model
     }
 
     /**
+     * Relationship to drinks table
+     *
      * @return HasMany
      */
     public function drinks(): HasMany
@@ -58,6 +67,18 @@ class Store extends Model
     }
 
     /**
+     * Relationship to images table
+     *
+     * @return MorphMany
+     */
+    public function images(): MorphMany
+    {
+        return $this->morphMany(Image::class, 'imaginable');
+    }
+
+    /**
+     * Relationship to events table
+     *
      * @return HasMany
      */
     public function events(): HasMany

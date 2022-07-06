@@ -4,11 +4,14 @@ namespace App\Services;
 
 use App\Models\Drink;
 use App\Repositories\DrinkRepository;
+use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DrinkService
 {
+    use SaveImagesUpload;
+
     /**
      * @var DrinkRepository
      */
@@ -31,8 +34,7 @@ class DrinkService
         DB::beginTransaction();
         try {
             $newRecord = $this->drinkRepository->store(array_merge($params, ['store_id' => Auth::user()->store_id]));
-            // TODO Save upload images
-
+            $newRecord->images()->createMany($this->storeImages($params['images']));
             DB::commit();
             return $newRecord;
         } catch (\Exception $exception) {
@@ -66,7 +68,7 @@ class DrinkService
             return $drink;
         } catch (\Exception $exception) {
             report($exception);
-            DB:rollback();
+            DB::rollback();
             return null;
         }
     }
