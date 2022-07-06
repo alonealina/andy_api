@@ -85,4 +85,14 @@ class Store extends Model
     {
         return $this->hasMany(Event::class);
     }
+
+    /**
+     * Relationship to informations table
+     *
+     * @return HasMany
+     */
+    public function informations(): HasMany
+    {
+        return $this->hasMany(Information::class);
+    }
 }
