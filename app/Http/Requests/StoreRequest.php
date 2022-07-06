@@ -49,6 +49,7 @@ class StoreRequest extends FormRequest
             'stand_count' => 'integer',
             'hotline' => 'max:100',
             'homepage_url' => 'url|max:255',
+            'images.*' => 'mimes:jpg,jpeg,png|max:5000'
         ];
     }
 }

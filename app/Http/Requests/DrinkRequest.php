@@ -37,7 +37,8 @@ class DrinkRequest extends FormRequest
             'type' => 'required|numeric',
             'name' => 'required',
             'price' => 'required|numeric',
-            'description' => 'nullable'
+            'description' => 'nullable',
+            'images.*' => 'mimes:jpg,jpeg,png|max:5000'
         ];
     }
 }

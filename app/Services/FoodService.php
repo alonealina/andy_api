@@ -4,11 +4,14 @@ namespace App\Services;
 
 use App\Models\Food;
 use App\Repositories\FoodRepository;
+use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FoodService
 {
+    use SaveImagesUpload;
+
     /**
      * @var FoodRepository
      */
@@ -34,15 +37,14 @@ class FoodService
 
     /**
      * @param $data
-     * @return bool
+     * @return mixed|null
      */
     public function store($data)
     {
         DB::beginTransaction();
         try {
             $newRecord = $this->foodRepository->store(array_merge($data, ['store_id' => Auth::user()->store_id]));
-            // TODO Save upload images
-
+            $newRecord->images()->createMany($this->storeImages($data['images']));
             DB::commit();
             return $newRecord;
         } catch (\Exception $exception) {
@@ -54,8 +56,8 @@ class FoodService
 
     /**
      * @param $data
-     * @param $id
-     * @return false|mixed|null
+     * @param Food $food
+     * @return Food|null
      */
     public function update($data, Food $food)
     {

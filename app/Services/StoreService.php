@@ -4,10 +4,13 @@ namespace App\Services;
 
 use App\Models\Store;
 use App\Repositories\StoreRepository;
+use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\DB;
 
 class StoreService
 {
+    use SaveImagesUpload;
+
     /**
      * @var StoreRepository
      */
@@ -42,7 +45,7 @@ class StoreService
         DB::beginTransaction();
         try {
             $newRecord = $this->storeRepository->store($data);
-            // TODO Save images upload
+            $newRecord->images()->createMany($this->storeImages($data['images']));
             DB::commit();
             return $newRecord;
         } catch (\Exception $exception) {
