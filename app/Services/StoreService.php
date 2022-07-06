@@ -84,7 +84,7 @@ class StoreService
         DB::beginTransaction();
         try {
             $store->delete();
-            // TODO Delete images upload
+            $this->deleteImages($store);
             DB::commit();
             return $store;
         } catch (\Exception $exception) {

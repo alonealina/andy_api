@@ -57,7 +57,7 @@ class DrinkService
      * @param Drink $drink
      * @return Drink|null
      */
-    public function update($params, Drink $drink)
+    public function update($params, Drink $drink): ?Drink
     {
         DB::beginTransaction();
         try {
@@ -77,18 +77,17 @@ class DrinkService
      * @param Drink $drink
      * @return Drink|null
      */
-    public function delete(Drink $drink)
+    public function delete(Drink $drink): ?Drink
     {
         DB::beginTransaction();
         try {
             $drink->delete();
-            // TODO Delete upload images
-
+            $this->deleteImages($drink);
             DB::commit();
             return $drink;
         } catch (\Exception $exception) {
             report($exception);
-            DB:rollback();
+            DB::rollback();
             return null;
         }
     }
