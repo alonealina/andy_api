@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\PaymentMethod;
+use App\Models\StoreCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StoreFactory extends Factory
@@ -14,7 +15,9 @@ class StoreFactory extends Factory
      */
     public function definition()
     {
+        $categoriesId = StoreCategory::pluck('id')->toArray();
         return [
+            'store_category_id' => array_rand($categoriesId),
             'name' => $this->faker->streetName(),
             'post_code_1' => $this->faker->numberBetween(111, 999),
             'post_code_2' => $this->faker->numberBetween(1111, 9999),

@@ -29,11 +29,12 @@ class StoreService
     /**
      * Get list store
      *
+     * @param $params
      * @return array
      */
-    public function getList(): array
+    public function getList($params): array
     {
-        return $this->storeRepository->getAll()->toArray();
+        return $this->storeRepository->getList($params);
     }
 
     /**

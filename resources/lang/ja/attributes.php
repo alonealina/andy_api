@@ -5,6 +5,10 @@ return [
         'number_phone' => 'ナンバーフォン',
         'password' => 'パスワード'
     ],
+    'store_categories' => [
+        'name' => 'お店の名前',
+        'image' => '画像'
+    ],
     'stores' => [
         'name' => 'お店の名前',
         'post_code_1' => '郵便番号1',
@@ -18,7 +22,8 @@ return [
         'room_count' => '個室',
         'stand_count' => 'スタンド',
         'hotline' => 'お問い合わせ',
-        'homepage_url' => 'ホームページURL'
+        'homepage_url' => 'ホームページURL',
+        'image' => '画像'
     ],
     'foods' => [
         'name' => '名前',
