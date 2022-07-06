@@ -70,4 +70,24 @@ class DrinkService
             return null;
         }
     }
+
+    /**
+     * @param Drink $drink
+     * @return Drink|null
+     */
+    public function delete(Drink $drink)
+    {
+        DB::beginTransaction();
+        try {
+            $drink->delete();
+            // TODO Delete upload images
+
+            DB::commit();
+            return $drink;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB:rollback();
+            return null;
+        }
+    }
 }
