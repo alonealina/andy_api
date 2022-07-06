@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequest;
 use App\Models\Store;
 use App\Services\StoreService;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 class StoreController extends Controller
@@ -28,13 +29,14 @@ class StoreController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => $this->storeService->getList(),
+            'data' => $this->storeService->getList($request->all()),
         ]);
     }
 
