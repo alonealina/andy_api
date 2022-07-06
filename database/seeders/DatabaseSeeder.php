@@ -17,6 +17,6 @@ class DatabaseSeeder extends Seeder
          \App\Models\User::factory(10)->create();
         $this->call(FoodSeeder::class);
         \App\Models\Drink::factory(10)->create();
-
+        \App\Models\Event::factory(10)->create();
     }
 }
