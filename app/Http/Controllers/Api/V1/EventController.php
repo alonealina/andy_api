@@ -37,14 +37,20 @@ class EventController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\EventRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param EventRequest $request
+     * @return JsonResponse
      */
-    public function store(EventRequest $request)
+    public function store(EventRequest $request): JsonResponse
     {
-        //
+        if ($newRecord = $this->eventService->store($request->validated())) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $newRecord
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 
     /**
