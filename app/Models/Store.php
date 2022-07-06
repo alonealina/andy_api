@@ -56,4 +56,12 @@ class Store extends Model
     {
         return $this->hasMany(Drink::class);
     }
+
+    /**
+     * @return HasMany
+     */
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
+    }
 }
