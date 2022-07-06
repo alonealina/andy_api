@@ -56,14 +56,15 @@ class DrinkController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return JsonResponse
      */
-    public function show($id)
+    public function show(Drink $drink): JsonResponse
     {
-        //
+        return response()->json([
+        'message' => MessageStatus::SUCCESS,
+        'data' => $drink
+        ]);
     }
 
     /**
