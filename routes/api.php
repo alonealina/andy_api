@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\StoreController;
 use App\Http\Controllers\Api\V1\DrinkController;
 use App\Http\Controllers\Api\V1\EventController;
+use App\Http\Controllers\Api\V1\InformationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,7 +27,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1'], function () {
         'stores' => StoreController::class,
         'foods' => FoodController::class,
         'drinks' => DrinkController::class,
-        'events' => EventController::class
+        'events' => EventController::class,
+        'informations' => InformationController::class
     ], [
         'only' => ['index', 'store', 'update', 'show', 'destroy'],
         'missing' => 'responseDataNotFound'
