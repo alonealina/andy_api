@@ -26,6 +26,7 @@ class FoodController extends Controller
      */
     public function __construct(FoodService $foodService)
     {
+        $this->middleware('role:ADMIN', ['except' => ['index', 'show']]);
         $this->foodService = $foodService;
     }
 

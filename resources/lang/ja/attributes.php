@@ -11,6 +11,7 @@ return [
     ],
     'stores' => [
         'name' => 'お店の名前',
+        'store_category_id' => 'ストアカテゴリ',
         'post_code_1' => '郵便番号1',
         'post_code_2' => '郵便番号2',
         'address' => '住所',

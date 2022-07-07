@@ -23,6 +23,7 @@ class StoreController extends Controller
      */
     public function __construct(StoreService $storeService)
     {
+        $this->middleware('role:ADMIN', ['except' => ['index', 'show']]);
         $this->storeService = $storeService;
     }
 
