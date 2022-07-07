@@ -16,8 +16,14 @@ class CreateSystemInformationTable extends Migration
         Schema::create('system_information', function (Blueprint $table) {
             $table->id();
             $table->integer('store_id');
-            $table->integer('key');
-            $table->integer('value');
+            $table->integer('pm_last');
+            $table->string('companion_fee');
+            $table->string('nomination_fee');
+            $table->string('extension_fee');
+            $table->string('vip_fee');
+            $table->string('shochu_fee');
+            $table->string('brandy_fee');
+            $table->string('whisky_fee');
             $table->softDeletes();
             $table->timestamps();
         });
