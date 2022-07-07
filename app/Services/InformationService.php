@@ -76,4 +76,23 @@ class InformationService
             return null;
         }
     }
+
+    /**
+     * @param Information $information
+     * @return Information|null
+     */
+    public function destroy(Information $information): ?Information
+    {
+        DB::beginTransaction();
+        try {
+            $information->delete();
+            $this->deleteImages($information);
+            DB::commit();
+            return $information;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return null;
+        }
+    }
 }

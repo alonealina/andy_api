@@ -74,7 +74,7 @@ class InformationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Information $information
+     * @param Information $information
      * @return Response
      */
     public function show(Information $information)
@@ -85,7 +85,7 @@ class InformationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Information $information
+     * @param Information $information
      * @return Response
      */
     public function edit(Information $information)
@@ -114,11 +114,19 @@ class InformationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Information $information
-     * @return Response
+     * @param Information $information
+     * @return JsonResponse
      */
-    public function destroy(Information $information)
+    public function destroy(Information $information): JsonResponse
     {
-        //
+        if ($record = $this->informationService->destroy($information)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $record
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 }
