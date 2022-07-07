@@ -69,12 +69,10 @@ class InformationService
             $information->update($params);
             // TODO Save upload images
             DB::commit();
-
             return $information;
         } catch (\Exception $exception) {
             report($exception);
             DB::rollback();
-
             return null;
         }
     }
