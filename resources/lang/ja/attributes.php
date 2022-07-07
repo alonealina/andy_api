@@ -40,5 +40,10 @@ return [
     ],
     'events' => [
         'title' => '題名'
+    ],
+    'informations' => [
+        'title' => '題名',
+        'content' => 'コンテンツ',
+        'image' => '画像'
     ]
 ];

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class InformationRequest extends FormRequest
@@ -11,9 +13,9 @@ class InformationRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,10 +23,20 @@ class InformationRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string',
+            'content' => 'required|string',
+            'images.*' => 'mimes:jpg,jpeg,png|max:5000'
         ];
+    }
+
+    /**
+     * @return array|Application|Translator|string|null
+     */
+    public function attributes()
+    {
+        return __('attributes.informations');
     }
 }
