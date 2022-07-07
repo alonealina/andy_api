@@ -8,6 +8,7 @@ use App\Http\Requests\InformationRequest;
 use App\Models\Information;
 use App\Services\InformationService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class InformationController extends Controller
 {
@@ -43,7 +44,7 @@ class InformationController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -53,19 +54,28 @@ class InformationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\InformationRequest $request
-     * @return \Illuminate\Http\Response
+     * @param InformationRequest $request
+     * @return JsonResponse
      */
-    public function store(InformationRequest $request)
+    public function store(InformationRequest $request): JsonResponse
     {
-        //
+
+        if ($newRecord = $this->informationService->store($request->validated())) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $newRecord
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 
     /**
      * Display the specified resource.
      *
      * @param \App\Models\Information $information
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Information $information)
     {
@@ -76,7 +86,7 @@ class InformationController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param \App\Models\Information $information
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Information $information)
     {
@@ -97,7 +107,7 @@ class InformationController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\Information $information
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Information $information)
     {

@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\Information;
 use Illuminate\Support\Facades\Auth;
 
-class InformationRepository
+class InformationRepository extends BaseRepository
 {
 
     /**
