@@ -2,20 +2,38 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Models\SystemInformation;
+use App\Services\SystemInformationService;
 use Illuminate\Http\Request;
 
 class SystemInformationController extends Controller
 {
+
+    protected $systemInformationService;
+
+    /**
+     * @param SystemInformationService $systemInformationService
+     */
+    public function __construct(SystemInformationService $systemInformationService)
+    {
+        $this->middleware('role:ADMIN', ['except' => ['index']]);
+        $this->systemInformationService = $systemInformationService;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->systemInformationService->getSystemInformation(),
+        ]);
     }
 
     /**
