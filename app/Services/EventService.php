@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Event;
 use App\Repositories\EventRepository;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\Auth;
@@ -47,6 +48,25 @@ class EventService
         } catch (\Exception $exception) {
             report($exception);
             DB::rollBack();
+            return null;
+        }
+    }
+
+    /**
+     * @param Event $event
+     * @return Event|null
+     */
+    public function delete(Event $event): ?Event
+    {
+        DB::beginTransaction();
+        try {
+            $event->delete();
+            $this->deleteImages($event);
+            DB::commit();
+            return $event;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollback();
             return null;
         }
     }

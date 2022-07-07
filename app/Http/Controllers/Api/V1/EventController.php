@@ -78,13 +78,19 @@ class EventController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
+     * @param Event $event
+     * @return JsonResponse
      */
-    public function destroy(Event $event)
+    public function destroy(Event $event): JsonResponse
     {
-        //
+        if ($record = $this->eventService->delete($event)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $record
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 }
