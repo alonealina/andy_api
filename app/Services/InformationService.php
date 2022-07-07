@@ -67,13 +67,8 @@ class InformationService
         DB::beginTransaction();
         try {
             $information->update($params);
-            $images = $this->storeImages($params['images']);
-            foreach ($images as $image) {
-                $information->images()->update(["file_name" => $image['file_name']]);
-            }
-
+            // TODO Save upload images
             DB::commit();
-
 
             return $information;
         } catch (\Exception $exception) {
