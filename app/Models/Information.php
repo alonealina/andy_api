@@ -22,6 +22,10 @@ class Information extends Model
         'content',
     ];
 
+    protected $with = [
+        'images',
+    ];
+
     /**
      * @return BelongsTo
      */

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Information;
 use App\Repositories\InformationRepository;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +52,33 @@ class InformationService
         } catch (\Exception $exception) {
             report($exception);
             DB::rollBack();
+
+            return null;
+        }
+    }
+
+    /**
+     * @param $params
+     * @param Information $information
+     * @return Information|null
+     */
+    public function update($params, Information $information): ?Information
+    {
+        DB::beginTransaction();
+        try {
+            $information->update($params);
+            $images = $this->storeImages($params['images']);
+            foreach ($images as $image) {
+                $information->images()->update(["file_name" => $image['file_name']]);
+            }
+
+            DB::commit();
+
+
+            return $information;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollback();
 
             return null;
         }

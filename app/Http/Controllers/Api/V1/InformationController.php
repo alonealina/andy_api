@@ -95,11 +95,19 @@ class InformationController extends Controller
     /**
      * @param InformationRequest $request
      * @param Information $information
-     * @return void
+     * @return JsonResponse
      */
-    public function update(InformationRequest $request, Information $information)
+    public function update(InformationRequest $request, Information $information): JsonResponse
     {
-        //
+        if ($record = $this->informationService->update($request->validated(), $information)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $record
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 
     /**
