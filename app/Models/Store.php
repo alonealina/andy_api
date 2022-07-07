@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -95,5 +96,15 @@ class Store extends Model
     public function informations(): HasMany
     {
         return $this->hasMany(Information::class);
+    }
+
+    /**
+     * Relationship to system_information table
+     *
+     * @return HasOne
+     */
+    public function systemInformation(): HasOne
+    {
+        return $this->hasOne(SystemInformation::class);
     }
 }
