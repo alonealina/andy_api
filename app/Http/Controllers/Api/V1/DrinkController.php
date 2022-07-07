@@ -22,6 +22,7 @@ class DrinkController extends Controller
      */
     public function __construct(DrinkService $drinkService)
     {
+        $this->middleware('role:ADMIN', ['except' => ['index', 'show']]);
         $this->drinkService = $drinkService;
     }
 

@@ -23,6 +23,7 @@ class InformationController extends Controller
      */
     public function __construct(InformationService $informationService)
     {
+        $this->middleware('role:ADMIN', ['except' => ['index', 'show']]);
         $this->informationService = $informationService;
     }
 

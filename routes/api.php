@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\StoreController;
 use App\Http\Controllers\Api\V1\DrinkController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\InformationController;
+use App\Http\Controllers\Api\V1\SystemInformationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +31,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1'], function () {
         'foods' => FoodController::class,
         'drinks' => DrinkController::class,
         'events' => EventController::class,
+        'system-information' => SystemInformationController::class,
         'informations' => InformationController::class
     ], [
         'only' => ['index', 'store', 'update', 'show', 'destroy'],

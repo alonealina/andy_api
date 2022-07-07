@@ -22,6 +22,7 @@ class EventController extends Controller
      */
     public function __construct(EventService $eventService)
     {
+        $this->middleware('role:ADMIN', ['except' => ['index', 'show']]);
         $this->eventService = $eventService;
     }
 

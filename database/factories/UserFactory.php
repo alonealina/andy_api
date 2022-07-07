@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\UserRole;
 use App\Models\Store;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +20,7 @@ class UserFactory extends Factory
         $storeIds = Store::pluck('id')->toArray();
         return [
             'store_id' => array_rand($storeIds),
+            'role' => UserRole::CUSTOMER,
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'number_phone' => '0' . $this->faker->numberBetween(11111111, 99999999),

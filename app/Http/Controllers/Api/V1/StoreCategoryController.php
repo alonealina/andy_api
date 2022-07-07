@@ -21,6 +21,7 @@ class StoreCategoryController extends Controller
      */
     public function __construct(StoreCategoryService $storeCategoryService)
     {
+        $this->middleware('role:ADMIN', ['except' => ['index', 'show']]);
         $this->storeCategoryService = $storeCategoryService;
     }
 
