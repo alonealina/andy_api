@@ -46,5 +46,15 @@ return [
         'title' => '題名',
         'content' => 'コンテンツ',
         'image' => '画像'
+    ],
+    'system_information' => [
+        'pm_last' => 'PM8:00 ~ LAST',
+        'companion_fee' => '同伴料',
+        'nomination_fee' => '指名料',
+        'extension_fee' => '延長料',
+        'vip_fee' => 'VIP',
+        'shochu_fee' => '焼酎',
+        'brandy_fee' => 'ブランデー',
+        'whisky_fee' => 'ウイスキー',
     ]
 ];
