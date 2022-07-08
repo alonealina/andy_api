@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\DrinkController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\InformationController;
 use App\Http\Controllers\Api\V1\SystemInformationController;
+use App\Http\Controllers\Api\V1\CastController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,7 +33,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1'], function () {
         'drinks' => DrinkController::class,
         'events' => EventController::class,
         'system-information' => SystemInformationController::class,
-        'informations' => InformationController::class
+        'information' => InformationController::class,
+        'casts' => CastController::class
     ], [
         'only' => ['index', 'store', 'update', 'show', 'destroy'],
         'missing' => 'responseDataNotFound'
