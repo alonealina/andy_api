@@ -70,4 +70,25 @@ class EventService
             return null;
         }
     }
+
+    /**
+     * @param $params
+     * @param Event $event
+     * @return Event|null
+     */
+    public function update($params, Event $event): ?Event
+    {
+        DB::beginTransaction();
+        try {
+            $event->update($params);
+            // TODO Save upload images
+
+            DB::commit();
+            return $event;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollback();
+            return null;
+        }
+    }
 }
