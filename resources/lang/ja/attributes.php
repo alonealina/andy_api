@@ -55,6 +55,18 @@ return [
         'vip_fee' => 'VIP',
         'shochu_fee' => '焼酎',
         'brandy_fee' => 'ブランデー',
-        'whisky_fee' => 'ウイスキー',
+        'whisky_fee' => 'ウイスキー'
+    ],
+    'casts' => [
+        'name' => '名前',
+        'height' => '身長',
+        'blood_type' => '血液型',
+        'hobbit' => '延長料',
+        'type_person' => 'タイプの人',
+        'dream' => '夢',
+        'fetish' => 'フェチ',
+        'slogan' => 'スローガン',
+        'instagram_url' => 'InstagramのURL',
+        'special_skill' => '特技'
     ]
 ];

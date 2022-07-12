@@ -5,12 +5,12 @@ namespace App\Repositories;
 use App\Models\Cast;
 use Illuminate\Support\Facades\Auth;
 
-class CastRepository
+class CastRepository extends BaseRepository
 {
     /**
      * @return string
      */
-    public function model()
+    public function model(): string
     {
         return Cast::class;
 
