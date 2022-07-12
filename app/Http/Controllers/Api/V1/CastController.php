@@ -46,18 +46,26 @@ class CastController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\CastRequest $request
-     * @return Response
+     * @param CastRequest $request
+     * @return JsonResponse
      */
-    public function store(CastRequest $request)
+    public function store(CastRequest $request): JsonResponse
     {
-        //
+        if ($newRecord = $this->castService->store($request->validated())) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $newRecord
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 
     /**
