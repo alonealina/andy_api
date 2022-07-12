@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CastRequest;
+use App\Http\Requests\UpdateWorkerRequest;
 use App\Models\Cast;
 use App\Services\CastService;
 use Illuminate\Http\JsonResponse;
@@ -71,7 +72,7 @@ class CastController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Cast $worker
+     * @param Cast $worker
      * @return Response
      */
     public function show(Cast $worker)
@@ -82,7 +83,7 @@ class CastController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Cast $worker
+     * @param Cast $worker
      * @return Response
      */
     public function edit(Cast $worker)
@@ -93,19 +94,27 @@ class CastController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateWorkerRequest $request
-     * @param \App\Models\Cast $worker
-     * @return Response
+     * @param CastRequest $request
+     * @param Cast $cast
+     * @return JsonResponse
      */
-    public function update(CastRequest $request, Cast $worker)
+    public function update(CastRequest $request, Cast $cast): JsonResponse
     {
-        //
+        if ($updateRecord = $this->castService->update($request->validated(), $cast)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $updateRecord
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Cast $worker
+     * @param Cast $worker
      * @return Response
      */
     public function destroy(Cast $worker)
