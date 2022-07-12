@@ -24,7 +24,7 @@ class GetScheduleCastRequest extends FormRequest
     public function rules()
     {
         return [
-            'cast_id' => 'required|exists:cast,id',
+            'cast_id' => 'required|exists:casts,id',
             'year' => 'required|numeric',
             'month' => 'required|numeric',
         ];
