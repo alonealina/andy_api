@@ -13,6 +13,6 @@ class InformationSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Information::factory(10)->create();
+        \App\Models\Information::factory(50)->create();
     }
 }

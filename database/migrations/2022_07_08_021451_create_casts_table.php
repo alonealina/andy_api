@@ -24,7 +24,7 @@ class CreateCastsTable extends Migration
             $table->string('dream',1000)->nullable();
             $table->string('fetish',1000)->nullable();
             $table->string('slogan',1000)->nullable();
-            $table->string('instagram_url',100)->nullable();
+            $table->string('instagram_url',1000)->nullable();
             $table->string('special_skill',1000)->nullable();
             $table->softDeletes();
             $table->timestamps();
