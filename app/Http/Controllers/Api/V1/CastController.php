@@ -115,10 +115,18 @@ class CastController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Cast $worker
-     * @return Response
+     * @return JsonResponse
      */
-    public function destroy(Cast $worker)
+    public function destroy(Cast $cast): JsonResponse
     {
-        //
+        if ($record = $this->castService->destroy($cast)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $record
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 }
