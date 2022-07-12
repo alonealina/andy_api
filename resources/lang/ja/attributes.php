@@ -68,5 +68,12 @@ return [
         'slogan' => 'スローガン',
         'instagram_url' => 'InstagramのURL',
         'special_skill' => '特技'
-    ]
+    ],
+    'order_details' => [
+        'user_id' => '個室',
+        'orderable_id' => 'orderable_id',
+        'orderable_type' => 'orderable_type',
+        'quantity' => '数量',
+        'status' => '状態'
+    ],
 ];

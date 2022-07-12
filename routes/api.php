@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\DrinkController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\InformationController;
 use App\Http\Controllers\Api\V1\SystemInformationController;
+use App\Http\Controllers\Api\V1\OrderDetailController;
 use App\Http\Controllers\Api\V1\CastController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1'], function () {
         'system-information' => SystemInformationController::class,
         'information' => InformationController::class,
         'casts' => CastController::class,
+        'schedules' => ScheduleController::class,
     ], [
         'only' => ['index', 'store', 'update', 'show', 'destroy'],
         'missing' => 'responseDataNotFound'

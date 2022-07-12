@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Store extends Model
@@ -115,5 +116,13 @@ class Store extends Model
     public function casts(): HasMany
     {
         return $this->hasMany(Cast::class);
+    }
+
+    /**
+     * @return HasManyThrough
+     */
+    public function orderDetails()
+    {
+        return $this->hasManyThrough(OrderDetail::class, User::class);
     }
 }
