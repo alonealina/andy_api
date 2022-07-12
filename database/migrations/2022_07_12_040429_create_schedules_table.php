@@ -16,8 +16,10 @@ class CreateSchedulesTable extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
             $table->integer('cast_id');
-            $table->boolean('is_service')->default(false);
-            $table->boolean('is_overtime')->default(false);
+            $table->smallInteger('year')->default(date("Y"));
+            $table->tinyInteger('month')->default(date("m"));
+            $table->tinyInteger('day')->default(date("d"));
+            $table->string('working_time')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

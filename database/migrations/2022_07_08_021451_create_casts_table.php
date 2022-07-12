@@ -26,6 +26,8 @@ class CreateCastsTable extends Migration
             $table->string('slogan',1000)->nullable();
             $table->string('instagram_url',1000)->nullable();
             $table->string('special_skill',1000)->nullable();
+            $table->boolean('is_service')->default(false);
+            $table->boolean('is_overtime')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

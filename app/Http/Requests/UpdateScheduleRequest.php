@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ScheduleRequest extends FormRequest
+class UpdateScheduleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,11 +28,11 @@ class ScheduleRequest extends FormRequest
             'is_overtime' => 'required|boolean',
             'year' => 'required|numeric',
             'month' => 'required|numeric',
-            'schedule_details' => 'required|array',
-            'schedule_details.*.day' => 'numeric',
-            'schedule_details.*.working_time' => 'array',
-            'schedule_details.*.working_time.*.start' => 'date_format:H:i',
-            'schedule_details.*.working_time.*.end' => 'date_format:H:i',
+            'schedules' => 'required|array',
+            'schedules.*.day' => 'numeric',
+            'schedules.*.working_time' => 'array',
+            'schedules.*.working_time.*.start' => 'date_format:H:i',
+            'schedules.*.working_time.*.end' => 'date_format:H:i',
         ];
     }
 }

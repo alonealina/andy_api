@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Schedule extends Model
@@ -14,8 +13,14 @@ class Schedule extends Model
 
     protected $fillable = [
         'cast_id',
-        'is_service',
-        'is_overtime',
+        'year',
+        'month',
+        'day',
+        'working_time',
+    ];
+
+    protected $casts = [
+        'working_time' => 'array'
     ];
 
     protected $hidden = [
@@ -32,15 +37,5 @@ class Schedule extends Model
     public function cast(): BelongsTo
     {
         return $this->belongsTo(Cast::class);
-    }
-
-    /**
-     * Relationship to schedule detail table
-     *
-     * @return HasMany
-     */
-    public function scheduleDetails(): HasMany
-    {
-        return $this->hasMany(ScheduleDetail::class);
     }
 }

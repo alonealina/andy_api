@@ -17,14 +17,11 @@ class ScheduleSeeder extends Seeder
     {
         $castIds = Cast::pluck('id')->toArray();
         foreach ($castIds as $castId) {
-            $schedule = Schedule::create([
-                'cast_id' => $castId,
-                'is_service' => rand(0, 1),
-                'is_overtime' => rand(0, 1)
-            ]);
             for ($i=1; $i<28; $i++) {
-                $schedule->scheduleDetails()->create([
-                    'month' => 7,
+                Schedule::create([
+                    'cast_id' => $castId,
+                    'year' => date('Y'),
+                    'month' => date('m'),
                     'day' => $i,
                     'working_time' => [
                         [

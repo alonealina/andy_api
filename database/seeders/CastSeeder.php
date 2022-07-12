@@ -13,6 +13,6 @@ class CastSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Cast::factory(10)->create();
+        \App\Models\Cast::factory(100)->create();
     }
 }

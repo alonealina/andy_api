@@ -4,13 +4,15 @@ namespace App\Services;
 
 use App\Models\Cast;
 use App\Repositories\CastRepository;
+use App\Repositories\ScheduleRepository;
+use App\Traits\CheckStore;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CastService
 {
-    use SaveImagesUpload;
+    use SaveImagesUpload, CheckStore;
 
     /**
      * @var CastRepository
@@ -18,11 +20,21 @@ class CastService
     protected $castRepository;
 
     /**
-     * @param CastRepository $castRepository
+     * @var ScheduleRepository
      */
-    public function __construct(CastRepository $castRepository)
-    {
+    protected $scheduleRepository;
+
+
+    /**
+     * @param CastRepository $castRepository
+     * @param ScheduleRepository $scheduleRepository
+     */
+    public function __construct(
+        CastRepository $castRepository,
+        ScheduleRepository $scheduleRepository
+    ) {
         $this->castRepository = $castRepository;
+        $this->scheduleRepository = $scheduleRepository;
     }
 
     /**
@@ -83,6 +95,54 @@ class CastService
         try {
             $cast->delete();
             $this->deleteImages($cast);
+            DB::commit();
+            return $cast;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return null;
+        }
+    }
+
+    /**
+     * @param Cast $cast
+     * @param $params
+     * @return array
+     */
+    public function getSchedule(Cast $cast, $params)
+    {
+        return $cast->load(['schedules' => function ($query) use ($params) {
+            $query->where([
+                'year' => $params['year'],
+                'month' => $params['month'],
+            ]);
+        }])->toArray();
+    }
+
+    /**
+     * @param Cast $cast
+     * @param $data
+     * @return Cast|null
+     */
+    public function setSchedule(Cast $cast, $data)
+    {
+        $this->checkStore($cast);
+        DB::beginTransaction();
+        try {
+            $cast->update([
+                'is_service' => $data['is_service'],
+                'is_overtime' => $data['is_overtime']
+            ]);
+            foreach ($data['schedules'] as $schedule) {
+                $this->scheduleRepository->updateOrCreate([
+                    'cast_id' => $cast->id,
+                    'year' => $data['year'],
+                    'month' => $data['month'],
+                    'day' => $schedule['day'],
+                ], [
+                    'working_time' => $schedule['working_time']
+                ]);
+            }
             DB::commit();
             return $cast;
         } catch (\Exception $exception) {

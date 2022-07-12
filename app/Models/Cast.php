@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -27,7 +27,9 @@ class Cast extends Model
         'fetish',
         'slogan',
         'instagram_url',
-        'special_skill'
+        'special_skill',
+        'is_service',
+        'is_overtime'
     ];
 
     protected $with = [
@@ -53,10 +55,10 @@ class Cast extends Model
     /**
      * Relationship to schedule table
      *
-     * @return HasOne
+     * @return HasMany
      */
-    public function schedule(): HasOne
+    public function schedules(): HasMany
     {
-        return $this->hasOne(Schedule::class);
+        return $this->hasMany(Schedule::class);
     }
 }

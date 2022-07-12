@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\V1\FoodController;
-use App\Http\Controllers\Api\V1\ScheduleController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\StoreCategoryController;
 use App\Http\Controllers\Api\V1\StoreController;
@@ -36,9 +35,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1'], function () {
         'system-information' => SystemInformationController::class,
         'information' => InformationController::class,
         'casts' => CastController::class,
-        'schedules' => ScheduleController::class,
     ], [
         'only' => ['index', 'store', 'update', 'show', 'destroy'],
         'missing' => 'responseDataNotFound'
     ]);
+
+    Route::get('casts/{cast}/schedules', [CastController::class, 'getSchedule'])->missing('responseDataNotFound');
+    Route::put('casts/{cast}/schedules', [CastController::class, 'updateSchedule'])->missing('responseDataNotFound');
 });
