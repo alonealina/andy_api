@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetScheduleCastRequest;
+use App\Http\Requests\ScheduleRequest;
 use App\Models\Schedule;
 use App\Services\ScheduleService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
 {
+    /**
+     * @var ScheduleService
+     */
     protected $scheduleService;
 
     /**
@@ -38,68 +41,22 @@ class ScheduleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Schedule  $schedul
-     * @return \Illuminate\Http\Response
-     */
-    public function show()
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Schedule  $schedul
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Schedule $schedul)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Schedule  $schedul
-     * @return \Illuminate\Http\Response
+     * @param ScheduleRequest $request
+     * @param Schedule $schedule
+     * @return JsonResponse
      */
-    public function update(Request $request, Schedule $schedul)
+    public function update(ScheduleRequest $request, Schedule $schedule): JsonResponse
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Schedule  $schedul
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Schedule $schedul)
-    {
-        //
+        if ($updateRecord = $this->scheduleService->update($request->validated(), $schedule)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $updateRecord
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 }

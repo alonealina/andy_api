@@ -59,7 +59,6 @@ class InformationController extends Controller
      */
     public function store(InformationRequest $request): JsonResponse
     {
-
         if ($newRecord = $this->informationService->store($request->validated())) {
             return response()->json([
                 'message' => MessageStatus::SUCCESS,
