@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(FoodSeeder::class);
         $this->call(InformationSeeder::class);
+        $this->call(CastSeeder::class);
         \App\Models\Drink::factory(100)->create();
         \App\Models\Event::factory(100)->create();
     }

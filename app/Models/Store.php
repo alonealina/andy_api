@@ -107,4 +107,13 @@ class Store extends Model
     {
         return $this->hasOne(SystemInformation::class);
     }
+
+    /**
+     * Relationship to workers table
+     * @return HasMany
+     */
+    public function casts(): HasMany
+    {
+        return $this->hasMany(Cast::class);
+    }
 }
