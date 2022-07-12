@@ -34,12 +34,14 @@ class OrderDetailRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|numeric',
-            'orderable_id' => 'required|numeric',
-            'orderable_type' => 'required|string',
-            'price' => 'required|numeric',
-            'quantity' => 'required|numeric',
-            'status' => 'required|numeric'
+            'foods' => 'required|array',
+            'foods.*.id' => 'required|exists:food,id',
+            'foods.*.price' => 'required|exists:food,price',
+            'foods.*.quantity' => 'required|numeric',
+            'drinks' => 'required|array',
+            'drinks.*.id' => 'required|exists:drinks,id',
+            'drinks.*.price' => 'required|exists:drinks,price',
+            'drinks.*.quantity' => 'required|numeric'
         ];
     }
 }

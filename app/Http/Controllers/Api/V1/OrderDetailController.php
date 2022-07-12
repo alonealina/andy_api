@@ -38,14 +38,20 @@ class OrderDetailController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\OrderDetailRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param OrderDetailRequest $request
+     * @return JsonResponse
      */
     public function store(OrderDetailRequest $request)
     {
-        //
+        if ($this->orderDetailService->store($request->validated())) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => []
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 
     /**

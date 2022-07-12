@@ -37,6 +37,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1'], function () {
         'information' => InformationController::class,
         'casts' => CastController::class,
         'schedules' => ScheduleController::class,
+        'order-details' => OrderDetailController::class
     ], [
         'only' => ['index', 'store', 'update', 'show', 'destroy'],
         'missing' => 'responseDataNotFound'
