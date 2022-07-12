@@ -72,4 +72,23 @@ class CastService
             return null;
         }
     }
+
+    /**
+     * @param Cast $cast
+     * @return Cast|null
+     */
+    public function destroy(Cast $cast)
+    {
+        DB::beginTransaction();
+        try {
+            $cast->delete();
+            $this->deleteImages($cast);
+            DB::commit();
+            return $cast;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return null;
+        }
+    }
 }
