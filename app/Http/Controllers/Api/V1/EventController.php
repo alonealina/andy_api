@@ -66,15 +66,21 @@ class EventController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateEventRequest  $request
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
+     * @param UpdateEventRequest $request
+     * @param Event $event
+     * @return JsonResponse
      */
-    public function update(UpdateEventRequest $request, Event $event)
+    public function update(EventRequest $request, Event $event): JsonResponse
     {
-        //
+        if ($record = $this->eventService->update($request->validated(), $event)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $record
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 
     /**
