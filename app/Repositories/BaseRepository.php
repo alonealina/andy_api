@@ -510,4 +510,14 @@ abstract class BaseRepository implements RepositoryInterface
             ]
         );
     }
+
+    /**
+     * @param $conditions
+     * @param $attributes
+     * @return mixed
+     */
+    public function updateOrCreate($conditions, $attributes)
+    {
+        return $this->model->updateOrCreate($conditions, $attributes);
+    }
 }
