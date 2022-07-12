@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Cast;
 use App\Repositories\CastRepository;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +45,27 @@ class CastService
             $newRecord->images()->createMany($this->storeImages($params['images']));
             DB::commit();
             return $newRecord;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return null;
+        }
+    }
+
+    /**
+     * @param $data
+     * @param Cast $cast
+     * @return mixed|null
+     */
+    public function update($data, Cast $cast)
+    {
+        DB::beginTransaction();
+        try {
+            $cast->update($data);
+            // TODO Save upload images
+
+            DB::commit();
+            return $cast;
         } catch (\Exception $exception) {
             report($exception);
             DB::rollBack();
