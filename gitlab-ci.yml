@@ -43,7 +43,7 @@ DeployDev:
   stage: DeployDev
   image: hblabvn/php-mongo:latest
   only:
-    - beta
+    - develop
   environment:
     name: dev
   cache:
