@@ -20,11 +20,10 @@ class UserFactory extends Factory
         $storeIds = Store::pluck('id')->toArray();
         return [
             'store_id' => array_rand($storeIds),
+            'username' => $this->faker->unique()->userName(),
+            'password' => Hash::make('123456789'),
             'role' => UserRole::CUSTOMER,
             'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'number_phone' => '0' . $this->faker->numberBetween(11111111, 99999999),
-            'password' => Hash::make('123456789'),
             'remember_token' => Str::random(10),
         ];
     }

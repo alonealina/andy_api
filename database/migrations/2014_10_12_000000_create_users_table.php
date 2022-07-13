@@ -16,12 +16,12 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->integer('store_id');
-            $table->tinyInteger('role')->default(\App\Enums\UserRole::CUSTOMER);
-            $table->string('email')->unique();
-            $table->string('number_phone')->unique();
-            $table->string('name');
+            $table->string('username')->unique();
             $table->string('password');
+            $table->tinyInteger('role')->default(\App\Enums\UserRole::CUSTOMER);
+            $table->string('name');
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
