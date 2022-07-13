@@ -13,7 +13,6 @@ DeployDev:
     paths:
       - vendor/
   script:
-    - echo $DEV_DEPLOY_ENV_FILE
     - echo "$DEV_DEPLOY_SSH_KEY"
     - eval $(ssh-agent -s) && echo "$DEV_DEPLOY_SSH_KEY" | ssh-add -
     - mkdir -p ~/.ssh
