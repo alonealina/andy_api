@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\FoodController;
 use App\Http\Controllers\Api\V1\StoreCategoryController;
 use App\Http\Controllers\Api\V1\StoreController;
@@ -20,8 +21,15 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
+    Route::post('/login', [AuthController::class, 'login']);
 
-require_once __DIR__ . '/auth.php';
+    Route::group(['middleware:auth'], function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/refresh', [AuthController::class, 'refresh']);
+        Route::get('/user-profile', [AuthController::class, 'userProfile']);
+    });
+});
 
 Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDataNotFound'], function () {
     Route::prefix('store-categories')->group(function () {
