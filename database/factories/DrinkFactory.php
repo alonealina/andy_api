@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\DrinkCategory;
 use App\Models\Store;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -15,9 +16,10 @@ class DrinkFactory extends Factory
     public function definition()
     {
         $storeIds = Store::pluck('id')->toArray();
+        $categoriesId = DrinkCategory::pluck('id')->toArray();
         return [
             'store_id' => array_rand($storeIds),
-            'type' => $this->faker->numberBetween(1, 4),
+            'drink_category_id' => array_rand($categoriesId),
             'name' => $this->faker->name(),
             'price' => $this->faker->randomDigit(),
             'description' => $this->faker->text(),

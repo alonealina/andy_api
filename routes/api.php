@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\InformationController;
 use App\Http\Controllers\Api\V1\OrderDetailController;
 use App\Http\Controllers\Api\V1\CastController;
+use App\Http\Controllers\Api\V1\DrinkCategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,8 +64,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
 
     Route::prefix('drinks')->group(function () {
         Route::get('/', [DrinkController::class, 'index']);
-        Route::get('/{drink}', [DrinkController::class, 'show']);
         Route::get('/default-images', [DrinkController::class, 'getImageDefault']);
+        Route::get('/{drink}', [DrinkController::class, 'show']);
         Route::middleware('role:ADMIN')->group(function () {
             Route::post('/', [DrinkController::class, 'store']);
             Route::post('/{drink}', [DrinkController::class, 'update']);
@@ -104,5 +105,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
     Route::prefix('order-details')->group(function () {
         Route::get('/', [OrderDetailController::class, 'index']);
         Route::post('/', [OrderDetailController::class, 'store'])->middleware('role:CUSTOMER');
+    });
+
+    Route::prefix('drink-categories')->group(function () {
+        Route::get('/', [DrinkCategoryController::class, 'index']);
+        Route::get('/{drinkCategory}', [DrinkCategoryController::class, 'show']);
     });
 });
