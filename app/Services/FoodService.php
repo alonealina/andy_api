@@ -7,6 +7,7 @@ use App\Repositories\FoodRepository;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class FoodService
 {
@@ -46,10 +47,12 @@ class FoodService
             $newRecord = $this->foodRepository->store(array_merge($data, ['store_id' => Auth::user()->store_id]));
             $newRecord->images()->createMany($this->storeImages($data['images']));
             DB::commit();
+
             return $newRecord;
         } catch (\Exception $exception) {
             report($exception);
             DB::rollBack();
+
             return null;
         }
     }
@@ -67,10 +70,12 @@ class FoodService
             // TODO Save upload images
 
             DB::commit();
+
             return $food;
         } catch (\Exception $exception) {
             report($exception);
             DB::rollBack();
+
             return null;
         }
     }
@@ -86,11 +91,27 @@ class FoodService
             $food->delete();
             $this->deleteImages($food);
             DB::commit();
+
             return $food;
         } catch (\Exception $exception) {
             report($exception);
             DB::rollBack();
+
             return null;
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getImageDefault(): array
+    {
+        $data = [];
+        $images = Storage::disk()->files('images/defaults/foods');
+        foreach ($images as $image) {
+            $data[] = Storage::disk()->url(IMAGES_PATH).'/'.$image;
+        }
+
+        return $data;
     }
 }
