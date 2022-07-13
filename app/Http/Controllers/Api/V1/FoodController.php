@@ -65,11 +65,12 @@ class FoodController extends Controller
         if ($newRecord = $this->foodService->store($request->validated())) {
             return response()->json([
                 'message' => MessageStatus::SUCCESS,
-                'data' => $newRecord
+                'data' => $newRecord,
             ]);
         }
+
         return response()->json([
-            'message' => MessageStatus::ERROR
+            'message' => MessageStatus::ERROR,
         ], 400);
     }
 
@@ -106,11 +107,12 @@ class FoodController extends Controller
         if ($updateRecord = $this->foodService->update($request->validated(), $food)) {
             return response()->json([
                 'message' => MessageStatus::SUCCESS,
-                'data' => $updateRecord
+                'data' => $updateRecord,
             ]);
         }
+
         return response()->json([
-            'message' => MessageStatus::ERROR
+            'message' => MessageStatus::ERROR,
         ], 400);
     }
 
@@ -125,11 +127,23 @@ class FoodController extends Controller
         if ($record = $this->foodService->destroy($food)) {
             return response()->json([
                 'message' => MessageStatus::SUCCESS,
-                'data' => $record
+                'data' => $record,
             ]);
         }
+
         return response()->json([
-            'message' => MessageStatus::ERROR
+            'message' => MessageStatus::ERROR,
         ], 400);
+    }
+
+    /**
+     * @return JsonResponse|void
+     */
+    public function getImageDefault()
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->foodService->getImageDefault(),
+        ]);
     }
 }

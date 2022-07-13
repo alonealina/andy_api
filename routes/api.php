@@ -42,4 +42,5 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1'], function () {
 
     Route::get('casts/{cast}/schedules', [CastController::class, 'getSchedule'])->missing('responseDataNotFound');
     Route::put('casts/{cast}/schedules', [CastController::class, 'updateSchedule'])->missing('responseDataNotFound');
+    Route::get('foods/default-images', [FoodController::class, 'getImageDefault']);
 });
