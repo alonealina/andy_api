@@ -13,6 +13,7 @@ DeployDev:
     paths:
       - vendor/
   script:
+    - echo "$DEV_DEPLOY_SSH_KEY"
     - eval $(ssh-agent -s) && echo "$DEV_DEPLOY_SSH_KEY" | ssh-add -
     - mkdir -p ~/.ssh
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\tControlMaster auto\n\tControlPath /tmp/ansible-%r@%h:%p\n\tControlPersist 15m\n\tPreferredAuthentications publickey
