@@ -1,13 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\V1\FoodController;
-use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\StoreCategoryController;
 use App\Http\Controllers\Api\V1\StoreController;
 use App\Http\Controllers\Api\V1\DrinkController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\InformationController;
-use App\Http\Controllers\Api\V1\SystemInformationController;
 use App\Http\Controllers\Api\V1\OrderDetailController;
 use App\Http\Controllers\Api\V1\CastController;
 use Illuminate\Support\Facades\Route;
@@ -25,25 +23,77 @@ use Illuminate\Support\Facades\Route;
 
 require_once __DIR__ . '/auth.php';
 
-Route::group(['middleware' => 'auth', 'prefix' => 'v1'], function () {
-    Route::resources([
-        'users' => UserController::class,
-        'store-categories' => StoreCategoryController::class,
-        'stores' => StoreController::class,
-        'foods' => FoodController::class,
-        'drinks' => DrinkController::class,
-        'events' => EventController::class,
-        'system-information' => SystemInformationController::class,
-        'information' => InformationController::class,
-        'casts' => CastController::class,
-        'schedules' => ScheduleController::class,
-        'order-details' => OrderDetailController::class
-    ], [
-        'only' => ['index', 'store', 'update', 'show', 'destroy'],
-        'missing' => 'responseDataNotFound'
-    ]);
+Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDataNotFound'], function () {
+    Route::prefix('store-categories')->group(function () {
+        Route::get('/', [StoreCategoryController::class, 'index']);
+        Route::post('/', [StoreCategoryController::class, 'store'])->middleware('role:SUPER_ADMIN');
+    });
 
-    Route::get('casts/{cast}/schedules', [CastController::class, 'getSchedule'])->missing('responseDataNotFound');
-    Route::put('casts/{cast}/schedules', [CastController::class, 'updateSchedule'])->missing('responseDataNotFound');
-    Route::get('foods/default-images', [FoodController::class, 'getImageDefault']);
+    Route::prefix('stores')->group(function () {
+        Route::get('/', [StoreController::class, 'index']);
+        Route::get('/{store}', [StoreController::class, 'show']);
+        Route::get('/{store}/system-information', [StoreController::class, 'getSystemInformation']);
+        Route::middleware('role:SUPER_ADMIN')->group(function () {
+            Route::post('/', [StoreController::class, 'store']);
+            Route::post('/{store}/delete', [StoreController::class, 'destroy']);
+        });
+        Route::middleware('role:SUPER_ADMIN,ADMIN')->group(function () {
+            Route::post('/{store}', [StoreController::class, 'update']);
+            Route::post('/{store}/system-information', [StoreController::class, 'updateSystemInformation']);
+        });
+    });
+
+    Route::prefix('foods')->group(function () {
+        Route::get('/', [FoodController::class, 'index']);
+        Route::get('/default-images', [FoodController::class, 'getImageDefault']);
+        Route::middleware('role:ADMIN')->group(function () {
+            Route::post('/', [FoodController::class, 'store']);
+            Route::post('/{food}', [FoodController::class, 'update']);
+            Route::post('/{food}/delete', [FoodController::class, 'destroy']);
+        });
+    });
+
+    Route::prefix('drinks')->group(function () {
+        Route::get('/', [DrinkController::class, 'index']);
+        Route::get('/{drink}', [DrinkController::class, 'show']);
+        Route::middleware('role:ADMIN')->group(function () {
+            Route::post('/', [DrinkController::class, 'store']);
+            Route::post('/{drink}', [DrinkController::class, 'update']);
+            Route::post('/{drink}/delete', [DrinkController::class, 'destroy']);
+        });
+    });
+
+    Route::prefix('events')->group(function () {
+        Route::get('/', [EventController::class, 'index']);
+        Route::middleware('role:ADMIN')->group(function () {
+            Route::post('/', [EventController::class, 'store']);
+            Route::post('/{event}', [EventController::class, 'update']);
+            Route::post('/{event}/delete', [EventController::class, 'destroy']);
+        });
+    });
+
+    Route::prefix('information')->group(function () {
+        Route::get('/', [InformationController::class, 'index']);
+        Route::middleware('role:ADMIN')->group(function () {
+            Route::post('/', [InformationController::class, 'store']);
+            Route::post('/{information}', [InformationController::class, 'update']);
+            Route::post('/{information}/delete', [InformationController::class, 'destroy']);
+        });
+    });
+
+    Route::prefix('casts')->group(function () {
+        Route::get('/', [CastController::class, 'index']);
+        Route::get('/{cast}/schedules', [CastController::class, 'getSchedule']);
+        Route::post('/{cast}/schedules', [CastController::class, 'updateSchedule'])->middleware('role:ADMIN,CAST');
+        Route::middleware('role:ADMIN')->group(function () {
+            Route::post('/', [CastController::class, 'store']);
+            Route::post('/{cast}', [CastController::class, 'update']);
+            Route::post('/{cast}/delete', [CastController::class, 'destroy']);
+        });
+    });
+
+    Route::prefix('order-details')->group(function () {
+        Route::get('/', [OrderDetailController::class, 'index']);
+        Route::post('/', [OrderDetailController::class, 'store'])->middleware('role:CUSTOMER');
+    });
 });

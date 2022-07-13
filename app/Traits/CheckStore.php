@@ -2,9 +2,8 @@
 
 namespace App\Traits;
 
-use Illuminate\Http\UploadedFile;
+use App\Models\Store;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 trait CheckStore
 {
@@ -14,6 +13,7 @@ trait CheckStore
      */
     public function checkStore($model)
     {
-        abort_if(Auth::user()->store_id !== $model->store->id, 403, __('messages.common.forbidden'));
+        $storeId = get_class($model) == Store::class ? $model->id : $model->store->id;
+        abort_if(Auth::user()->store_id !== $storeId, 403, __('messages.common.forbidden'));
     }
 }

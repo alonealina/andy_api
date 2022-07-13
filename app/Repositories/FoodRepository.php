@@ -17,7 +17,6 @@ class FoodRepository extends BaseRepository
     }
 
     /**
-     * @param $params
      * @return mixed
      */
     public function getList()
