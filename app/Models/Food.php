@@ -46,4 +46,12 @@ class Food extends Model
     {
         return $this->morphMany(Image::class, 'imaginable');
     }
+
+    /**
+     * @return MorphMany
+     */
+    public function orderDetails()
+    {
+        return $this->morphMany(OrderDetail::class, 'orderable');
+    }
 }
