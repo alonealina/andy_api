@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequest;
+use App\Http\Requests\SystemInformationRequest;
 use App\Models\Store;
 use App\Services\StoreService;
 use Illuminate\Http\Request;
@@ -23,7 +24,6 @@ class StoreController extends Controller
      */
     public function __construct(StoreService $storeService)
     {
-        $this->middleware('role:ADMIN', ['except' => ['index', 'show']]);
         $this->storeService = $storeService;
     }
 
@@ -106,6 +106,40 @@ class StoreController extends Controller
             return response()->json([
                 'message' => MessageStatus::SUCCESS,
                 'data' => $deleteRecord
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
+    }
+
+    /**
+     * Get system information
+     *
+     * @param Store $store
+     * @return JsonResponse
+     */
+    public function getSystemInformation(Store $store): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->storeService->getSystemInformation($store),
+        ]);
+    }
+
+    /**
+     * Update system information
+     *
+     * @param SystemInformationRequest $request
+     * @param Store $store
+     * @return JsonResponse
+     */
+    public function updateSystemInformation(SystemInformationRequest $request, Store $store): JsonResponse
+    {
+        if ($updateRecord = $this->storeService->updateSystemInformation($request->validated(), $store)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $updateRecord
             ]);
         }
         return response()->json([

@@ -22,7 +22,6 @@ class OrderDetailController extends Controller
      */
     public function __construct(OrderDetailService $orderDetailService)
     {
-        $this->middleware('role:ADMIN', ['except' => ['index', 'show']]);
         $this->orderDetailService = $orderDetailService;
     }
 

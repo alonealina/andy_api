@@ -10,7 +10,6 @@ use App\Http\Requests\UpdateScheduleRequest;
 use App\Models\Cast;
 use App\Services\CastService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 
 class CastController extends Controller
 {
@@ -24,7 +23,6 @@ class CastController extends Controller
      */
     public function __construct(CastService $castService)
     {
-        $this->middleware('role:ADMIN', ['except' => ['index', 'show', 'getSchedule']]);
         $this->castService = $castService;
     }
 
@@ -39,16 +37,6 @@ class CastController extends Controller
             'message' => MessageStatus::SUCCESS,
             'data' => $this->castService->getList(),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-
     }
 
     /**
@@ -68,28 +56,6 @@ class CastController extends Controller
         return response()->json([
             'message' => MessageStatus::ERROR
         ], 400);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Cast $worker
-     * @return Response
-     */
-    public function show(Cast $worker)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Cast $worker
-     * @return Response
-     */
-    public function edit(Cast $worker)
-    {
-        //
     }
 
     /**

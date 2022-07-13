@@ -5,11 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FoodRequest;
-use App\Http\Requests\UpdateFoodRequest;
 use App\Models\Food;
 use App\Services\FoodService;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 
 class FoodController extends Controller
@@ -26,7 +23,6 @@ class FoodController extends Controller
      */
     public function __construct(FoodService $foodService)
     {
-        $this->middleware('role:ADMIN', ['except' => ['index', 'show']]);
         $this->foodService = $foodService;
     }
 
@@ -41,16 +37,6 @@ class FoodController extends Controller
             'message' => MessageStatus::SUCCESS,
             'data' => $this->foodService->getList(),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return void
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -72,28 +58,6 @@ class FoodController extends Controller
         return response()->json([
             'message' => MessageStatus::ERROR,
         ], 400);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Food $food
-     * @return void
-     */
-    public function show(Food $food)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Food $food
-     * @return void
-     */
-    public function edit(Food $food)
-    {
-        //
     }
 
     /**
@@ -137,9 +101,11 @@ class FoodController extends Controller
     }
 
     /**
-     * @return JsonResponse|void
+     * Get list images default
+     *
+     * @return JsonResponse
      */
-    public function getImageDefault()
+    public function getImageDefault(): JsonResponse
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,

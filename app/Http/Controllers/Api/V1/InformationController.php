@@ -24,7 +24,6 @@ class InformationController extends Controller
      */
     public function __construct(InformationService $informationService)
     {
-        $this->middleware('role:ADMIN', ['except' => ['index', 'show']]);
         $this->informationService = $informationService;
     }
 
@@ -39,16 +38,6 @@ class InformationController extends Controller
             'message' => MessageStatus::SUCCESS,
             'data' => $this->informationService->getList(),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -68,28 +57,6 @@ class InformationController extends Controller
         return response()->json([
             'message' => MessageStatus::ERROR
         ], 400);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Information $information
-     * @return Response
-     */
-    public function show(Information $information)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Information $information
-     * @return Response
-     */
-    public function edit(Information $information)
-    {
-        //
     }
 
     /**

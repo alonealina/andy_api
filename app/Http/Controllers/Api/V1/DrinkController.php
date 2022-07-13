@@ -8,7 +8,6 @@ use App\Http\Requests\DrinkRequest;
 use App\Models\Drink;
 use App\Services\DrinkService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class DrinkController extends Controller
 {
@@ -22,7 +21,6 @@ class DrinkController extends Controller
      */
     public function __construct(DrinkService $drinkService)
     {
-        $this->middleware('role:ADMIN', ['except' => ['index', 'show']]);
         $this->drinkService = $drinkService;
     }
 
@@ -57,7 +55,7 @@ class DrinkController extends Controller
     }
 
     /**
-     * @param $id
+     * @param Drink $drink
      * @return JsonResponse
      */
     public function show(Drink $drink): JsonResponse

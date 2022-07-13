@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
-use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
 use App\Services\EventService;
 use \Illuminate\Http\JsonResponse;
@@ -22,7 +21,6 @@ class EventController extends Controller
      */
     public function __construct(EventService $eventService)
     {
-        $this->middleware('role:ADMIN', ['except' => ['index', 'show']]);
         $this->eventService = $eventService;
     }
 
@@ -55,18 +53,7 @@ class EventController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Event $event)
-    {
-        //
-    }
-
-    /**
-     * @param UpdateEventRequest $request
+     * @param EventRequest $request
      * @param Event $event
      * @return JsonResponse
      */

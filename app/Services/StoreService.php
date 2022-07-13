@@ -4,12 +4,13 @@ namespace App\Services;
 
 use App\Models\Store;
 use App\Repositories\StoreRepository;
+use App\Traits\CheckStore;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\DB;
 
 class StoreService
 {
-    use SaveImagesUpload;
+    use SaveImagesUpload, CheckStore;
 
     /**
      * @var StoreRepository
@@ -93,5 +94,30 @@ class StoreService
             DB::rollBack();
             return null;
         }
+    }
+
+    /**
+     * Get system information
+     *
+     * @param Store $store
+     * @return mixed
+     */
+    public function getSystemInformation(Store $store)
+    {
+        return $store->systemInformation->toArray();
+    }
+
+    /**
+     * Update system information
+     *
+     * @param $data
+     * @param Store $store
+     * @return mixed
+     */
+    public function updateSystemInformation($data, Store $store)
+    {
+        $this->checkStore($store);
+        $store->systemInformation()->update($data);
+        return $store->systemInformation->toArray();
     }
 }
