@@ -14,12 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
-    Route::post('/login', [AuthController::class, 'login']);
 
-    Route::group(['middleware:auth'], function () {
-        Route::post('/logout', [AuthController::class, 'logout']);
-        Route::post('/refresh', [AuthController::class, 'refresh']);
-        Route::get('/user-profile', [AuthController::class, 'userProfile']);
-    });
-});
