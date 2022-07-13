@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -21,8 +19,9 @@ class AuthController extends Controller
      * @param LoginRequest $request
      * @return JsonResponse
      */
-    public function login(LoginRequest $request){
-        $credentials = $this->credentials($request);
+    public function login(LoginRequest $request): JsonResponse
+    {
+        $credentials = $request->only('username', 'password');
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['message' => __('messages.users.login_fail')], 401);
@@ -55,21 +54,6 @@ class AuthController extends Controller
     public function userProfile(): JsonResponse
     {
         return response()->json(auth()->user());
-    }
-
-    /**
-     * @param Request $request
-     * @return array
-     */
-    protected function credentials(Request $request): array
-    {
-        if (is_numeric($request->get('email'))) {
-            return [
-                'number_phone' => $request->get('email'),
-                'password' => $request->get('password')
-            ];
-        }
-        return $request->only('email', 'password');
     }
 
     /**

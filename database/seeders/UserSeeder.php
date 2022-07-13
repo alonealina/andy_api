@@ -17,37 +17,31 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $faker = \Faker\Factory::create();
         $storeIds = Store::pluck('id')->toArray();
         \App\Models\User::create([
             'store_id' => array_rand($storeIds),
-            'role' => UserRole::SUPER_ADMIN,
-            'email' => 'superadmin@gmail.com',
-            'number_phone' => '0123456789',
-            'name' => 'Super Admin',
+            'username' => 'super_admin',
             'password' => Hash::make('123456789'),
+            'role' => UserRole::SUPER_ADMIN,
+            'name' => 'Super Admin',
             'remember_token' => Str::random(10),
         ]);
-
         foreach ($storeIds as $storeId) {
             \App\Models\User::create([
                 'store_id' => $storeId,
-                'role' => UserRole::ADMIN,
-                'email' => 'admin' . $storeId . '@gmail.com',
-                'number_phone' => '0' . $faker->numberBetween(11111111, 99999999),
-                'name' => 'Admin',
+                'username' => 'admin_store_' . $storeId,
                 'password' => Hash::make('123456789'),
+                'role' => UserRole::ADMIN,
+                'name' => 'Admin ' . $storeId,
                 'remember_token' => Str::random(10),
             ]);
-
             for ($i=1; $i<10; $i++) {
                 \App\Models\User::create([
                     'store_id' => $storeId,
-                    'role' => UserRole::CUSTOMER,
-                    'email' =>'room_' . $storeId . '_' . $i,
-                    'number_phone' => '0' . $faker->numberBetween(11111111, 99999999),
-                    'name' => 'Room ' . $storeId . ' ' . $i,
+                    'username' =>'store_' . $storeId . '_room_' . $i,
                     'password' => Hash::make('123456789'),
+                    'role' => UserRole::CUSTOMER,
+                    'name' => 'Store ' . $storeId . ' Room ' . $i,
                     'remember_token' => Str::random(10),
                 ]);
             }

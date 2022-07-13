@@ -33,16 +33,10 @@ class LoginRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
-        if (request('email') !== null && is_numeric(request('email'))) {
-            return [
-                'email' => 'required|numeric',
-                'password' => 'required|min:8'
-            ];
-        }
         return [
-            'email' => 'required|email',
+            'username' => 'required|exists:users,username',
             'password' => 'required|min:8'
         ];
     }

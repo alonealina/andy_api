@@ -1,7 +1,7 @@
 <?php
 return [
     'users' => [
-        'email' => '電子メール',
+        'username' => 'ユーザー名',
         'number_phone' => 'ナンバーフォン',
         'password' => 'パスワード'
     ],
