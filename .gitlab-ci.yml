@@ -3,7 +3,7 @@ stages:
 
 DeployDev:
   stage: DeployDev
-  image: hblabvn/php-mongo:latest
+  image: hblabvn/php-mongo:php-7.4.11
   only:
     - develop
   environment:
