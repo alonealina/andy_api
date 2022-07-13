@@ -8,14 +8,14 @@ use Illuminate\Support\Facades\Storage;
 trait SaveImagesUpload
 {
     /**
-     * @param $files
+     * @param $data
      * @return array
      */
-    public function storeImages($files): array
+    public function storeImages($data): array
     {
+        if (!isset($data['images'])) return [];
         $dataReturn = [];
-        $files = is_array($files) ? $files : array($files);
-        foreach ($files as $key => $file) {
+        foreach ($data['images'] as $key => $file) {
             $dataReturn[] = $this->saveImagesToDisk($key, $file);
         }
         return $dataReturn;

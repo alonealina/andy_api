@@ -45,7 +45,7 @@ class FoodService
         DB::beginTransaction();
         try {
             $newRecord = $this->foodRepository->store(array_merge($data, ['store_id' => Auth::user()->store_id]));
-            $newRecord->images()->createMany($this->storeImages($data['images']));
+            $newRecord->images()->createMany($this->storeImages($data));
             DB::commit();
 
             return $newRecord;

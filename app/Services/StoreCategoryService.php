@@ -44,7 +44,7 @@ class StoreCategoryService
         DB::beginTransaction();
         try {
             $newRecord = $this->storeCategoryRepository->store($data);
-            $newRecord->images()->createMany($this->storeImages($data['images']));
+            $newRecord->images()->createMany($this->storeImages($data));
             DB::commit();
             return $newRecord;
         } catch (\Exception $exception) {

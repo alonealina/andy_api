@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -124,5 +125,13 @@ class Store extends Model
     public function orderDetails()
     {
         return $this->hasManyThrough(OrderDetail::class, User::class);
+    }
+
+    /**
+     * @return Model|HasMany|object|null
+     */
+    public function getAdmin()
+    {
+        return $this->users()->where('role', UserRole::ADMIN)->first();
     }
 }

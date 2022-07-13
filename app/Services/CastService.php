@@ -54,7 +54,7 @@ class CastService
         DB::beginTransaction();
         try {
             $newRecord = $this->castRepository->store(array_merge($params, ['store_id' => Auth::user()->store_id]));
-            $newRecord->images()->createMany($this->storeImages($params['images']));
+            $newRecord->images()->createMany($this->storeImages($params));
             DB::commit();
             return $newRecord;
         } catch (\Exception $exception) {
