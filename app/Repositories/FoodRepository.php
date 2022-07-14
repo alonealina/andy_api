@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Enums\MessageStatus;
+use App\Enums\InventoryStatus;
 use App\Models\Food;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,6 +22,6 @@ class FoodRepository extends BaseRepository
      */
     public function getList()
     {
-        return Auth::user()->store->foods->where('status', MessageStatus::ON_SALE)->toArray();
+        return Auth::user()->store->foods->where('status', InventoryStatus::ON_SALE)->toArray();
     }
 }
