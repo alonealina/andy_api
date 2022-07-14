@@ -109,7 +109,7 @@ class FoodService
         $data = [];
         $images = Storage::disk()->files('images/defaults/foods');
         foreach ($images as $image) {
-            $data[] = Storage::disk()->url(IMAGES_PATH).'/'.$image;
+            $data[] = Storage::disk()->url('').$image;
         }
 
         return $data;

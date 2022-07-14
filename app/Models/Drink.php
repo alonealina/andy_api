@@ -22,8 +22,13 @@ class Drink extends Model
         'status',
     ];
 
+    protected $hidden = [
+        'drink_category_id'
+    ];
+
     protected $with = [
-        'images'
+        'images',
+        'drinkCategory'
     ];
 
     /**
@@ -52,5 +57,13 @@ class Drink extends Model
     public function orderDetails()
     {
         return $this->morphMany(OrderDetail::class, 'orderable');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function drinkCategory()
+    {
+        return $this->belongsTo(DrinkCategory::class);
     }
 }
