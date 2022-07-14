@@ -34,7 +34,7 @@ class DrinkRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required|numeric',
+            'drink_category_id' => 'required|numeric',
             'name' => 'required',
             'price' => 'required|numeric',
             'description' => 'nullable',
