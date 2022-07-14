@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
     Route::prefix('drinks')->group(function () {
         Route::get('/', [DrinkController::class, 'index']);
         Route::get('/{drink}', [DrinkController::class, 'show']);
+        Route::get('/default-images', [DrinkController::class, 'getImageDefault']);
         Route::middleware('role:ADMIN')->group(function () {
             Route::post('/', [DrinkController::class, 'store']);
             Route::post('/{drink}', [DrinkController::class, 'update']);

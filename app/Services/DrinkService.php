@@ -7,6 +7,7 @@ use App\Repositories\DrinkRepository;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class DrinkService
 {
@@ -90,5 +91,19 @@ class DrinkService
             DB::rollback();
             return null;
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getImageDefault(): array
+    {
+        $data = [];
+        $images = Storage::disk()->files('images/defaults/drinks');
+        foreach ($images as $image) {
+            $data[] = Storage::disk()->url(IMAGES_PATH).'/'.$image;
+        }
+
+        return $data;
     }
 }
