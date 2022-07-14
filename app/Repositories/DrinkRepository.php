@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Enums\MessageStatus;
+use App\Enums\InventoryStatus;
 use App\Models\Drink;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +22,6 @@ class DrinkRepository extends BaseRepository
      */
     public function getList()
     {
-        return Auth::user()->store->drinks->toArray();
+        return Auth::user()->store->drinks->where('status', InventoryStatus::ON_SALE)->toArray();
     }
 }

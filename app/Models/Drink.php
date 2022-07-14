@@ -19,6 +19,7 @@ class Drink extends Model
         'price',
         'image',
         'description',
+        'status',
     ];
 
     protected $with = [

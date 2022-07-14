@@ -21,6 +21,7 @@ class Food extends Model
         'price',
         'image',
         'description',
+        'status',
     ];
 
     protected $with = [
