@@ -20,6 +20,7 @@ class CreateFoodTable extends Migration
             $table->float('price');
             $table->string('image');
             $table->text('description')->nullable();
+            $table->text('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });

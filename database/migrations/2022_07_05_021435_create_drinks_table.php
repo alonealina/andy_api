@@ -20,6 +20,7 @@ class CreateDrinksTable extends Migration
             $table->string('name', 100);
             $table->float('price')->default(0);
             $table->text('description')->nullable();
+            $table->text('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });
