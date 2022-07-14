@@ -16,10 +16,10 @@ class DrinkFactory extends Factory
     public function definition()
     {
         $storeIds = Store::pluck('id')->toArray();
-        $categoriesId = DrinkCategory::pluck('id')->toArray();
+        $categoriesId = DrinkCategory::where('parent_id','!=',null)->pluck('id')->toArray();
         return [
             'store_id' => array_rand($storeIds),
-            'drink_category_id' => array_rand($categoriesId),
+            'drink_category_id' => $categoriesId[array_rand($categoriesId)],
             'name' => $this->faker->name(),
             'price' => $this->faker->randomDigit(),
             'description' => $this->faker->text(),
