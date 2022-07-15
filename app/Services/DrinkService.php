@@ -100,12 +100,6 @@ class DrinkService
      */
     public function getImageDefault(): array
     {
-        $data = [];
-        $images = Storage::disk()->files('upload-files/images/default/drinks');
-        foreach ($images as $image) {
-            $data[] = Storage::disk()->url('').$image;
-        }
-
-        return $data;
+        return Storage::disk()->files('upload-files/images/default/drinks');
     }
 }

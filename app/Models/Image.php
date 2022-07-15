@@ -32,6 +32,7 @@ class Image extends Model
      */
     public function getFileUrlAttribute(): string
     {
-        return Storage::disk()->url(IMAGES_PATH) . '/' . $this->file_name;
+//        return Storage::disk()->url(IMAGES_PATH) . '/' . $this->file_name;
+        return IMAGES_PATH . '/' . $this->file_name;
     }
 }
