@@ -41,7 +41,7 @@ trait SaveImagesUpload
     public function saveImagesToDisk($key, UploadedFile $file): array
     {
         $path = Storage::disk()->put(IMAGES_PATH, $file);
-        $fileName = explode("/", $path)[1];
+        $fileName = explode("/", $path)[2];
         return [
             'file_name' => $fileName,
             'order' => $key
