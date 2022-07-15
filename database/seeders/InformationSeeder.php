@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Information;
+use App\Models\Store;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 
 class InformationSeeder extends Seeder
@@ -13,6 +16,19 @@ class InformationSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Information::factory(50)->create();
+//        \App\Models\Information::factory(50)->create();
+
+        $faker = Factory::create();
+        $storeIds = Store::pluck('id')->toArray();
+
+        foreach ($storeIds as $storeId) {
+            for ($i=0; $i<50;$i++) {
+                Information::create([
+                    'store_id' => $storeId,
+                    'title' => $faker->word(),
+                    'content' => $faker->text(),
+                ]);
+            }
+        }
     }
 }
