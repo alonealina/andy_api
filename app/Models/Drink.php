@@ -14,7 +14,7 @@ class Drink extends Model
 
     protected $fillable = [
         'store_id',
-        'type',
+        'drink_category_id',
         'name',
         'price',
         'image',
