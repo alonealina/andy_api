@@ -22,6 +22,9 @@ class FoodRepository extends BaseRepository
      */
     public function getList()
     {
-        return Auth::user()->store->foods->where('status', InventoryStatus::ON_SALE)->toArray();
+        return $this->model->belongsToStore()
+            ->where('status', InventoryStatus::ON_SALE)
+            ->orderBy('created_at', 'DESC')
+            ->get()->toArray();
     }
 }
