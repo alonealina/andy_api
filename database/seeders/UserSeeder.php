@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
         \App\Models\User::create([
             'store_id' => array_rand($storeIds),
             'username' => 'super_admin',
-            'password' => Hash::make('123456789'),
+            'password' => Hash::make('L63K7B7QxpE7j4n'),
             'role' => UserRole::SUPER_ADMIN,
             'name' => 'Super Admin',
             'remember_token' => Str::random(10),
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             \App\Models\User::create([
                 'store_id' => $storeId,
                 'username' => 'admin_store_' . $storeId,
-                'password' => Hash::make('123456789'),
+                'password' => Hash::make('TvdaPeQmJ6p7LTj'),
                 'role' => UserRole::ADMIN,
                 'name' => 'Admin ' . $storeId,
                 'remember_token' => Str::random(10),
