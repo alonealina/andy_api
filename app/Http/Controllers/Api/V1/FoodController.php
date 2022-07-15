@@ -61,6 +61,18 @@ class FoodController extends Controller
     }
 
     /**
+     * @param Food $food
+     * @return JsonResponse
+     */
+    public function show(Food $food): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $food
+        ]);
+    }
+
+    /**
      *
      * @param FoodRequest $request
      * @param Food $food

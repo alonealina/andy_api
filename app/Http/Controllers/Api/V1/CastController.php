@@ -59,6 +59,18 @@ class CastController extends Controller
     }
 
     /**
+     * @param Cast $cast
+     * @return JsonResponse
+     */
+    public function show(Cast $cast): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $cast
+        ]);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param CastRequest $request
