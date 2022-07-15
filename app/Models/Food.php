@@ -19,7 +19,6 @@ class Food extends Model
         'store_id',
         'name',
         'price',
-        'image',
         'description',
         'status',
     ];
