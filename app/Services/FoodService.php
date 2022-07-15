@@ -67,8 +67,10 @@ class FoodService
         DB::beginTransaction();
         try {
             $food->update($data);
-            // TODO Save upload images
-
+            if (isset($data['images'])) {
+                $this->deleteImages($food);
+                $food->images()->createMany($this->storeImages($data));
+            }
             DB::commit();
 
             return $food;

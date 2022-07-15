@@ -63,8 +63,10 @@ class DrinkService
         DB::beginTransaction();
         try {
             $drink->update($params);
-            // TODO Save upload images
-
+            if (isset($params['images'])) {
+                $this->deleteImages($drink);
+                $drink->images()->createMany($this->storeImages($params));
+            }
             DB::commit();
             return $drink;
         } catch (\Exception $exception) {
