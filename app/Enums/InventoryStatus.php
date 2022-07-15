@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-class InventoryStatus
+use BenSampo\Enum\Enum;
+
+class InventoryStatus extends Enum
 {
     const ON_SALE = 1;
     const SOLD_OUT = 0;

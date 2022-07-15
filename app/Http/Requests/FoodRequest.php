@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\InventoryStatus;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -37,6 +38,7 @@ class FoodRequest extends FormRequest
             'name' => 'required',
             'price' => 'required|numeric',
             'description' => 'string',
+            'status' => 'in:' . implode(',', InventoryStatus::getValues()),
             'images.*' => 'mimes:jpg,jpeg,png|max:5000'
         ];
     }
