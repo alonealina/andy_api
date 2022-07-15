@@ -108,6 +108,6 @@ class FoodService
      */
     public function getImageDefault(): array
     {
-        return Storage::disk()->files('images/defaults/foods');
+        return Storage::disk()->files('upload-files/images/default/foods');
     }
 }
