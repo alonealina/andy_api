@@ -5,7 +5,7 @@ use App\Http\Controllers\Api\V1\FoodController;
 use App\Http\Controllers\Api\V1\StoreCategoryController;
 use App\Http\Controllers\Api\V1\StoreController;
 use App\Http\Controllers\Api\V1\DrinkController;
-use App\Http\Controllers\Api\V1\EventController;
+use App\Http\Controllers\Api\V1\NewsController;
 use App\Http\Controllers\Api\V1\InformationController;
 use App\Http\Controllers\Api\V1\OrderDetailController;
 use App\Http\Controllers\Api\V1\CastController;
@@ -73,12 +73,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         });
     });
 
-    Route::prefix('events')->group(function () {
-        Route::get('/', [EventController::class, 'index']);
+    Route::prefix('news')->group(function () {
+        Route::get('/', [NewsController::class, 'index']);
         Route::middleware('role:ADMIN')->group(function () {
-            Route::post('/', [EventController::class, 'store']);
-            Route::post('/{event}', [EventController::class, 'update']);
-            Route::post('/{event}/delete', [EventController::class, 'destroy']);
+            Route::post('/', [NewsController::class, 'store']);
+            Route::post('/{news}', [NewsController::class, 'update']);
+            Route::post('/{news}/delete', [NewsController::class, 'destroy']);
         });
     });
 

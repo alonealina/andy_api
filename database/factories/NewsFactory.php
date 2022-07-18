@@ -5,24 +5,25 @@ namespace Database\Factories;
 use App\Models\Store;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class EventFactory extends Factory
+class NewsFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         $storeIds = Store::pluck('id')->toArray();
         return [
             'store_id' => array_rand($storeIds),
-            'title' => $this->faker->text(),
+            'title' => $this->faker->word(),
+            'content' => $this->faker->text(),
         ];
     }
 
     /**
-     * @return EventFactory
+     * @return NewsFactory
      */
     public function unverified()
     {
