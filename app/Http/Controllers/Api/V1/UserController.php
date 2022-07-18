@@ -3,22 +3,22 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Services\UserService;
+use App\Services\AccountService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     /**
-     * @var UserService
+     * @var AccountService
      */
     protected $userService;
 
     /**
      * Construct function
      *
-     * @param UserService $userService
+     * @param AccountService $userService
      */
-    public function __construct(UserService $userService)
+    public function __construct(AccountService $userService)
     {
         $this->userService = $userService;
     }
