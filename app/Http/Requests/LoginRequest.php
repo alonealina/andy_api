@@ -25,7 +25,7 @@ class LoginRequest extends FormRequest
      */
     public function attributes()
     {
-        return __('attributes.users');
+        return __('attributes.accounts');
     }
 
     /**
@@ -36,7 +36,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|exists:users,username',
+            'username' => 'required|exists:accounts,username',
             'password' => 'required|min:8'
         ];
     }

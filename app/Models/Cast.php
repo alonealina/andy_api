@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasBranchId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,12 +13,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Cast extends Model
 {
     use HasFactory, SoftDeletes;
+    use HasBranchId;
 
     /**
      * @var string[]
      */
     protected $fillable = [
-        'store_id',
+        'branch_id',
         'name',
         'height',
         'blood_type',
@@ -39,9 +41,9 @@ class Cast extends Model
     /**
      * @return BelongsTo
      */
-    public function store(): BelongsTo
+    public function branch(): BelongsTo
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Branch::class);
     }
 
     /**

@@ -13,7 +13,7 @@ class Event extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'store_id',
+        'branch_id',
         'title',
     ];
 
@@ -24,9 +24,9 @@ class Event extends Model
     /**
      * @return BelongsTo
      */
-    public function store(): BelongsTo
+    public function branch(): BelongsTo
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Branch::class);
     }
 
     /**

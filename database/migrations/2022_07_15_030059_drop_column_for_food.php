@@ -13,7 +13,7 @@ class DropColumnForFood extends Migration
      */
     public function up()
     {
-        Schema::table('food', function (Blueprint $table) {
+        Schema::table('foods', function (Blueprint $table) {
             $table->dropColumn('image');
         });
     }
@@ -25,7 +25,7 @@ class DropColumnForFood extends Migration
      */
     public function down()
     {
-        Schema::table('drinks', function (Blueprint $table) {
+        Schema::table('foods', function (Blueprint $table) {
             $table->string('image');
         });
     }

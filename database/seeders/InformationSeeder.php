@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Branch;
 use App\Models\Information;
-use App\Models\Store;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 
@@ -16,15 +16,13 @@ class InformationSeeder extends Seeder
      */
     public function run()
     {
-//        \App\Models\Information::factory(50)->create();
-
         $faker = Factory::create();
-        $storeIds = Store::pluck('id')->toArray();
+        $branchIds = Branch::pluck('id')->toArray();
 
-        foreach ($storeIds as $storeId) {
+        foreach ($branchIds as $branchId) {
             for ($i=0; $i<50;$i++) {
                 Information::create([
-                    'store_id' => $storeId,
+                    'branch_id' => $branchId,
                     'title' => $faker->word(),
                     'content' => $faker->text(),
                 ]);

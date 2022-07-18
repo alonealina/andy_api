@@ -14,7 +14,7 @@ class OrderDetail extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'user_id',
+        'account_id',
         'orderable_id',
         'orderable_type',
         'price',
@@ -35,9 +35,9 @@ class OrderDetail extends Model
     /**
      * @return BelongsTo
      */
-    public function user()
+    public function account(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Account::class);
     }
 
     /**

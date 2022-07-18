@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Support\Facades\Auth;
 
-trait CommonTraitModel
+trait CommonScopeModel
 {
     /**
      * Scope check store
@@ -12,8 +12,8 @@ trait CommonTraitModel
      * @param $query
      * @return void
      */
-    public function scopeBelongsToStore($query)
+    public function scopeBelongsToBranch($query)
     {
-        $query->where('store_id', Auth::user()->store_id);
+        $query->where('branch_id', Auth::user()->branch_id);
     }
 }

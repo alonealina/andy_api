@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Store;
+use App\Models\Branch;
 use App\Models\SystemInformation;
 use Illuminate\Database\Seeder;
 
@@ -15,10 +15,10 @@ class SystemInformationSeeder extends Seeder
      */
     public function run()
     {
-        $storeIds = Store::pluck('id')->toArray();
-        foreach ($storeIds as $storeId) {
+        $branchIds = Branch::pluck('id')->toArray();
+        foreach ($branchIds as $branchId) {
             SystemInformation::create([
-                'store_id' => $storeId,
+                'branch_id' => $branchId,
                 'pm_last' => [
                     'price' => 8800,
                     'minute' => 60,

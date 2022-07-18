@@ -15,7 +15,7 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->integer('store_id');
+            $table->integer('branch_id');
             $table->string('title', 255);
             $table->softDeletes();
             $table->timestamps();

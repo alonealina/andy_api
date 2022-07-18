@@ -14,10 +14,10 @@ class UpdateStatusForFoodAndDrink extends Migration
     public function up()
     {
         Schema::table('drinks', function (Blueprint $table) {
-            $table->tinyInteger('status')->default(\App\Enums\InventoryStatus::ON_SALE);
+            $table->tinyInteger('status')->after('price')->default(\App\Enums\InventoryStatus::ON_SALE);
         });
-        Schema::table('food', function (Blueprint $table) {
-            $table->tinyInteger('status')->default(\App\Enums\InventoryStatus::ON_SALE);
+        Schema::table('foods', function (Blueprint $table) {
+            $table->tinyInteger('status')->after('price')->default(\App\Enums\InventoryStatus::ON_SALE);
         });
     }
 

@@ -15,7 +15,7 @@ class CreateSystemInformationTable extends Migration
     {
         Schema::create('system_information', function (Blueprint $table) {
             $table->id();
-            $table->integer('store_id');
+            $table->integer('branch_id');
             $table->string('pm_last');
             $table->string('companion_fee');
             $table->string('nomination_fee');

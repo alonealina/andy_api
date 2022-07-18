@@ -15,7 +15,7 @@ class CreateDrinksTable extends Migration
     {
         Schema::create('drinks', function (Blueprint $table) {
             $table->id();
-            $table->integer('store_id');
+            $table->integer('branch_id');
             $table->tinyInteger('type');
             $table->string('name', 100);
             $table->float('price')->default(0);

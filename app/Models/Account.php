@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\UserRole;
+use App\Enums\AccountRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class Account extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -21,7 +21,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'store_id',
+        'branch_id',
         'username',
         'password',
         'role',
@@ -44,7 +44,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
     protected $casts = [
-        'role' => UserRole::class,
+        'role' => AccountRole::class,
     ];
 
     /**
@@ -63,13 +63,13 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Relationship to store table
+     * Relationship to branch table
      *
      * @return BelongsTo
      */
-    public function store(): BelongsTo
+    public function branch(): BelongsTo
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Branch::class);
     }
 
     /**
@@ -91,8 +91,8 @@ class User extends Authenticatable implements JWTSubject
     /**
      * @return mixed
      */
-    public function getAdmin()
+    public function getAdminBranch()
     {
-        return $this->store->getAdmin();
+        return $this->branch->getAdmin();
     }
 }

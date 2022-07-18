@@ -11,7 +11,7 @@ class SystemInformation extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'store_id',
+        'branch_id',
         'pm_last',
         'companion_fee',
         'nomination_fee',

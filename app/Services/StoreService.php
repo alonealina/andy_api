@@ -4,13 +4,13 @@ namespace App\Services;
 
 use App\Models\Store;
 use App\Repositories\StoreRepository;
-use App\Traits\CheckStore;
+use App\Traits\CheckBranch;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\DB;
 
 class StoreService
 {
-    use SaveImagesUpload, CheckStore;
+    use SaveImagesUpload, CheckBranch;
 
     /**
      * @var StoreRepository
@@ -116,7 +116,7 @@ class StoreService
      */
     public function updateSystemInformation($data, Store $store)
     {
-        $this->checkStore($store);
+        $this->checkBranch($store);
         $store->systemInformation()->update($data);
         return $store->systemInformation->toArray();
     }

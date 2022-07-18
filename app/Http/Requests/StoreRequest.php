@@ -37,8 +37,8 @@ class StoreRequest extends FormRequest
         return [
             'name' => 'required|max:100',
             'store_category_id' => 'required|exists:store_categories,id',
-            'post_code_1' => 'numeric|max:999',
-            'post_code_2' => 'numeric|max:9999',
+            'post_code_1' => 'numeric',
+            'post_code_2' => 'numeric',
             'address' => 'max:100',
             'start_time' => 'date_format:H:i',
             'end_time' => 'date_format:H:i',

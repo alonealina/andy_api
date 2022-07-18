@@ -34,7 +34,7 @@ class DrinkService
     {
         DB::beginTransaction();
         try {
-            $newRecord = $this->drinkRepository->store(array_merge($params, ['store_id' => Auth::user()->store_id]));
+            $newRecord = $this->drinkRepository->store($params);
             $newRecord->images()->createMany($this->storeImages($params));
             DB::commit();
             return $newRecord;

@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Enums\InventoryStatus;
-use App\Enums\UserRole;
+use App\Enums\AccountRole;
 use App\Models\Drink;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,8 +22,8 @@ class DrinkRepository extends BaseRepository
      */
     public function getList()
     {
-        return $this->model->belongsToStore()
-            ->when(Auth::user()->role->is(UserRole::CUSTOMER), function ($query) {
+        return $this->model->belongsToBranch()
+            ->when(Auth::user()->role->is(AccountRole::CUSTOMER), function ($query) {
                 $query->where('status', InventoryStatus::ON_SALE);
             })
             ->orderBy('created_at', 'DESC')
