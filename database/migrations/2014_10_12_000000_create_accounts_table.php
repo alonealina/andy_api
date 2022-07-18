@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFoodTable extends Migration
+class CreateAccountsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateFoodTable extends Migration
      */
     public function up()
     {
-        Schema::create('food', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->integer('store_id');
-            $table->string('name', 100);
-            $table->float('price');
-            $table->string('image');
-            $table->text('description')->nullable();
+            $table->integer('branch_id');
+            $table->string('username')->unique();
+            $table->string('password');
+            $table->tinyInteger('role')->default(\App\Enums\AccountRole::CUSTOMER);
+            $table->string('name');
+            $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -32,6 +33,6 @@ class CreateFoodTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('food');
+        Schema::dropIfExists('accounts');
     }
 }

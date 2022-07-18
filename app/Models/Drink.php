@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Traits\CommonTraitModel;
+use App\Traits\CommonScopeModel;
+use App\Traits\HasBranchId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,10 +13,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Drink extends Model
 {
     use HasFactory, SoftDeletes;
-    use CommonTraitModel;
+    use CommonScopeModel, HasBranchId;
 
     protected $fillable = [
-        'store_id',
+        'branch_id',
         'drink_category_id',
         'name',
         'price',
@@ -34,13 +35,13 @@ class Drink extends Model
     ];
 
     /**
-     * Relationship to store table
+     * Relationship to branch table
      *
      * @return BelongsTo
      */
-    public function store(): BelongsTo
+    public function branch(): BelongsTo
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Branch::class);
     }
 
     /**

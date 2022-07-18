@@ -5,14 +5,13 @@ namespace App\Services;
 use App\Models\Cast;
 use App\Repositories\CastRepository;
 use App\Repositories\ScheduleRepository;
-use App\Traits\CheckStore;
+use App\Traits\CheckBranch;
 use App\Traits\SaveImagesUpload;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CastService
 {
-    use SaveImagesUpload, CheckStore;
+    use SaveImagesUpload, CheckBranch;
 
     /**
      * @var CastRepository
@@ -53,7 +52,7 @@ class CastService
     {
         DB::beginTransaction();
         try {
-            $newRecord = $this->castRepository->store(array_merge($params, ['store_id' => Auth::user()->store_id]));
+            $newRecord = $this->castRepository->store($params);
             $newRecord->images()->createMany($this->storeImages($params));
             DB::commit();
             return $newRecord;
@@ -126,7 +125,7 @@ class CastService
      */
     public function setSchedule(Cast $cast, $data)
     {
-        $this->checkStore($cast);
+        $this->checkBranch($cast);
         DB::beginTransaction();
         try {
             $cast->update([

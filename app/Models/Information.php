@@ -17,7 +17,7 @@ class Information extends Model
      * @var string[]
      */
     protected $fillable = [
-        'store_id',
+        'branch_id',
         'title',
         'content',
     ];
@@ -29,9 +29,9 @@ class Information extends Model
     /**
      * @return BelongsTo
      */
-    public function store(): BelongsTo
+    public function branch(): BelongsTo
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsTo(Branch::class);
     }
 
     /**

@@ -37,7 +37,7 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'User successfully signed out']);
+        return response()->json(['message' => 'Account successfully signed out']);
     }
 
     /**
@@ -65,7 +65,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer Token',
-            'user' => auth()->user()
+            'account' => auth()->user()
         ]);
     }
 }

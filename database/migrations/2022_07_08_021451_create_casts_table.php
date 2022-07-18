@@ -15,8 +15,8 @@ class CreateCastsTable extends Migration
     {
         Schema::create('casts', function (Blueprint $table) {
             $table->id();
-            $table->integer('store_id');
-            $table->string('name', 30);
+            $table->integer('branch_id');
+            $table->string('name', 100);
             $table->smallInteger('height')->nullable();
             $table->tinyInteger('blood_type')->nullable();
             $table->string('hobbit',1000)->nullable();

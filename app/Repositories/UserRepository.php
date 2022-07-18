@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\User;
+use App\Models\Account;
 
 class UserRepository extends BaseRepository
 {
@@ -12,6 +12,6 @@ class UserRepository extends BaseRepository
      */
     public function model()
     {
-       return User::class;
+       return Account::class;
     }
 }

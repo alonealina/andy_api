@@ -35,19 +35,17 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
 Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDataNotFound'], function () {
     Route::prefix('store-categories')->group(function () {
         Route::get('/', [StoreCategoryController::class, 'index']);
-        Route::post('/', [StoreCategoryController::class, 'store'])->middleware('role:SUPER_ADMIN');
+        Route::post('/', [StoreCategoryController::class, 'store'])->middleware('role:ADMIN');
     });
 
     Route::prefix('stores')->group(function () {
         Route::get('/', [StoreController::class, 'index']);
         Route::get('/{store}', [StoreController::class, 'show']);
         Route::get('/{store}/system-information', [StoreController::class, 'getSystemInformation']);
-        Route::middleware('role:SUPER_ADMIN')->group(function () {
+        Route::middleware('role:ADMIN')->group(function () {
             Route::post('/', [StoreController::class, 'store']);
-            Route::post('/{store}/delete', [StoreController::class, 'destroy']);
-        });
-        Route::middleware('role:SUPER_ADMIN,ADMIN')->group(function () {
             Route::post('/{store}', [StoreController::class, 'update']);
+            Route::post('/{store}/delete', [StoreController::class, 'destroy']);
             Route::post('/{store}/system-information', [StoreController::class, 'updateSystemInformation']);
         });
     });

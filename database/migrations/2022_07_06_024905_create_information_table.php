@@ -15,7 +15,7 @@ class   CreateInformationTable extends Migration
     {
         Schema::create('information', function (Blueprint $table) {
             $table->id();
-            $table->integer('store_id');
+            $table->integer('branch_id');
             $table->string('title');
             $table->text('content');
             $table->softDeletes();

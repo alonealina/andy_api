@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Branch;
 use App\Models\Cast;
-use App\Models\Store;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 
@@ -16,15 +16,13 @@ class CastSeeder extends Seeder
      */
     public function run()
     {
-//        \App\Models\Cast::factory(100)->create();
-
         $faker = Factory::create();
-        $storeIds = Store::pluck('id')->toArray();
+        $branchIds = Branch::pluck('id')->toArray();
 
-        foreach ($storeIds as $storeId) {
+        foreach ($branchIds as $branchId) {
             for ($i=0; $i<50;$i++) {
                 Cast::create([
-                    'store_id' => $storeId,
+                    'branch_id' => $branchId,
                     'name' => $faker->name(),
                     'height' => $faker->randomFloat(2, 150, 170 ),
                     'blood_type' => $faker->numberBetween(1,8),

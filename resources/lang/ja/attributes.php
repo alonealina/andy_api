@@ -1,6 +1,6 @@
 <?php
 return [
-    'users' => [
+    'accounts' => [
         'username' => 'ユーザー名',
         'number_phone' => 'ナンバーフォン',
         'password' => 'パスワード'
