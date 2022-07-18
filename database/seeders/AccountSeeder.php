@@ -39,7 +39,7 @@ class AccountSeeder extends Seeder
                 \App\Models\Account::create([
                     'branch_id' => $branchId,
                     'username' =>'branch_' . $branchId . '_room_' . $i,
-                    'password' => Hash::make('123456789'),
+                    'password' => Hash::make('2Qq2fG9EjQGY2qP'),
                     'role' => AccountRole::CUSTOMER,
                     'name' => 'Branch ' . $branchId . ' Room ' . $i,
                     'remember_token' => Str::random(10),

@@ -21,9 +21,11 @@ class StoreRepository extends BaseRepository
      */
     public function getList($params)
     {
-        return $this->model
+        return $this->model->belongsToBranch()
             ->when(isset($params['store_category_id']), function ($query) use ($params) {
                 $query->where('store_category_id', $params['store_category_id']);
-            })->get()->toArray();
+            })
+            ->orderBy('created_at', 'DESC')
+            ->get()->toArray();
     }
 }
