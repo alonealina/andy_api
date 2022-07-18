@@ -3,11 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\Branch;
-use App\Models\Event;
+use App\Models\News;
+use App\Models\Store;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 
-class EventSeeder extends Seeder
+class NewsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -21,9 +22,11 @@ class EventSeeder extends Seeder
 
         foreach ($branchIds as $branchId) {
             for ($i=0; $i<50;$i++) {
-                Event::create([
+                News::create([
                     'branch_id' => $branchId,
-                    'title' => $faker->text(),
+                    'title' => $faker->word(),
+                    'content' => $faker->text(),
+                    'news_time' => $faker->dateTimeBetween('-1 year', '+1 year'),
                 ]);
             }
         }
