@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Enums\InventoryStatus;
+use App\Enums\UserRole;
 use App\Models\Food;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,7 +24,9 @@ class FoodRepository extends BaseRepository
     public function getList()
     {
         return $this->model->belongsToStore()
-            ->where('status', InventoryStatus::ON_SALE)
+            ->when(Auth::user()->role->is(UserRole::CUSTOMER), function ($query) {
+                $query->where('status', InventoryStatus::ON_SALE);
+            })
             ->orderBy('created_at', 'DESC')
             ->get()->toArray();
     }
