@@ -6,14 +6,14 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class EventRequest extends FormRequest
+class NewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -23,7 +23,7 @@ class EventRequest extends FormRequest
      */
     public function attributes()
     {
-        return __('attributes.events');
+        return __('attributes.news');
     }
 
     /**
@@ -31,11 +31,12 @@ class EventRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'title' => 'required',
-            'images.*' => 'mimes:jpg,jpeg,png|max:5000'
+            'title' => 'required|string',
+            'content' => 'required|string',
+            'news_time' => 'required|date_format:Y-m-d H:i:s',
         ];
     }
 }

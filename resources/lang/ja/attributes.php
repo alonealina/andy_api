@@ -39,8 +39,10 @@ return [
         'image' => '画像',
         'description' => '説明'
     ],
-    'events' => [
-        'title' => '題名'
+    'news' => [
+        'title' => '題名',
+        'content' => 'コンテンツ',
+        'news_time' => 'ニュースタイム',
     ],
     'informations' => [
         'title' => '題名',
