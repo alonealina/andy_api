@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\InformationController;
 use App\Http\Controllers\Api\V1\OrderDetailController;
 use App\Http\Controllers\Api\V1\CastController;
 use App\Http\Controllers\Api\V1\DrinkCategoryController;
+use App\Http\Controllers\Api\V1\BranchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -110,5 +111,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
     Route::prefix('drink-categories')->group(function () {
         Route::get('/', [DrinkCategoryController::class, 'index']);
         Route::get('/{drinkCategory}', [DrinkCategoryController::class, 'show']);
+    });
+
+    Route::prefix('branches')->middleware('role:SUPER_ADMIN')->group(function (){
+        Route::get('/', [BranchController::class, 'index']);
     });
 });
