@@ -22,6 +22,8 @@ class InformationRepository extends BaseRepository
      */
     public function getList()
     {
-        return Auth::user()->store->informations->toArray();
+        return $this->model->belongsToBranch()
+            ->orderBy('created_at', 'DESC')
+            ->get()->toArray();
     }
 }

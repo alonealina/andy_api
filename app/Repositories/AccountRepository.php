@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Account;
 
-class UserRepository extends BaseRepository
+class AccountRepository extends BaseRepository
 {
 
     /**

@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Cast;
-use Illuminate\Support\Facades\Auth;
 
 class CastRepository extends BaseRepository
 {
@@ -13,7 +12,6 @@ class CastRepository extends BaseRepository
     public function model(): string
     {
         return Cast::class;
-
     }
 
     /**
@@ -21,6 +19,8 @@ class CastRepository extends BaseRepository
      */
     public function getList()
     {
-        return Auth::user()->store->casts->toArray();
+        return $this->model->belongsToBranch()
+            ->orderBy('created_at', 'DESC')
+            ->get()->toArray();
     }
 }
