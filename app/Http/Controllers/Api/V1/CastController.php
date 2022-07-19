@@ -6,6 +6,7 @@ use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CastRequest;
 use App\Http\Requests\GetScheduleCastRequest;
+use App\Http\Requests\UpdateCastRequest;
 use App\Http\Requests\UpdateScheduleRequest;
 use App\Models\Cast;
 use App\Services\CastService;
@@ -71,15 +72,13 @@ class CastController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param CastRequest $request
+     * @param UpdateCastRequest $request
      * @param Cast $cast
      * @return JsonResponse
      */
-    public function update(CastRequest $request, Cast $cast): JsonResponse
+    public function update(UpdateCastRequest $request, Cast $cast): JsonResponse
     {
-        if ($updateRecord = $this->castService->update($request->validated(), $cast)) {
+        if ($updateRecord = $this->castService->update($request->all(), $cast)) {
             return response()->json([
                 'message' => MessageStatus::SUCCESS,
                 'data' => $updateRecord

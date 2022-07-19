@@ -84,6 +84,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
 
     Route::prefix('information')->group(function () {
         Route::get('/', [InformationController::class, 'index']);
+        Route::get('/{information}', [InformationController::class, 'show']);
         Route::middleware('role:ADMIN')->group(function () {
             Route::post('/', [InformationController::class, 'store']);
             Route::post('/{information}', [InformationController::class, 'update']);

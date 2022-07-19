@@ -34,6 +34,18 @@ trait SaveImagesUpload
     }
 
     /**
+     * @param $images
+     * @return void
+     */
+    public function deleteImagesCloud($images)
+    {
+        foreach ($images as $image) {
+            Storage::disk()->delete(IMAGES_PATH . '/' . $image->file_name);
+            $image->forceDelete();
+        }
+    }
+
+    /**
      * @param $key
      * @param UploadedFile $file
      * @return array

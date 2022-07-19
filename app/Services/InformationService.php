@@ -43,8 +43,7 @@ class InformationService
     {
         DB::beginTransaction();
         try {
-            $newRecord = $this->informationRepository->store(array_merge($data,
-                ['store_id' => Auth::user()->store_id]));
+            $newRecord = $this->informationRepository->store($data);
             $newRecord->images()->createMany($this->storeImages($data));
             DB::commit();
 
@@ -62,12 +61,15 @@ class InformationService
      * @param Information $information
      * @return Information|null
      */
-    public function update($params, Information $information): ?Information
+    public function update($data, Information $information): ?Information
     {
         DB::beginTransaction();
         try {
-            $information->update($params);
-            // TODO Save upload images
+            $information->update($data);
+            if (isset($data['images'])) {
+                $this->deleteImages($information);
+                $information->images()->createMany($this->storeImages($data));
+            }
             DB::commit();
             return $information;
         } catch (\Exception $exception) {
