@@ -14,7 +14,7 @@ trait HasBranchId
         parent::boot();
 
         static::creating(function ($model) {
-            if ($model->hasFillAble('branch_id')) {
+            if ($model->hasFillAble('branch_id') && self::getBranchId()) {
                 $model->branch_id = self::getBranchId();
             }
         });
