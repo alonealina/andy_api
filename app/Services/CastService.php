@@ -64,14 +64,6 @@ class CastService
     }
 
     /**
-     * @param $params
-     * @return mixed|null
-     */
-    public function show(Cast  $cast)
-    {
-        return $this->castRepository->show($cast);
-    }
-    /**
      * @param $data
      * @param Cast $cast
      * @return mixed|null
@@ -158,31 +150,5 @@ class CastService
             DB::rollBack();
             return null;
         }
-    }
-
-    /**
-     * @param $cast
-     * @param $data
-     * @return void
-     */
-    public function updateImages($cast, $data)
-    {
-        if (!isset($data['images'])) {
-            $this->deleteImages($cast);
-            return;
-        }
-        $oldImages = $cast->images;
-        $saveImages = [];
-        foreach ($data['images'] as $key => $newImage) {
-            $record = $oldImages->where('file_name', $newImage['file_name'])->first();
-            if (!empty($record)) {
-                $record->order = $key;
-                $record->save();
-                $saveImages[] = $newImage['file_name'];
-            } else {
-                $cast->images()->create($this->saveImagesToDisk($key, $newImage['file']));
-            }
-        }
-        $this->deleteImagesCloud($oldImages->whereNotIn('file_name', $saveImages));
     }
 }
