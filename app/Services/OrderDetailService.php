@@ -48,7 +48,7 @@ class OrderDetailService
             $userId = Auth::user()->id;
             foreach ($params['foods'] as $item) {
                 $this->orderDetailRepository->create([
-                    'user_id' => $userId,
+                    'account_id' => $userId,
                     'quantity' => $item['quantity'],
                     'price' => $item['price'],
                     'orderable_id' => $item['id'],
@@ -57,7 +57,7 @@ class OrderDetailService
             }
             foreach ($params['drinks'] as $item) {
                 $this->orderDetailRepository->create([
-                    'user_id' => $userId,
+                    'account_id' => $userId,
                     'quantity' => $item['quantity'],
                     'price' => $item['price'],
                     'orderable_id' => $item['id'],
@@ -71,5 +71,12 @@ class OrderDetailService
             DB::rollBack();
             return null;
         }
+    }
+
+    public function update($orderDetail, $params)
+    {
+        $orderDetail->status = $params['status'];
+        $orderDetail->save();
+        return $orderDetail;
     }
 }

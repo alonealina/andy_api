@@ -106,6 +106,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
     Route::prefix('order-details')->group(function () {
         Route::get('/', [OrderDetailController::class, 'index']);
         Route::post('/', [OrderDetailController::class, 'store'])->middleware('role:CUSTOMER');
+        Route::post('/{orderDetail}', [OrderDetailController::class, 'update'])->middleware('role:ADMIN');;
     });
 
     Route::prefix('drink-categories')->group(function () {
