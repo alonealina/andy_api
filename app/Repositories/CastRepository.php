@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Cast;
+use Illuminate\Support\Facades\DB;
 
 class CastRepository extends BaseRepository
 {
@@ -22,5 +23,10 @@ class CastRepository extends BaseRepository
         return $this->model->belongsToBranch()
             ->orderBy('created_at', 'DESC')
             ->get()->toArray();
+    }
+
+    public function show($cast)
+    {
+       return $cast->images()->orderBy('order','asc')->get()->toArray();
     }
 }
