@@ -78,7 +78,7 @@ class CastController extends Controller
      */
     public function update(UpdateCastRequest $request, Cast $cast): JsonResponse
     {
-        if ($updateRecord = $this->castService->update($request->validated(), $cast)) {
+        if ($updateRecord = $this->castService->update($request->all(), $cast)) {
             return response()->json([
                 'message' => MessageStatus::SUCCESS,
                 'data' => $updateRecord
