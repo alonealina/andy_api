@@ -64,6 +64,14 @@ class CastService
     }
 
     /**
+     * @param $params
+     * @return mixed|null
+     */
+    public function show(Cast  $cast)
+    {
+        return $this->castRepository->show($cast);
+    }
+    /**
      * @param $data
      * @param Cast $cast
      * @return mixed|null
