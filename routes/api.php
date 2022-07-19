@@ -116,5 +116,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
 
     Route::prefix('branches')->middleware('role:SUPER_ADMIN')->group(function (){
         Route::get('/', [BranchController::class, 'index']);
+        Route::post('/', [BranchController::class, 'store']);
+        Route::get('/{branch}', [BranchController::class, 'show']);
+        Route::post('/{branch}', [BranchController::class, 'update']);
     });
 });

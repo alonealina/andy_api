@@ -24,7 +24,7 @@ class Branch extends Model
     ];
 
     protected $appends = [
-        'admin_id',
+        'admin_username',
     ];
 
     /**
@@ -60,8 +60,16 @@ class Branch extends Model
     /**
      * @return HigherOrderBuilderProxy|mixed
      */
+    public function getAdminUsernameAttribute()
+    {
+        return $this->getAdmin() ? $this->getAdmin()->username : "";
+    }
+
+    /**
+     * @return HigherOrderBuilderProxy|mixed
+     */
     public function getAdminIdAttribute()
     {
-        return $this->getAdmin()->username;
+        return $this->getAdmin() ? $this->getAdmin()->id : "";
     }
 }
