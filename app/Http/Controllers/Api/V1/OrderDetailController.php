@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderDetailRequest;
+use App\Http\Requests\UpdateOrderDetailRequest;
 use App\Models\OrderDetail;
 use App\Services\OrderDetailService;
 use Illuminate\Http\JsonResponse;
@@ -54,36 +55,19 @@ class OrderDetailController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\OrderDetail  $orderDetail
-     * @return \Illuminate\Http\Response
-     */
-    public function show(OrderDetail $orderDetail)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateOrderDetailRequest  $request
-     * @param  \App\Models\OrderDetail  $orderDetail
-     * @return \Illuminate\Http\Response
+     * @param OrderDetail $orderDetail
+     * @return JsonResponse
      */
     public function update(UpdateOrderDetailRequest $request, OrderDetail $orderDetail)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\OrderDetail  $orderDetail
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(OrderDetail $orderDetail)
-    {
-        //
+        if ($record = $this->orderDetailService->update($orderDetail, $request->validated())) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $record
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
     }
 }

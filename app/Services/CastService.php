@@ -174,7 +174,7 @@ class CastService
             } else {
                 $cast->images()->create($this->saveImagesToDisk($key, $newImage['file']));
             }
-            $this->deleteImagesCloud($oldImages->whereNotIn('file_name', $saveImages));
         }
+        $this->deleteImagesCloud($oldImages->whereNotIn('file_name', $saveImages));
     }
 }

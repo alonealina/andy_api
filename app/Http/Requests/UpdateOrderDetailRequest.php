@@ -7,7 +7,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class OrderDetailRequest extends FormRequest
+class UpdateOrderDetailRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -35,14 +35,7 @@ class OrderDetailRequest extends FormRequest
     public function rules()
     {
         return [
-            'foods' => 'array',
-            'foods.*.id' => 'exists:foods,id',
-            'foods.*.price' => 'exists:foods,price',
-            'foods.*.quantity' => 'numeric',
-            'drinks' => 'array',
-            'drinks.*.id' => 'exists:drinks,id',
-            'drinks.*.price' => 'exists:drinks,price',
-            'drinks.*.quantity' => 'numeric'
+            'status' => 'in:' . implode(',', OrderDetailStatus::getValues()),
         ];
     }
 }
