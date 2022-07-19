@@ -48,7 +48,7 @@ DeployTest:
     - chmod go-wrx ~/.ssh
     - chmod +x -R .platform/hooks
     - composer global require hirak/prestissimo -q
-    - composer require --dev knuckleswtf/scribe -q
+    - composer require --dev knuckleswtf/scribe
     - composer install --ignore-platform-reqs --no-scripts -q && composer dump-autoload -q
     - echo "$TEST_DEPLOY_ENV_FILE" > .env && echo "OK" > public/health.html
     - rsync -azPq --exclude='.git' ./ $TEST_DEPLOY_USER@$TEST_DEPLOY_HOST:$TEST_DEPLOY_DIR/
