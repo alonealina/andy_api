@@ -24,4 +24,9 @@ class CastRepository extends BaseRepository
             ->orderBy('created_at', 'DESC')
             ->get()->toArray();
     }
+
+    public function show($cast)
+    {
+       return $cast->images()->orderBy('order','asc')->get()->toArray();
+    }
 }
