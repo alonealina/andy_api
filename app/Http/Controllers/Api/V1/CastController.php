@@ -67,7 +67,7 @@ class CastController extends Controller
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => array_merge($cast->toArray(), ['images' => $this->castService->show($cast)])
+            'data' => $cast
         ]);
     }
 

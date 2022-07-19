@@ -50,7 +50,7 @@ class Store extends Model
      */
     public function images(): MorphMany
     {
-        return $this->morphMany(Image::class, 'imaginable');
+        return $this->morphMany(Image::class, 'imaginable')->orderBy('order');
     }
 
     /**
