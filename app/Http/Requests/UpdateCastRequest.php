@@ -6,14 +6,14 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CastRequest extends FormRequest
+class UpdateCastRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
         return true;
     }
@@ -36,7 +36,9 @@ class CastRequest extends FormRequest
             'slogan' => 'string|nullable',
             'instagram_url' => 'string|nullable',
             'special_skill' => 'string|nullable',
-            'images.*' => 'mimes:jpg,jpeg,png|max:5000'
+            'images' => 'array',
+            'images.*.file_name' => 'string|nullable',
+            'images.*.file' => 'mimes:jpg,jpeg,png|max:5000|nullable'
         ];
     }
 

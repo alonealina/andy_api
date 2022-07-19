@@ -67,7 +67,7 @@ class StoreService
         DB::beginTransaction();
         try {
             $store->update($data);
-            // TODO Save images upload
+            $this->updateImages($store, $data);
             DB::commit();
             return $store;
         } catch (\Exception $exception) {

@@ -73,8 +73,7 @@ class CastService
         DB::beginTransaction();
         try {
             $cast->update($data);
-            // TODO Save upload images
-
+            $this->updateImages($cast, $data);
             DB::commit();
             return $cast;
         } catch (\Exception $exception) {
@@ -110,12 +109,14 @@ class CastService
      */
     public function getSchedule(Cast $cast, $params)
     {
-        return $cast->load(['schedules' => function ($query) use ($params) {
-            $query->where([
-                'year' => $params['year'],
-                'month' => $params['month'],
-            ]);
-        }])->toArray();
+        return $cast->load([
+            'schedules' => function ($query) use ($params) {
+                $query->where([
+                    'year' => $params['year'],
+                    'month' => $params['month'],
+                ]);
+            }
+        ])->toArray();
     }
 
     /**

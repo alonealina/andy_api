@@ -34,6 +34,18 @@ trait SaveImagesUpload
     }
 
     /**
+     * @param $images
+     * @return void
+     */
+    public function deleteImagesCloud($images)
+    {
+        foreach ($images as $image) {
+            Storage::disk()->delete(IMAGES_PATH . '/' . $image->file_name);
+            $image->forceDelete();
+        }
+    }
+
+    /**
      * @param $key
      * @param UploadedFile $file
      * @return array
@@ -46,5 +58,32 @@ trait SaveImagesUpload
             'file_name' => $fileName,
             'order' => $key
         ];
+    }
+
+
+    /**
+     * @param $cast
+     * @param $data
+     * @return void
+     */
+    public function updateImages($model, $data)
+    {
+        if (!isset($data['images'])) {
+            $this->deleteImages($model);
+            return;
+        }
+        $oldImages = $model->images;
+        $saveImages = [];
+        foreach ($data['images'] as $key => $newImage) {
+            $record = $oldImages->where('file_name', $newImage['file_name'])->first();
+            if (!empty($record)) {
+                $record->order = $key;
+                $record->save();
+                $saveImages[] = $newImage['file_name'];
+            } else {
+                $model->images()->create($this->saveImagesToDisk($key, $newImage['file']));
+            }
+        }
+        $this->deleteImagesCloud($oldImages->whereNotIn('file_name', $saveImages));
     }
 }

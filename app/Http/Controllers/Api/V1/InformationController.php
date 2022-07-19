@@ -60,6 +60,18 @@ class InformationController extends Controller
     }
 
     /**
+     * @param Information $information
+     * @return JsonResponse
+     */
+    public function show(Information $information): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $information
+        ]);
+    }
+
+    /**
      * @param InformationRequest $request
      * @param Information $information
      * @return JsonResponse
