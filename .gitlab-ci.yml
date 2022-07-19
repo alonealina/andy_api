@@ -50,9 +50,6 @@ DeployTest:
     - composer global require hirak/prestissimo -q
     - composer require --dev knuckleswtf/scribe -q
     - composer install --ignore-platform-reqs --no-scripts -q && composer dump-autoload -q
-    - echo "$TEST_ANALYTIC_CREDENTIAL_FILE" > storage/analytics/service-account-credentials.json
-    - echo "$TEST_GOOGLE_TOKEN" > storage/googleapi/token.json
-    - echo "$TEST_GOOGLE_CREDENTIAL" > storage/googleapi/credentials.json
     - echo "$TEST_DEPLOY_ENV_FILE" > .env && echo "OK" > public/health.html
     - rsync -azPq --exclude='.git' ./ $TEST_DEPLOY_USER@$TEST_DEPLOY_HOST:$TEST_DEPLOY_DIR/
     - ssh $TEST_DEPLOY_USER@$TEST_DEPLOY_HOST "source .bash_profile && cd $TEST_DEPLOY_DIR && eb deploy $TEST_EB_ENV_NAME -l $CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
