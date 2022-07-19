@@ -42,9 +42,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
     });
 
     Route::prefix('accounts')->group(function () {
-        Route::get('/', [AccountController::class, 'index']);
-        Route::get('/{account}', [AccountController::class, 'show']);
         Route::middleware('role:ADMIN')->group(function () {
+            Route::get('/', [AccountController::class, 'index']);
+            Route::get('/{account}', [AccountController::class, 'show']);
             Route::post('/', [AccountController::class, 'store']);
             Route::post('/{account}', [AccountController::class, 'update']);
             Route::post('/{account}/delete', [AccountController::class, 'destroy']);

@@ -67,7 +67,7 @@ class CastController extends Controller
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => array_merge($cast->toArray(), ['images' => $this->castService->show($cast)])
+            'data' => $cast
         ]);
     }
 
@@ -78,7 +78,7 @@ class CastController extends Controller
      */
     public function update(UpdateCastRequest $request, Cast $cast): JsonResponse
     {
-        if ($updateRecord = $this->castService->update($request->all(), $cast)) {
+        if ($updateRecord = $this->castService->update($request->validated(), $cast)) {
             return response()->json([
                 'message' => MessageStatus::SUCCESS,
                 'data' => $updateRecord
