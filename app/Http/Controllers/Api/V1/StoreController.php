@@ -6,6 +6,7 @@ use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRequest;
 use App\Http\Requests\SystemInformationRequest;
+use App\Http\Requests\UpdateStoreRequest;
 use App\Models\Store;
 use App\Services\StoreService;
 use Illuminate\Http\Request;
@@ -77,11 +78,11 @@ class StoreController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param StoreRequest $request
+     * @param UpdateStoreRequest $request
      * @param Store $store
      * @return JsonResponse
      */
-    public function update(StoreRequest $request, Store $store): JsonResponse
+    public function update(UpdateStoreRequest $request, Store $store): JsonResponse
     {
         if ($updateRecord = $this->storeService->update($request->validated(), $store)) {
             return response()->json([
