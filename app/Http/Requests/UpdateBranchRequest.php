@@ -33,12 +33,17 @@ class UpdateBranchRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rule = [
             'admin_id' => 'required|unique:accounts,username,' . $this->branch->admin_id,
             'admin_password' => 'required|min:8',
             'name' => 'required|string',
             'tablet_count' => 'required|numeric',
-            'images.*' => 'mimes:jpg,jpeg,png|max:5000'
         ];
+        if (isset($this->images[0]) && !is_string($this->images[0])) {
+            $rule['images.*'] = 'mimes:jpg,jpeg,png|max:5000';
+        } else {
+            $rule['images.*'] = 'string|nullable';
+        }
+        return $rule;
     }
 }
