@@ -131,5 +131,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::post('/', [BranchController::class, 'store']);
         Route::get('/{branch}', [BranchController::class, 'show']);
         Route::post('/{branch}', [BranchController::class, 'update']);
+        Route::post('/{branch}/delete', [BranchController::class, 'destroy']);
     });
 });

@@ -79,7 +79,7 @@ class BranchService
      * @param Branch $branch
      * @return Branch|null
      */
-    public function update($data, Branch $branch)
+    public function update($data, Branch $branch): ?Branch
     {
         DB::beginTransaction();
         try {
@@ -105,10 +105,29 @@ class BranchService
      */
     public function updateImage($data, $branch)
     {
-        if (isset($data['images']) && is_string($data['images'])) return;
+        if (isset($data['images']) && is_string($data['images'][0])) return;
         $this->deleteImages($branch);
         if (isset($data['images'])) {
             $branch->images()->createMany($this->storeImages($data));
+        }
+    }
+
+    /**
+     * @param Branch $branch
+     * @return Branch|null
+     */
+    public function delete(Branch $branch): ?Branch
+    {
+        DB::beginTransaction();
+        try {
+            $branch->delete();
+            $this->deleteImages($branch);
+            DB::commit();
+            return $branch;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return null;
         }
     }
 }

@@ -30,6 +30,11 @@ class DrinkCategoryService
      */
     public function getByCategory($drinkCategory)
     {
-        return $drinkCategory->getAllDrinkCategory()->load('drinks')->toArray();
+        return $drinkCategory->load(['drinks' => function($query)
+        {
+            $query->belongsToBranch();
+        }])->get()->map(function ($item) {
+            return $item->drinks->groupBy('category_child');
+        })->toArray();
     }
 }
