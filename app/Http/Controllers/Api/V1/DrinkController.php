@@ -8,6 +8,7 @@ use App\Http\Requests\DrinkRequest;
 use App\Models\Drink;
 use App\Services\DrinkService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class DrinkController extends Controller
 {
@@ -27,11 +28,11 @@ class DrinkController extends Controller
     /**
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => $this->drinkService->getList()
+            'data' => $this->drinkService->getList($request->all())
         ]);
     }
 
