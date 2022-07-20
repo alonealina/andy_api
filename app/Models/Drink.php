@@ -25,13 +25,8 @@ class Drink extends Model
         'status',
     ];
 
-    protected $hidden = [
-        'drink_category_id'
-    ];
-
     protected $with = [
-        'images',
-        'drinkCategory'
+        'images'
     ];
 
     /**

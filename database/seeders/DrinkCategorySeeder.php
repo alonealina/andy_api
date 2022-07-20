@@ -14,17 +14,11 @@ class DrinkCategorySeeder extends Seeder
      */
     public function run()
     {
-        $arrayName = ['ウイスキー ブランデー', '焼酎', 'ワイン', 'シャンパン', 'レコメンド'];
+        $arrayName = ['シャンパン', 'ワイン', 'ブランデーウイスキー', '焼酎', '日本酒', 'カクテルサワー', 'ソフトドリンク', '割りもの', 'その他'];
         foreach ($arrayName as $name) {
-            $drinkCategory = DrinkCategory::create([
+            DrinkCategory::create([
                 'name' => $name
             ]);
-            for ($i=1; $i <= 3; $i++) {
-                DrinkCategory::create([
-                    'name' => $name . ' - ' . $i,
-                    'parent_id' => $drinkCategory->id
-                ]);
-            }
         }
     }
 }

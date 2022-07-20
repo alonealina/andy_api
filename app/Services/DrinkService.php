@@ -48,9 +48,9 @@ class DrinkService
     /**
      * @return mixed
      */
-    public function getList()
+    public function getList($params)
     {
-        return $this->drinkRepository->getList();
+        return $this->drinkRepository->getList($params);
     }
 
     /**

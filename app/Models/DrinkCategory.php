@@ -13,6 +13,7 @@ class DrinkCategory extends Model
     use HasFactory;
 
     protected $hidden = [
+        'parent_id',
         'deleted_at',
         'created_at',
         'updated_at'
@@ -55,6 +56,6 @@ class DrinkCategory extends Model
      */
     public function drinks(): HasMany
     {
-        return $this->hasMany(Drink::class);
+        return $this->hasMany(Drink::class)->orderBy('category_child');
     }
 }
