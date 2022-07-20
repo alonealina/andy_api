@@ -84,4 +84,21 @@ class BranchController extends Controller
             'data' => $branch->toArray(),
         ]);
     }
+
+    /**
+     * @param Branch $branch
+     * @return JsonResponse
+     */
+    public function destroy(Branch $branch): JsonResponse
+    {
+        if ($record = $this->branchService->delete($branch)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $record
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
+    }
 }
