@@ -34,15 +34,4 @@ class OrderController extends Controller
             'data' => $this->orderService->getList()
         ]);
     }
-
-    /**
-     * @return JsonResponse
-     */
-    public function getListPending(): JsonResponse
-    {
-        return response()->json([
-            'message' => MessageStatus::SUCCESS,
-            'data' => $this->orderService->getListPending()
-        ]);
-    }
 }
