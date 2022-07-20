@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateOrderDetailRequest;
 use App\Models\OrderDetail;
 use App\Services\OrderDetailService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class OrderDetailController extends Controller
 {
@@ -27,13 +28,14 @@ class OrderDetailController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request): JsonResponse
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => $this->orderDetailService->index()
+            'data' => $this->orderDetailService->getList($request->all())
         ]);
     }
 

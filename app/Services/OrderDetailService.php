@@ -32,7 +32,7 @@ class OrderDetailService
     /**
      * @return mixed
      */
-    public function index()
+    public function getList($params)
     {
         return $this->orderDetailRepository->getOrderPending();
     }
