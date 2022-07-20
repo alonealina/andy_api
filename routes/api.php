@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\V1\CastController;
 use App\Http\Controllers\Api\V1\DrinkCategoryController;
 use App\Http\Controllers\Api\V1\BranchController;
 use App\Http\Controllers\Api\V1\OrderController;
+use App\Http\Controllers\Api\V1\AccountController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +39,16 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
     Route::prefix('store-categories')->group(function () {
         Route::get('/', [StoreCategoryController::class, 'index']);
         Route::post('/', [StoreCategoryController::class, 'store'])->middleware('role:ADMIN');
+    });
+
+    Route::prefix('accounts')->group(function () {
+        Route::middleware('role:ADMIN')->group(function () {
+            Route::get('/', [AccountController::class, 'index']);
+            Route::get('/{account}', [AccountController::class, 'show']);
+            Route::post('/', [AccountController::class, 'store']);
+            Route::post('/{account}', [AccountController::class, 'update']);
+            Route::post('/{account}/delete', [AccountController::class, 'destroy']);
+        });
     });
 
     Route::prefix('stores')->group(function () {
