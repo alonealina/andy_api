@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CastSeeder::class);
         $this->call(NewsSeeder::class);
         $this->call(ScheduleSeeder::class);
+        $this->call(OrderSeeder::class);
         $this->call(OrderDetailSeeder::class);
     }
 }

@@ -17,13 +17,16 @@ class OrderDetailRepository extends BaseRepository
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getOrderPending()
+    public function getOrderPending(): array
     {
-         return Auth::user()->store->orderDetails()
+         return $this->model->with(['account:accounts.id,name', 'orderable:id,name'])
+             ->whereHas('account', function ($query) {
+                 $query->where('branch_id', Auth::user()->branch_id);
+             })
              ->where('status', OrderDetailStatus::PENDING)
-             ->with('orderable:id,name,price')
-             ->get()->toArray();
+             ->get()->sortBy('account.id')
+             ->toArray();
     }
 }

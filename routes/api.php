@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\OrderDetailController;
 use App\Http\Controllers\Api\V1\CastController;
 use App\Http\Controllers\Api\V1\DrinkCategoryController;
 use App\Http\Controllers\Api\V1\BranchController;
+use App\Http\Controllers\Api\V1\OrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -102,6 +103,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
             Route::post('/{cast}', [CastController::class, 'update']);
             Route::post('/{cast}/delete', [CastController::class, 'destroy']);
         });
+    });
+
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [OrderController::class, 'index']);
+        Route::get('/pending', [OrderController::class, 'getListPending']);
     });
 
     Route::prefix('order-details')->group(function () {
