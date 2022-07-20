@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class DrinkCategoryRequest extends FormRequest
 {
@@ -13,7 +16,15 @@ class DrinkCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
+    }
+
+    /**
+     * @return array|Application|Translator|string|null
+     */
+    public function attributes()
+    {
+        return __('attributes.drink-categories');
     }
 
     /**
@@ -24,7 +35,8 @@ class DrinkCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'string|required',
+            'parent_id' => 'numeric'
         ];
     }
 }

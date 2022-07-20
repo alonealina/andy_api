@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\DrinkCategory;
 use App\Repositories\DrinkCategoryRepository;
 
 class DrinkCategoryService
@@ -25,16 +26,32 @@ class DrinkCategoryService
     }
 
     /**
-     * @param $drinkCategory
+     * @param $params
+     * @param DrinkCategory $drinkCategory
+     * @return DrinkCategory
+     */
+    public function update($params, DrinkCategory $drinkCategory)
+    {
+        $drinkCategory->update($params);
+        return $drinkCategory;
+    }
+
+    /**
+     * @param $params
      * @return mixed
      */
-    public function getByCategory($drinkCategory)
+    public function store($params)
     {
-        return $drinkCategory->load(['drinks' => function($query)
-        {
-            $query->belongsToBranch();
-        }])->get()->map(function ($item) {
-            return $item->drinks->groupBy('category_child');
-        })->toArray();
+        return $this->drinkCategoryRepository->store($params);
+    }
+
+    /**
+     * @param DrinkCategory $drinkCategory
+     * @return DrinkCategory
+     */
+    public function delete(DrinkCategory $drinkCategory): DrinkCategory
+    {
+        $drinkCategory->delete();
+        return $drinkCategory;
     }
 }

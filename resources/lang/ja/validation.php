@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'string' => ':attribute文字列である必要があります',
     'regex' => ':attributeの形式が正しくありません。',
     'email' => ':attributeメール形式である必要があります。',
     'url' => ':attributeの形式が正しくありません。',
