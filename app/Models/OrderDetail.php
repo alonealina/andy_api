@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\OrderDetailStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -14,7 +15,7 @@ class OrderDetail extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'account_id',
+        'order_id',
         'orderable_id',
         'orderable_type',
         'price',
@@ -35,9 +36,17 @@ class OrderDetail extends Model
     /**
      * @return BelongsTo
      */
-    public function account(): BelongsTo
+    public function order(): BelongsTo
     {
-        return $this->belongsTo(Account::class);
+        return $this->belongsTo(Order::class);
+    }
+
+    /**
+     * @return HasOneThrough
+     */
+    public function account(): HasOneThrough
+    {
+        return $this->hasOneThrough(Account::class, Order::class, 'id', 'id', 'order_id', 'account_id');
     }
 
     /**

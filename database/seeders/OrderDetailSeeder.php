@@ -5,8 +5,9 @@ namespace Database\Seeders;
 use App\Enums\OrderDetailStatus;
 use App\Models\Drink;
 use App\Models\Food;
-use App\Models\Account;
+use App\Models\Order;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class OrderDetailSeeder extends Seeder
 {
@@ -17,27 +18,27 @@ class OrderDetailSeeder extends Seeder
      */
     public function run()
     {
-        $drinks = Drink::get();
-        $users = Account::pluck('id')->toArray();
-        foreach ($drinks as $drink) {
-            for($i=1; $i<10; $i++) {
-                $drink->orderDetails()->create([
-                    'account_id' => array_rand($users),
-                    'price' => $drink->price,
-                    'quantity' => rand(1, 5),
-                    'status' => array_rand(OrderDetailStatus::getValues()),
+        DB::table('order_details')->truncate();
+        $orders = Order::all();
+        $drinks = Drink::select('id', 'price')->limit(5)->get()->toArray();
+        $foods = Food::select('id', 'price')->limit(5)->get()->toArray();
+        foreach ($orders as $order) {
+            for ($i = 0; $i < 5; $i++) {
+                $order->orderDetails()->create([
+                    'orderable_id' => $drinks[$i]['id'],
+                    'orderable_type' => Drink::class,
+                    'price' => $drinks[$i]['price'],
+                    'quantity' => 1,
+                    'amount' => $drinks[$i]['price'],
+                    'status' => OrderDetailStatus::PENDING,
                 ]);
-            }
-        }
-
-        $foods = Food::get();
-        foreach ($foods as $food) {
-            for($i=1; $i<10; $i++) {
-                $food->orderDetails()->create([
-                    'account_id' => array_rand($users),
-                    'price' => $food->price,
-                    'quantity' => rand(1, 5),
-                    'status' => array_rand(OrderDetailStatus::getValues()),
+                $order->orderDetails()->create([
+                    'orderable_id' => $foods[$i]['id'],
+                    'orderable_type' => Food::class,
+                    'price' => $foods[$i]['price'],
+                    'quantity' => 1,
+                    'amount' => $foods[$i]['price'],
+                    'status' => OrderDetailStatus::PENDING,
                 ]);
             }
         }
