@@ -118,13 +118,15 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
 
     Route::prefix('orders')->group(function () {
         Route::get('/', [OrderController::class, 'index']);
-        Route::get('/pending', [OrderController::class, 'getListPending']);
     });
 
     Route::prefix('order-details')->group(function () {
         Route::get('/', [OrderDetailController::class, 'index']);
         Route::post('/', [OrderDetailController::class, 'store'])->middleware('role:CUSTOMER');
-        Route::post('/{orderDetail}', [OrderDetailController::class, 'update'])->middleware('role:ADMIN');;
+        Route::middleware('role:ADMIN')->group(function () {
+            Route::get('/pending', [OrderDetailController::class, 'getListPending']);
+            Route::post('/{orderDetail}', [OrderDetailController::class, 'update']);
+        });
     });
 
     Route::prefix('drink-categories')->group(function () {
