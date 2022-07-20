@@ -13,4 +13,13 @@ class BranchRepository extends BaseRepository
     {
         return Branch::class;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getList()
+    {
+        return $this->model->orderBy('created_at', 'DESC')
+            ->get()->toArray();
+    }
 }

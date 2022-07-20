@@ -78,4 +78,10 @@ return [
         'quantity' => '数量',
         'status' => '状態'
     ],
+    'branches' => [
+        'name' => '名前',
+        'tablet_count' => '錠剤の数',
+        'admin_id' => '管理者ID',
+        'admin_password' => '管理者パスワード',
+    ]
 ];
