@@ -12,6 +12,13 @@ class AccountRepository extends BaseRepository
      */
     public function model()
     {
-       return Account::class;
+        return Account::class;
+    }
+
+    public function getList()
+    {
+        return $this->model->belongsToBranch()
+            ->orderBy('created_at', 'DESC')
+            ->get()->toArray();
     }
 }

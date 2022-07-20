@@ -2,8 +2,9 @@
 return [
     'accounts' => [
         'username' => 'ユーザー名',
-        'number_phone' => 'ナンバーフォン',
-        'password' => 'パスワード'
+        'password' => 'パスワード',
+        'password_confirmation' => 'パスワードの確認',
+        'name' => '名前',
     ],
     'store_categories' => [
         'name' => 'お店の名前',
