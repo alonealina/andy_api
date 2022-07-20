@@ -2,9 +2,12 @@
 
 namespace App\Services;
 
+use App\Enums\AccountRole;
+use App\Models\Account;
 use App\Repositories\AccountRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
 class AccountService
 {
@@ -26,8 +29,43 @@ class AccountService
     /**
      * @return Collection|Model[]
      */
-    public function getAll()
+    public function getList()
     {
-        return $this->accountRepository->getAll();
+        return $this->accountRepository->getList();
+    }
+
+    /**
+     * @param $params
+     * @return null
+     */
+    public function store($data)
+    {
+        return $this->accountRepository->create([
+            'username' => $data['username'],
+            'password' => Hash::make($data['password']),
+            'role' => AccountRole::CUSTOMER,
+            'name' => $data['name']
+        ]);
+    }
+
+    /**
+     * @param $params
+     * @param Account $account
+     * @return Account
+     */
+    public function update($params, Account $account): Account
+    {
+        $account->update($params);
+        return $account;
+    }
+
+    /**
+     * @param Account $account
+     * @return Account
+     */
+    public function delete(Account $account): Account
+    {
+        $account->delete();
+        return $account;
     }
 }

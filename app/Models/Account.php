@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Enums\AccountRole;
+use App\Traits\CommonScopeModel;
+use App\Traits\HasBranchId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -13,7 +16,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class Account extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use CommonScopeModel, HasBranchId;
 
     /**
      * The attributes that are mass assignable.
@@ -50,7 +54,8 @@ class Account extends Authenticatable implements JWTSubject
     /**
      * @return mixed
      */
-    public function getJWTIdentifier() {
+    public function getJWTIdentifier()
+    {
         return $this->getKey();
     }
 
