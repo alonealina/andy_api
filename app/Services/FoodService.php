@@ -31,9 +31,9 @@ class FoodService
     /**
      * @return mixed
      */
-    public function getList()
+    public function getList($params)
     {
-        return $this->foodRepository->getList();
+        return $this->foodRepository->getList($params);
     }
 
     /**

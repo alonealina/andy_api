@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\CommonScopeModel;
+use App\Traits\HasBranchId;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,8 +14,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class DrinkCategory extends Model
 {
     use HasFactory, SoftDeletes;
+    use CommonScopeModel, HasBranchId;
 
     protected $fillable = [
+        'branch_id',
         'name',
         'parent_id'
     ];
@@ -65,5 +69,15 @@ class DrinkCategory extends Model
     public function drinks(): HasMany
     {
         return $this->hasMany(Drink::class);
+    }
+
+    /**
+     * Relationship to branch table
+     *
+     * @return BelongsTo
+     */
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
     }
 }

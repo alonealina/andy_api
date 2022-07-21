@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnFoodCategoryForFoodsTable extends Migration
+class EditColumnCategoryIdForFoodsAndDrinksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnFoodCategoryForFoodsTable extends Migration
      */
     public function up()
     {
-        Schema::table('foods', function (Blueprint $table) {
-            $table->integer('food_category_id')->after('branch_id');
+        Schema::table('drinks', function (Blueprint $table) {
+            $table->integer('drink_category_id')->change();
         });
     }
 
@@ -25,8 +25,8 @@ class AddColumnFoodCategoryForFoodsTable extends Migration
      */
     public function down()
     {
-        Schema::table('foods', function (Blueprint $table) {
-            $table->dropColumn('food_category_id');
+        Schema::table('drinks', function (Blueprint $table) {
+            $table->tinyInteger('drink_category_id')->change();
         });
     }
 }

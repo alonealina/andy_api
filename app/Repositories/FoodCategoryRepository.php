@@ -13,4 +13,12 @@ class FoodCategoryRepository extends BaseRepository
     {
         return FoodCategory::class;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getList()
+    {
+        return $this->model->belongsToBranch()->get()->toArray();
+    }
 }
