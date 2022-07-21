@@ -68,10 +68,10 @@ class Cast extends Model
     }
 
     /**
-     * @return HasOne
+     * @return BelongsTo
      */
-    public function account(): HasOne
+    public function account(): BelongsTo
     {
-        return $this->hasOne(Account::class, 'id', 'account_id');
+        return $this->belongsTo(Account::class);
     }
 }

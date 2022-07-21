@@ -120,30 +120,4 @@ class StoreService
         $store->systemInformation()->update($data);
         return $store->systemInformation->toArray();
     }
-
-    /**
-     * @param $cast
-     * @param $data
-     * @return void
-     */
-    public function updateImages($store, $data)
-    {
-        if (!isset($data['images'])) {
-            $this->deleteImages($store);
-            return;
-        }
-        $oldImages = $store->images;
-        $saveImages = [];
-        foreach ($data['images'] as $key => $newImage) {
-            $record = $oldImages->where('file_name', $newImage['file_name'])->first();
-            if (!empty($record)) {
-                $record->order = $key;
-                $record->save();
-                $saveImages[] = $newImage['file_name'];
-            } else {
-                $store->images()->create($this->saveImagesToDisk($key, $newImage['file']));
-            }
-        }
-        $this->deleteImagesCloud($oldImages->whereNotIn('file_name', $saveImages));
-    }
 }

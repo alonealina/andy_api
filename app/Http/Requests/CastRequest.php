@@ -26,7 +26,7 @@ class CastRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|string',
+            'username' => 'required|unique:accounts,username',
             'password' => 'required|min:8|confirmed',
             'name' => 'required|string',
             'height' => 'numeric|min:100|max:500|nullable',

@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Cast;
-use Illuminate\Support\Facades\DB;
 
 class CastRepository extends BaseRepository
 {

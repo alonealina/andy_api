@@ -26,7 +26,6 @@ class Account extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'branch_id',
-        'account_id',
         'username',
         'password',
         'password_show',
