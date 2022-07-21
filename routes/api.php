@@ -63,26 +63,26 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         });
     });
 
-    Route::prefix('foods')->group(function () {
+    Route::prefix('foods')->middleware('role:ADMIN,CUSTOMER')->group(function () {
         Route::get('/', [FoodController::class, 'index']);
-        Route::get('/default-images', [FoodController::class, 'getImageDefault']);
-        Route::get('/{food}', [FoodController::class, 'show']);
         Route::middleware('role:ADMIN')->group(function () {
+            Route::get('/default-images', [FoodController::class, 'getImageDefault']);
             Route::post('/', [FoodController::class, 'store']);
             Route::post('/{food}', [FoodController::class, 'update']);
             Route::post('/{food}/delete', [FoodController::class, 'destroy']);
         });
+        Route::get('/{food}', [FoodController::class, 'show']);
     });
 
-    Route::prefix('drinks')->group(function () {
+    Route::prefix('drinks')->middleware('role:ADMIN,CUSTOMER')->group(function () {
         Route::get('/', [DrinkController::class, 'index']);
-        Route::get('/default-images', [DrinkController::class, 'getImageDefault']);
-        Route::get('/{drink}', [DrinkController::class, 'show']);
         Route::middleware('role:ADMIN')->group(function () {
+            Route::get('/default-images', [DrinkController::class, 'getImageDefault']);
             Route::post('/', [DrinkController::class, 'store']);
             Route::post('/{drink}', [DrinkController::class, 'update']);
             Route::post('/{drink}/delete', [DrinkController::class, 'destroy']);
         });
+        Route::get('/{drink}', [DrinkController::class, 'show']);
     });
 
     Route::prefix('news')->group(function () {
@@ -121,7 +121,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
     });
 
     Route::prefix('order-details')->group(function () {
-        Route::get('/', [OrderDetailController::class, 'index']);
         Route::post('/', [OrderDetailController::class, 'store'])->middleware('role:CUSTOMER');
         Route::middleware('role:ADMIN')->group(function () {
             Route::get('/pending', [OrderDetailController::class, 'getListPending']);
