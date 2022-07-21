@@ -96,5 +96,9 @@ return [
     ],
     'food-categories' => [
         'name' => '名前'
+    ],
+    'backgrounds' => [
+        'position' => '位置',
+        'file' => '画像'
     ]
 ];
