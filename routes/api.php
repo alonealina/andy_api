@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\V1\DrinkCategoryController;
 use App\Http\Controllers\Api\V1\BranchController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\AccountController;
+use App\Http\Controllers\Api\V1\FoodCategoryController;
+use App\Http\Controllers\Api\V1\BackgroundController;
 use App\Http\Controllers\Api\V1\SystemInformationController;
 use Illuminate\Support\Facades\Route;
 
@@ -152,5 +154,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::get('/{branch}', [BranchController::class, 'show']);
         Route::post('/{branch}', [BranchController::class, 'update']);
         Route::post('/{branch}/delete', [BranchController::class, 'destroy']);
+    });
+
+    Route::prefix('food-categories')->group(function () {
+        Route::post('/', [FoodCategoryController::class, 'store'])->middleware('role:ADMIN');
+    });
+
+    Route::prefix('backgrounds')->middleware('role:ADMIN,CUSTOMER')->group(function () {
+        Route::get('/', [BackgroundController::class, 'index']);
+        Route::post('/', [BackgroundController::class, 'store'])->middleware('role:ADMIN');
     });
 });

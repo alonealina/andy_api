@@ -75,7 +75,7 @@ class DrinkCategoryController extends Controller
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' =>  $drinkCategory
+            'data' =>  $this->drinkCategoryService->show($drinkCategory)
         ]);
     }
 

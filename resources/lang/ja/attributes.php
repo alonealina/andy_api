@@ -93,5 +93,12 @@ return [
     'drink-categories' => [
         'name' => '名前',
         'parent_id' => 'カテゴリーID'
+    ],
+    'food-categories' => [
+        'name' => '名前'
+    ],
+    'backgrounds' => [
+        'position' => '位置',
+        'file' => '画像'
     ]
 ];

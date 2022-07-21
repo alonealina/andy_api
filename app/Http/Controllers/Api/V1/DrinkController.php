@@ -63,7 +63,7 @@ class DrinkController extends Controller
     {
         return response()->json([
         'message' => MessageStatus::SUCCESS,
-        'data' => $drink
+        'data' => $this->drinkService->show($drink)
         ]);
     }
 
