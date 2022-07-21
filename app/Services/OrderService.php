@@ -29,4 +29,15 @@ class OrderService
     {
         return $this->orderRepository->getList($params);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getHistory()
+    {
+        return $this->orderRepository->getOderUnpaidByAccount()->orderDetails
+            ->load('orderable:id,name')
+            ->sortByDesc('created_at')->values()
+            ->toArray();
+    }
 }
