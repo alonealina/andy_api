@@ -17,13 +17,19 @@ class OrderRepository extends BaseRepository
     }
 
     /**
-     * @return mixed
+     * @param $params
+     * @return array
      */
-    public function getList()
+    public function getList($params): array
     {
-        return $this->model->whereHas('account', function ($query) {
-            $query->where('branch_id', Auth::user()->branch_id);
-        })->get()->toArray();
+        return $this->model->with('account:id,name')
+            ->whereHas('account', function ($query) {
+                $query->where('branch_id', Auth::user()->branch_id);
+            })
+            ->when(isset($params['status']), function ($query) use ($params) {
+                $query->whereStatus($params['status']);
+            })
+            ->get()->toArray();
     }
 
     /**
