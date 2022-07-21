@@ -119,6 +119,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
 
     Route::prefix('orders')->group(function () {
         Route::get('/', [OrderController::class, 'index']);
+        Route::get('/history', [OrderController::class, 'getHistory']);
     });
 
     Route::prefix('order-details')->group(function () {

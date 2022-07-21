@@ -34,4 +34,15 @@ class OrderController extends Controller
             'data' => $this->orderService->getList($request->all())
         ]);
     }
+
+    /**
+     * @return JsonResponse
+     */
+    public function getHistory(): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->orderService->getHistory()
+        ]);
+    }
 }
