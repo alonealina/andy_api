@@ -125,6 +125,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::post('/', [OrderDetailController::class, 'store'])->middleware('role:CUSTOMER');
         Route::middleware('role:ADMIN')->group(function () {
             Route::get('/pending', [OrderDetailController::class, 'getListPending']);
+            Route::get('/new', [OrderDetailController::class, 'getNewOrder']);
             Route::post('/{orderDetail}', [OrderDetailController::class, 'update']);
         });
     });
