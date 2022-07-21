@@ -9,7 +9,6 @@ use App\Http\Requests\UpdateOrderDetailRequest;
 use App\Models\OrderDetail;
 use App\Services\OrderDetailService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class OrderDetailController extends Controller
 {
@@ -31,7 +30,7 @@ class OrderDetailController extends Controller
      * @param OrderDetailRequest $request
      * @return JsonResponse
      */
-    public function store(OrderDetailRequest $request)
+    public function store(OrderDetailRequest $request): JsonResponse
     {
         if ($this->orderDetailService->store($request->validated())) {
             return response()->json([
@@ -70,6 +69,17 @@ class OrderDetailController extends Controller
         return response()->json([
             'message' => MessageStatus::SUCCESS,
             'data' => $this->orderDetailService->getListPending()
+        ]);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function getNewOrder(): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->orderDetailService->getNewOrder()
         ]);
     }
 }

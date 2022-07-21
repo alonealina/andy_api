@@ -20,11 +20,17 @@ class OrderDetail extends Model
         'orderable_type',
         'price',
         'quantity',
+        'amount',
         'status',
+        'read_at'
     ];
 
     protected $casts = [
       'status' => OrderDetailStatus::class
+    ];
+
+    protected $dates = [
+        'read_at'
     ];
 
     protected $hidden = [
@@ -52,7 +58,7 @@ class OrderDetail extends Model
     /**
      * @return MorphTo
      */
-    public function orderable()
+    public function orderable(): MorphTo
     {
         return $this->morphTo();
     }
