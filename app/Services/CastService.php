@@ -2,12 +2,15 @@
 
 namespace App\Services;
 
+use App\Enums\AccountRole;
 use App\Models\Cast;
+use App\Repositories\AccountRepository;
 use App\Repositories\CastRepository;
 use App\Repositories\ScheduleRepository;
 use App\Traits\CheckBranch;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class CastService
 {
@@ -23,17 +26,24 @@ class CastService
      */
     protected $scheduleRepository;
 
+    /**
+     * @var AccountRepository
+     */
+    protected $accountRepository;
 
     /**
      * @param CastRepository $castRepository
      * @param ScheduleRepository $scheduleRepository
+     * @param AccountRepository $accountRepository
      */
     public function __construct(
         CastRepository $castRepository,
-        ScheduleRepository $scheduleRepository
+        ScheduleRepository $scheduleRepository,
+        AccountRepository $accountRepository
     ) {
         $this->castRepository = $castRepository;
         $this->scheduleRepository = $scheduleRepository;
+        $this->accountRepository = $accountRepository;
     }
 
     /**
@@ -52,7 +62,13 @@ class CastService
     {
         DB::beginTransaction();
         try {
-            $newRecord = $this->castRepository->store($params);
+            $account = $this->accountRepository->create([
+                'username' => $params['username'],
+                'password' => Hash::make($params['password']),
+                'role' => AccountRole::CAST,
+                'name' => $params['name']
+            ]);
+            $newRecord = $this->castRepository->store(array_merge(['account_id' => $account->id], $params));
             $newRecord->images()->createMany($this->storeImages($params));
             DB::commit();
             return $newRecord;
@@ -74,6 +90,25 @@ class CastService
         try {
             $cast->update($data);
             $this->updateImages($cast, $data);
+            DB::commit();
+            return $cast;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return null;
+        }
+    }
+
+    /**
+     * @param $data
+     * @param Cast $cast
+     * @return Cast|null
+     */
+    public function updateAccount($data, Cast $cast): ?Cast
+    {
+        DB::beginTransaction();
+        try {
+            $cast->account()->update(['password' => Hash::make($data['password'])]);
             DB::commit();
             return $cast;
         } catch (\Exception $exception) {

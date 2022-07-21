@@ -112,6 +112,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::middleware('role:ADMIN')->group(function () {
             Route::post('/', [CastController::class, 'store']);
             Route::post('/{cast}', [CastController::class, 'update']);
+            Route::post('/{cast}/account', [CastController::class, 'updateAccount']);
             Route::post('/{cast}/delete', [CastController::class, 'destroy']);
         });
     });

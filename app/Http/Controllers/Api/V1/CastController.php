@@ -6,6 +6,7 @@ use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CastRequest;
 use App\Http\Requests\GetScheduleCastRequest;
+use App\Http\Requests\UpdateCastAccountRequest;
 use App\Http\Requests\UpdateCastRequest;
 use App\Http\Requests\UpdateScheduleRequest;
 use App\Models\Cast;
@@ -89,6 +90,23 @@ class CastController extends Controller
         ], 400);
     }
 
+    /**
+     * @param UpdateCastAccountRequest $request
+     * @param Cast $cast
+     * @return JsonResponse
+     */
+    public function updateAccount(UpdateCastAccountRequest $request, Cast $cast): JsonResponse
+    {
+        if ($updateRecord = $this->castService->updateAccount($request->validated(), $cast)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $updateRecord
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
+    }
     /**
      * Remove the specified resource from storage.
      *
