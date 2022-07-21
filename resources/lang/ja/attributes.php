@@ -86,5 +86,9 @@ return [
         'tablet_count' => '錠剤の数',
         'admin_id' => '管理者ID',
         'admin_password' => '管理者パスワード',
+    ],
+    'drink-categories' => [
+        'name' => '名前',
+        'parent_id' => 'カテゴリーID'
     ]
 ];

@@ -29,6 +29,12 @@ class Drink extends Model
         'images'
     ];
 
+    protected $hidden = [
+        'deleted_at',
+        'created_at',
+        'updated_at'
+    ];
+
     /**
      * Relationship to branch table
      *

@@ -19,14 +19,13 @@ class DrinkSeeder extends Seeder
     {
         $faker = Factory::create();
         $branchIds = Branch::pluck('id')->toArray();
-        $categoriesId = DrinkCategory::pluck('id')->toArray();
+        $categoriesId = DrinkCategory::where('parent_id','!=',null)->pluck('id')->toArray();
 
         foreach ($branchIds as $branchId) {
             for ($i=0; $i<50;$i++) {
                 Drink::create([
                     'branch_id' => $branchId,
                     'drink_category_id' => $categoriesId[array_rand($categoriesId)],
-                    'category_child' => 'category_child - ' . rand(1,3),
                     'name' => $faker->name(),
                     'price' => rand(1,9) * 1000,
                     'description' => $faker->text(),
