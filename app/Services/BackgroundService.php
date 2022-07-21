@@ -4,14 +4,15 @@ namespace App\Services;
 
 use App\Repositories\BackgroundRepository;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class BackgroundService
 {
     protected $backgroundRepository;
 
+    /**
+     * @param BackgroundRepository $backgroundRepository
+     */
     public function __construct(BackgroundRepository $backgroundRepository)
     {
         $this->backgroundRepository = $backgroundRepository;
@@ -26,83 +27,66 @@ class BackgroundService
     }
 
     /**
-     * @param $params
-     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|null
+     * @param $data
+     * @return bool
      */
-    public function store($params)
+    public function store($data): bool
     {
-        $file_names = array_column($params['background'], 'file_name');
-        $keepFiles = $this->getFiles($params['background'], 'file_name');
-        $newFiles = $this->getFiles($params['background'], 'file');
-        $allBackground = $this->backgroundRepository->where('branch_id', Auth::user()->branch_id);
-
-        DB::beginTransaction();
-        try {
-            if (!empty($keepFiles)) {
-                $updateRecords = $allBackground->whereIn('file_name', array_column($keepFiles, 'file_name'))->get();
-                foreach ($updateRecords as $updateRecord) {
-                    $updateRecord->position = $keepFiles[
-                        array_search($updateRecord->file_name, array_column($keepFiles, 'file_name'))]['position'];
-
-                    $updateRecord->save();
-                }
-            }
-
-            if (!empty($newFiles)) {
-                $deleteBackgrounds = $this->backgroundRepository->whereNotIn('file_name', $file_names);
-                $this->deleteImages($deleteBackgrounds->get());
-                $deleteBackgrounds->delete();
-
-                foreach ($newFiles as $newFile) {
-                    $file_name = $this->saveImagesToDisk($newFile['file']);
-                    $this->backgroundRepository->store([
-                        'file_name' => $file_name,
-                        'position' => $newFile['position']
-                    ]);
-                }
-            }
-            DB::commit();
-            return $allBackground->get();
-        } catch (\Exception $exception) {
-            report($exception);
-            DB::rollback();
-            return null;
+        $oldImages = $this->backgroundRepository->getOldImages();
+        if (empty($data['images'])) {
+            $this->deleteImages($oldImages);
+            return true;
         }
+        $saveImages = [];
+        foreach ($data['images'] as $newImage) {
+            $record = $oldImages->where('file_name', $newImage['file_name'])->first();
+            if (!empty($record)) {
+                $record->position = $newImage['position'];
+                $record->save();
+                $saveImages[] = $newImage['file_name'];
+            } else {
+                $this->backgroundRepository->create($this->saveImagesToDisk($newImage['position'], $newImage['file']));
+            }
+        }
+        $this->deleteImagesCloud($oldImages->whereNotIn('file_name', $saveImages));
+        return true;
     }
 
     /**
+     * @param $position
      * @param UploadedFile $file
-     * @return mixed|string
-     */
-    public function saveImagesToDisk(UploadedFile $file)
-    {
-        $path = Storage::disk()->put(IMAGES_PATH, $file);
-        return explode("/", $path)[2];
-    }
-
-    /**
-     * @param $array
      * @return array
      */
-    public function getFiles($array, $column): array
+    public function saveImagesToDisk($position, UploadedFile $file): array
     {
-        $subArr = [];
-        foreach ($array as $record) {
-            if (!empty($record[$column])) {
-                $subArr [] = $record;
-            }
-        }
-        return $subArr;
+        $path = Storage::disk()->put(IMAGES_PATH, $file);
+        $fileName = explode("/", $path)[2];
+        return [
+            'file_name' => $fileName,
+            'position' => $position
+        ];
     }
 
     /**
-     * @param $backgrounds
+     * @param $oldImages
      * @return void
      */
-    public function deleteImages($backgrounds)
+    public function deleteImages($oldImages)
     {
-        foreach ($backgrounds as $background) {
-            Storage::disk()->delete(IMAGES_PATH . '/' . $background['file_name']);
+        foreach ($oldImages as $oldImage) {
+            Storage::disk()->delete(IMAGES_PATH . '/' . $oldImage['file_name']);
+        }
+    }
+
+    /**
+     * @param $images
+     * @return void
+     */
+    public function deleteImagesCloud($images)
+    {
+        foreach ($images as $image) {
+            Storage::disk()->delete(IMAGES_PATH . '/' . $image->file_name);
+            $image->forceDelete();
         }
     }
 }

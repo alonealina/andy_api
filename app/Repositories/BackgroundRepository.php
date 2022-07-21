@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Background;
+use Illuminate\Support\Facades\Auth;
 
 class BackgroundRepository extends BaseRepository
 {
@@ -12,20 +13,18 @@ class BackgroundRepository extends BaseRepository
     }
 
     /**
-     * @param $column
-     * @param $values
      * @return mixed
      */
-    public function whereNotIn($column, $values)
+    public function getList()
     {
-        return $this->model()::whereNotIn($column, $values);
+        return $this->model->belongsToBranch()->orderBy('position')->get();
     }
 
     /**
      * @return mixed
      */
-    public function getList()
+    public function getOldImages()
     {
-        return $this->model->belongsToBranch()->get();
+        return $this->model->where('branch_id',Auth::user()->branch_id)->get();
     }
 }

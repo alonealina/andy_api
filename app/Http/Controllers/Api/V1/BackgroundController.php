@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Enums\MessageStatus;
 use App\Http\Requests\BackgroundRequest;
+use App\Models\Background;
 use App\Services\BackgroundService;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 class BackgroundController extends Controller
@@ -22,12 +22,12 @@ class BackgroundController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param BackgroundRequest $request
      * @return JsonResponse
      */
     public function store(BackgroundRequest $request): JsonResponse
     {
-        if ($newRecord = $this->backgroundService->store($request->all())) {
+        if ($newRecord = $this->backgroundService->store($request->validated())) {
             return response()->json([
                 'message' => MessageStatus::SUCCESS,
                 'data' => $newRecord

@@ -156,8 +156,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::post('/', [FoodCategoryController::class, 'store'])->middleware('role:ADMIN');
     });
 
-    Route::prefix('backgrounds')->group(function () {
+    Route::prefix('backgrounds')->middleware('role:ADMIN,CUSTOMER')->group(function () {
         Route::get('/', [BackgroundController::class, 'index']);
-        Route::post('/', [BackgroundController::class, 'store']);
+        Route::post('/', [BackgroundController::class, 'store'])->middleware('role:ADMIN');
     });
 });

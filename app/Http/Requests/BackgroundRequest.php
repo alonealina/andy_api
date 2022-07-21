@@ -13,7 +13,7 @@ class BackgroundRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -31,11 +31,13 @@ class BackgroundRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'background' => 'array',
-            'background.*.position' => 'numeric',
+            'images' => 'array',
+            'images.*.file_name' => 'string|nullable',
+            'images.*.file' => 'mimes:jpg,jpeg,png|max:5000|nullable',
+            'images.*.position' => 'numeric|min:0|max:6',
         ];
     }
 }

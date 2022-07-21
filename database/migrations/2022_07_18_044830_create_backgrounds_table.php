@@ -16,7 +16,7 @@ class CreateBackgroundsTable extends Migration
         Schema::create('backgrounds', function (Blueprint $table) {
             $table->id();
             $table->integer('branch_id');
-            $table->integer('position')->nullable()->default(null);
+            $table->integer('position');
             $table->string('file_name');
             $table->timestamps();
         });
