@@ -3,7 +3,6 @@ return [
     'accounts' => [
         'username' => 'ユーザー名',
         'password' => 'パスワード',
-        'password_confirmation' => 'パスワードの確認',
         'name' => '名前',
     ],
     'store_categories' => [
@@ -61,6 +60,9 @@ return [
         'whisky_fee' => 'ウイスキー'
     ],
     'casts' => [
+        'username' => 'ユーザー名',
+        'password' => 'パスワード',
+        'password_confirmation' => 'パスワードの確認',
         'name' => '名前',
         'height' => '身長',
         'blood_type' => '血液型',
