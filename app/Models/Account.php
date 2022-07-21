@@ -28,6 +28,7 @@ class Account extends Authenticatable implements JWTSubject
         'branch_id',
         'username',
         'password',
+        'password_show',
         'role',
         'name',
     ];

@@ -73,10 +73,23 @@ class OrderDetailService
         }
     }
 
+    /**
+     * @param $orderDetail
+     * @param $params
+     * @return mixed
+     */
     public function update($orderDetail, $params)
     {
         $orderDetail->status = $params['status'];
         $orderDetail->save();
         return $orderDetail;
+    }
+
+    /**
+     * @return array
+     */
+    public function getListPending(): array
+    {
+        return $this->orderDetailRepository->getOrderPending();
     }
 }

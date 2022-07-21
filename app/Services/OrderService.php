@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Repositories\OrderDetailRepository;
 use App\Repositories\OrderRepository;
 
 class OrderService
@@ -12,29 +11,14 @@ class OrderService
      */
     protected $orderRepository;
 
-    /**
-     * @var
-     */
-    protected $orderDetailRepository;
 
     /**
      * @param OrderRepository $orderRepository
-     * @param OrderDetailRepository $orderDetailRepository
      */
     public function __construct(
-        OrderRepository $orderRepository,
-        OrderDetailRepository $orderDetailRepository
+        OrderRepository $orderRepository
     ) {
         $this->orderRepository = $orderRepository;
-        $this->orderDetailRepository = $orderDetailRepository;
-    }
-
-    /**
-     * @return array
-     */
-    public function getListPending(): array
-    {
-        return $this->orderDetailRepository->getOrderPending();
     }
 
     /**

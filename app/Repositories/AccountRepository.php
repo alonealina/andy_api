@@ -15,6 +15,9 @@ class AccountRepository extends BaseRepository
         return Account::class;
     }
 
+    /**
+     * @return mixed
+     */
     public function getList()
     {
         return $this->model->belongsToBranch()

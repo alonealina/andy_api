@@ -57,10 +57,11 @@ class OrderDetailController extends Controller
     }
 
     /**
+     * @param UpdateOrderDetailRequest $request
      * @param OrderDetail $orderDetail
      * @return JsonResponse
      */
-    public function update(UpdateOrderDetailRequest $request, OrderDetail $orderDetail)
+    public function update(UpdateOrderDetailRequest $request, OrderDetail $orderDetail): JsonResponse
     {
         if ($record = $this->orderDetailService->update($orderDetail, $request->validated())) {
             return response()->json([
@@ -71,5 +72,16 @@ class OrderDetailController extends Controller
         return response()->json([
             'message' => MessageStatus::ERROR
         ], 400);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function getListPending(): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->orderDetailService->getListPending()
+        ]);
     }
 }

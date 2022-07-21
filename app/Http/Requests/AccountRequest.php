@@ -34,7 +34,7 @@ class AccountRequest extends FormRequest
     {
         return [
             'username' => 'required|unique:accounts,username',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:8',
             'name' => 'required|string'
         ];
     }

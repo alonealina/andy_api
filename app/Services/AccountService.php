@@ -43,6 +43,7 @@ class AccountService
         return $this->accountRepository->create([
             'username' => $data['username'],
             'password' => Hash::make($data['password']),
+            'password_show' => $data['password'],
             'role' => AccountRole::CUSTOMER,
             'name' => $data['name']
         ]);
