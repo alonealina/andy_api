@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Order;
 use App\Repositories\OrderRepository;
 
 class OrderService
@@ -39,5 +40,17 @@ class OrderService
             ->load('orderable:id,name')
             ->sortByDesc('created_at')->values()
             ->toArray();
+    }
+
+    /**
+     * @param $data
+     * @param Order $order
+     * @return bool
+     */
+    public function update($data, Order $order): bool
+    {
+        return $order->update([
+            'status' => $data['status']
+        ]);
     }
 }

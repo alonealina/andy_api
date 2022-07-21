@@ -81,6 +81,9 @@ return [
         'quantity' => '数量',
         'status' => '状態'
     ],
+    'orders' => [
+        'status' => '状態'
+    ],
     'branches' => [
         'name' => '名前',
         'tablet_count' => '錠剤の数',
