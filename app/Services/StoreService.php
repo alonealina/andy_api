@@ -95,29 +95,4 @@ class StoreService
             return null;
         }
     }
-
-    /**
-     * Get system information
-     *
-     * @param Store $store
-     * @return mixed
-     */
-    public function getSystemInformation(Store $store)
-    {
-        return $store->systemInformation->toArray();
-    }
-
-    /**
-     * Update system information
-     *
-     * @param $data
-     * @param Store $store
-     * @return mixed
-     */
-    public function updateSystemInformation($data, Store $store)
-    {
-        $this->checkBranch($store);
-        $store->systemInformation()->update($data);
-        return $store->systemInformation->toArray();
-    }
 }

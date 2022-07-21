@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\AccountController;
 use App\Http\Controllers\Api\V1\FoodCategoryController;
 use App\Http\Controllers\Api\V1\BackgroundController;
+use App\Http\Controllers\Api\V1\SystemInformationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,16 +54,19 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         });
     });
 
-    Route::prefix('stores')->group(function () {
+    Route::prefix('stores')->middleware('role:ADMIN,CUSTOMER')->group(function () {
         Route::get('/', [StoreController::class, 'index']);
         Route::get('/{store}', [StoreController::class, 'show']);
-        Route::get('/{store}/system-information', [StoreController::class, 'getSystemInformation']);
         Route::middleware('role:ADMIN')->group(function () {
             Route::post('/', [StoreController::class, 'store']);
             Route::post('/{store}', [StoreController::class, 'update']);
             Route::post('/{store}/delete', [StoreController::class, 'destroy']);
-            Route::post('/{store}/system-information', [StoreController::class, 'updateSystemInformation']);
         });
+    });
+
+    Route::prefix('system-information')->middleware('role:ADMIN,CUSTOMER')->group(function () {
+        Route::get('/', [SystemInformationController::class, 'getSystemInformation']);
+        Route::post('/', [SystemInformationController::class, 'updateSystemInformation'])->middleware('role:ADMIN');
     });
 
     Route::prefix('foods')->middleware('role:ADMIN,CUSTOMER')->group(function () {

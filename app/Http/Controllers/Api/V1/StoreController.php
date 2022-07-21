@@ -113,38 +113,4 @@ class StoreController extends Controller
             'message' => MessageStatus::ERROR
         ], 400);
     }
-
-    /**
-     * Get system information
-     *
-     * @param Store $store
-     * @return JsonResponse
-     */
-    public function getSystemInformation(Store $store): JsonResponse
-    {
-        return response()->json([
-            'message' => MessageStatus::SUCCESS,
-            'data' => $this->storeService->getSystemInformation($store),
-        ]);
-    }
-
-    /**
-     * Update system information
-     *
-     * @param SystemInformationRequest $request
-     * @param Store $store
-     * @return JsonResponse
-     */
-    public function updateSystemInformation(SystemInformationRequest $request, Store $store): JsonResponse
-    {
-        if ($updateRecord = $this->storeService->updateSystemInformation($request->validated(), $store)) {
-            return response()->json([
-                'message' => MessageStatus::SUCCESS,
-                'data' => $updateRecord
-            ]);
-        }
-        return response()->json([
-            'message' => MessageStatus::ERROR
-        ], 400);
-    }
 }
