@@ -59,4 +59,12 @@ class Food extends Model
     {
         return $this->morphMany(OrderDetail::class, 'orderable');
     }
+
+    /**
+     * @return BelongsTo
+     */
+    public function foodCategory()
+    {
+        return $this->belongsTo(FoodCategory::class);
+    }
 }
