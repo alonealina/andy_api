@@ -117,9 +117,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         });
     });
 
-    Route::prefix('orders')->group(function () {
-        Route::get('/', [OrderController::class, 'index']);
-        Route::get('/history', [OrderController::class, 'getHistory']);
+    Route::prefix('orders')->middleware('role:ADMIN,CUSTOMER')->group(function () {
+        Route::get('/history', [OrderController::class, 'getHistory'])->middleware('role:CUSTOMER');
+        Route::middleware('role:ADMIN')->group(function () {
+            Route::get('/', [OrderController::class, 'index']);
+            Route::post('/{order}', [OrderController::class, 'update']);
+        });
     });
 
     Route::prefix('order-details')->group(function () {

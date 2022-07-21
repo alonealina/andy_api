@@ -2,12 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\OrderDetailStatus;
+use App\Enums\OrderStatus;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateOrderDetailRequest extends FormRequest
+class UpdateOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class UpdateOrderDetailRequest extends FormRequest
      */
     public function attributes()
     {
-        return __('attributes.order_details');
+        return __('attributes.orders');
     }
 
     /**
@@ -35,7 +35,7 @@ class UpdateOrderDetailRequest extends FormRequest
     public function rules()
     {
         return [
-            'status' => 'required|in:' . implode(',', OrderDetailStatus::getValues()),
+            'status' => 'required|in:' . implode(',', OrderStatus::getValues()),
         ];
     }
 }
