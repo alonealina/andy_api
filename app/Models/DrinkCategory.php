@@ -7,13 +7,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DrinkCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
+    protected $fillable = [
+        'name',
+        'parent_id'
+    ];
 
     protected $hidden = [
-        'parent_id',
         'deleted_at',
         'created_at',
         'updated_at'
@@ -44,11 +49,14 @@ class DrinkCategory extends Model
     }
 
     /**
-     * @return DrinkCategory|Collection
+     * @return array|mixed
      */
     public function getAllDrinkCategory()
     {
-        return $this->isParent() ? $this->childs()->get() : $this;
+        $record = $this->isParent() ? $this->childs() : $this;
+        return $record->with(['drinks' => function ($query) {
+            $query->belongsToBranch();
+        }])->get()->toArray();
     }
 
     /**
@@ -56,6 +64,6 @@ class DrinkCategory extends Model
      */
     public function drinks(): HasMany
     {
-        return $this->hasMany(Drink::class)->orderBy('category_child');
+        return $this->hasMany(Drink::class);
     }
 }

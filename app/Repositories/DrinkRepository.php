@@ -20,18 +20,13 @@ class DrinkRepository extends BaseRepository
     /**
      * @return mixed
      */
-    public function getList($params)
+    public function getList()
     {
-        $dataReturn = $this->model->belongsToBranch()
+        return $this->model->belongsToBranch()
             ->when(Auth::user()->role->is(AccountRole::CUSTOMER), function ($query) {
                 $query->where('status', InventoryStatus::ON_SALE);
             })
-            ->when(isset($params['drink_category_id']), function ($query) use ($params){
-                $query->where('drink_category_id', $params['drink_category_id']);
-            })
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('drink_category_id')
             ->get();
-        return Auth::user()->role->is(AccountRole::CUSTOMER) ? $dataReturn->toArray() :
-            $dataReturn->groupBy('category_child')->toArray();
     }
 }

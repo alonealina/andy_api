@@ -130,7 +130,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
 
     Route::prefix('drink-categories')->group(function () {
         Route::get('/', [DrinkCategoryController::class, 'index']);
+        Route::post('/', [DrinkCategoryController::class, 'store'])->middleware('role:ADMIN');
         Route::get('/{drinkCategory}', [DrinkCategoryController::class, 'show']);
+        Route::post('/{drinkCategory}', [DrinkCategoryController::class, 'update'])->middleware('role:ADMIN');
+        Route::post('/{drinkCategory}/delete', [DrinkCategoryController::class, 'destroy'])->middleware('role:ADMIN');
     });
 
     Route::prefix('branches')->middleware('role:SUPER_ADMIN')->group(function (){

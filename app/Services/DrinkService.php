@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Models\Drink;
+use App\Repositories\DrinkCategoryRepository;
 use App\Repositories\DrinkRepository;
 use App\Traits\SaveImagesUpload;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,11 +19,20 @@ class DrinkService
     protected $drinkRepository;
 
     /**
+     * @var DrinkCategoryRepository
+     */
+    protected $drinkCategoryRepository;
+
+    /**
      * @param DrinkRepository $drinkRepository
      */
-    public function __construct(DrinkRepository $drinkRepository)
+    public function __construct(
+        DrinkRepository $drinkRepository,
+        DrinkCategoryRepository $drinkCategoryRepository
+    )
     {
         $this->drinkRepository = $drinkRepository;
+        $this->drinkCategoryRepository = $drinkCategoryRepository;
     }
 
     /**
@@ -50,7 +59,9 @@ class DrinkService
      */
     public function getList($params)
     {
-        return $this->drinkRepository->getList($params);
+        return isset($params['drink_category_id']) ?
+            $this->drinkCategoryRepository->getAllDrinkOfBranch($params['drink_category_id']) :
+        $this->drinkRepository->getList();
     }
 
     /**
