@@ -31,7 +31,7 @@ class OrderController extends Controller
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => $this->orderService->getList()
+            'data' => $this->orderService->getList($request->all())
         ]);
     }
 }

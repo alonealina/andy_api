@@ -22,10 +22,11 @@ class OrderService
     }
 
     /**
+     * @param $params
      * @return array
      */
-    public function getList(): array
+    public function getList($params): array
     {
-        return $this->orderRepository->getList();
+        return $this->orderRepository->getList($params);
     }
 }
