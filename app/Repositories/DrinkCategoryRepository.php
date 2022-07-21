@@ -18,6 +18,14 @@ class DrinkCategoryRepository extends BaseRepository
     }
 
     /**
+     * @return array
+     */
+    public function getListParent()
+    {
+        return $this->where('parent_id', null)->get()->toArray();
+    }
+
+    /**
      * @param $id
      * @return mixed
      */

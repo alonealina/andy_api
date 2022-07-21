@@ -113,4 +113,13 @@ class DrinkService
     {
         return Storage::disk()->files('upload-files/images/default/drinks');
     }
+
+    /**
+     * @param Drink $drink
+     * @return array
+     */
+    public function show(Drink $drink): array
+    {
+        return $drink->load('drinkCategory.parent')->toArray();
+    }
 }
