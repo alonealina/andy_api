@@ -20,9 +20,9 @@ class DrinkCategoryService
     /**
      * @return array
      */
-    public function getList(): array
+    public function getList()
     {
-        return $this->drinkCategoryRepository->getAll()->toArray();
+        return $this->drinkCategoryRepository->getListParent();
     }
 
     /**
@@ -53,5 +53,14 @@ class DrinkCategoryService
     {
         $drinkCategory->delete();
         return $drinkCategory;
+    }
+
+    /**
+     * @param DrinkCategory $drinkCategory
+     * @return DrinkCategory|mixed
+     */
+    public function show(DrinkCategory $drinkCategory)
+    {
+        return $drinkCategory->load('childs')->toArray();
     }
 }
