@@ -176,4 +176,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::get('/total', [TurnoverController::class, 'getTurnoverTotal']);
         Route::get('/detail', [TurnoverController::class, 'getTurnoverDetail']);
     });
+
+    Route::post('/sos', [AccountController::class, 'callSOS'])->middleware('role:CUSTOMER');
 });

@@ -4,9 +4,6 @@ namespace App\Services;
 
 use App\Models\News;
 use App\Repositories\NewsRepository;
-use App\Traits\SaveImagesUpload;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class NewsService
 {
