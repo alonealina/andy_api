@@ -164,4 +164,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::get('/', [BackgroundController::class, 'index']);
         Route::post('/', [BackgroundController::class, 'store'])->middleware('role:ADMIN');
     });
+
+    Route::post('/sos', [AccountController::class, 'callSOS'])->middleware('role:CUSTOMER');
 });
