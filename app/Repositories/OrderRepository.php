@@ -76,14 +76,14 @@ class OrderRepository extends BaseRepository
     public function getTurnoverDetailByDay()
     {
         return $this->model
-            ->selectRaw('count(id) as count, DATE_FORMAT(created_at, "%d/%m") as day, SUM(total_amount) as total_amount')
+            ->selectRaw('DATE_FORMAT(created_at, "%d/%m") as x_value, SUM(total_amount) as total_amount, count(id) as count')
             ->whereHas('account', function ($query) {
                 $query->where('branch_id', Auth::user()->branch_id);
             })
             ->whereStatus(OrderStatus::PAID)
             ->whereRaw('YEAR(created_at) = YEAR(CURRENT_DATE()) AND MONTH(created_at) = MONTH(CURRENT_DATE())')
             ->groupByRaw('DATE_FORMAT(created_at, "%d/%m")')
-            ->get()->keyBy('day')
+            ->get()
             ->toArray();
     }
 
@@ -93,14 +93,14 @@ class OrderRepository extends BaseRepository
     public function getTurnoverDetailByMonth()
     {
         return $this->model
-            ->selectRaw('count(id) as count, DATE_FORMAT(created_at, "%m") as month, SUM(total_amount) as total_amount')
+            ->selectRaw('DATE_FORMAT(created_at, "%m") as x_value, SUM(total_amount) as total_amount, count(id) as count')
             ->whereHas('account', function ($query) {
                 $query->where('branch_id', Auth::user()->branch_id);
             })
             ->whereStatus(OrderStatus::PAID)
             ->whereRaw('YEAR(created_at) = YEAR(CURRENT_DATE())')
             ->groupByRaw('DATE_FORMAT(created_at, "%m")')
-            ->get()->keyBy('month')
+            ->get()
             ->toArray();
     }
 
@@ -110,13 +110,13 @@ class OrderRepository extends BaseRepository
     public function getTurnoverDetailByYear()
     {
         return $this->model
-            ->selectRaw('count(id) as count, DATE_FORMAT(created_at, "%Y") as year, SUM(total_amount) as total_amount')
+            ->selectRaw('DATE_FORMAT(created_at, "%Y") as x_value, SUM(total_amount) as total_amount, count(id) as count')
             ->whereHas('account', function ($query) {
                 $query->where('branch_id', Auth::user()->branch_id);
             })
             ->whereStatus(OrderStatus::PAID)
             ->groupByRaw('DATE_FORMAT(created_at, "%Y")')
-            ->get()->keyBy('year')
+            ->get()
             ->toArray();
     }
 }
