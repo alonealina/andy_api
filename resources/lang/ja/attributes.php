@@ -101,5 +101,8 @@ return [
     'backgrounds' => [
         'position' => '位置',
         'file' => '画像'
+    ],
+    'turnover_details' => [
+        'type' => 'タイプ',
     ]
 ];
