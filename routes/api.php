@@ -156,8 +156,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::post('/{branch}/delete', [BranchController::class, 'destroy']);
     });
 
-    Route::prefix('food-categories')->group(function () {
-        Route::post('/', [FoodCategoryController::class, 'store'])->middleware('role:ADMIN');
+    Route::prefix('food-categories')->middleware('role:ADMIN,CUSTOMER')->group(function () {
+        Route::get('/', [FoodCategoryController::class, 'index']);
+        Route::get('/{foodCategory}', [FoodCategoryController::class, 'show']);
+        Route::middleware('role:ADMIN')->group(function () {
+            Route::post('/', [FoodCategoryController::class, 'store']);
+            Route::post('/{foodCategory}', [FoodCategoryController::class, 'update']);
+            Route::post('/{foodCategory}/delete', [FoodCategoryController::class, 'destroy']);
+        });
     });
 
     Route::prefix('backgrounds')->middleware('role:ADMIN,CUSTOMER')->group(function () {

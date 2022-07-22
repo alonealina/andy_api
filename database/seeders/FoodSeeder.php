@@ -20,9 +20,9 @@ class FoodSeeder extends Seeder
         Food::truncate();
         $faker = Factory::create();
         $branchIds = Branch::pluck('id')->toArray();
-        $categoriesId = FoodCategory::pluck('id')->toArray();
         foreach ($branchIds as $branchId) {
-            for ($i=0; $i<50;$i++) {
+            $categoriesId = FoodCategory::where('branch_id', $branchId)->pluck('id')->toArray();
+            for ($i=0; $i<150;$i++) {
                 Food::create([
                     'branch_id' => $branchId,
                     'food_category_id' => $categoriesId[array_rand($categoriesId)],

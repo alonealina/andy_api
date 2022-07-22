@@ -35,6 +35,7 @@ class FoodRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'food_category_id' => 'required|exists:food_categories,id',
             'name' => 'required',
             'price' => 'required|numeric',
             'description' => 'string|nullable',

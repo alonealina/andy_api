@@ -22,6 +22,7 @@ class Food extends Model
      */
     protected $fillable = [
         'branch_id',
+        'food_category_id',
         'name',
         'price',
         'description',
