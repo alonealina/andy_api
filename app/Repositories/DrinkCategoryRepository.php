@@ -22,7 +22,7 @@ class DrinkCategoryRepository extends BaseRepository
      */
     public function getListParent()
     {
-        return $this->where('parent_id', null)->get()->toArray();
+        return $this->model->belongsToBranch()->where('parent_id', null)->get()->toArray();
     }
 
     /**

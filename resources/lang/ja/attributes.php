@@ -27,13 +27,14 @@ return [
         'image' => '画像'
     ],
     'foods' => [
+        'food_category_id' => 'カテゴリー',
         'name' => '名前',
         'price' => '価格',
         'image' => '画像',
         'description' => '説明'
     ],
     'drinks' => [
-        'type' => 'タイプ',
+        'drink_category_id' => 'カテゴリー',
         'name' => '名前',
         'price' => '価格',
         'image' => '画像',
@@ -100,5 +101,8 @@ return [
     'backgrounds' => [
         'position' => '位置',
         'file' => '画像'
+    ],
+    'turnover_details' => [
+        'type' => 'タイプ',
     ]
 ];

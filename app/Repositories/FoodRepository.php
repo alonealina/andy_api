@@ -21,9 +21,12 @@ class FoodRepository extends BaseRepository
     /**
      * @return mixed
      */
-    public function getList()
+    public function getList($params)
     {
         return $this->model->belongsToBranch()
+            ->when(isset($params['food_category_id']), function ($query) use ($params){
+                $query->where('food_category_id', $params['food_category_id']);
+            })
             ->when(Auth::user()->role->is(AccountRole::CUSTOMER), function ($query) {
                 $query->where('status', InventoryStatus::ON_SALE);
             })

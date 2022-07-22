@@ -4,9 +4,12 @@ namespace App\Services;
 
 use App\Models\DrinkCategory;
 use App\Repositories\DrinkCategoryRepository;
+use App\Traits\CheckBranch;
 
 class DrinkCategoryService
 {
+    use CheckBranch;
+
     protected $drinkCategoryRepository;
 
     /**
@@ -20,7 +23,7 @@ class DrinkCategoryService
     /**
      * @return array
      */
-    public function getList()
+    public function getList(): array
     {
         return $this->drinkCategoryRepository->getListParent();
     }
@@ -30,8 +33,9 @@ class DrinkCategoryService
      * @param DrinkCategory $drinkCategory
      * @return DrinkCategory
      */
-    public function update($params, DrinkCategory $drinkCategory)
+    public function update($params, DrinkCategory $drinkCategory): DrinkCategory
     {
+        $this->checkBranch($drinkCategory);
         $drinkCategory->update($params);
         return $drinkCategory;
     }
@@ -51,6 +55,7 @@ class DrinkCategoryService
      */
     public function delete(DrinkCategory $drinkCategory): DrinkCategory
     {
+        $this->checkBranch($drinkCategory);
         $drinkCategory->delete();
         return $drinkCategory;
     }

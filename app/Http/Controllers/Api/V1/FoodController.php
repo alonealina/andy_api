@@ -8,6 +8,7 @@ use App\Http\Requests\FoodRequest;
 use App\Models\Food;
 use App\Services\FoodService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class FoodController extends Controller
 {
@@ -31,11 +32,11 @@ class FoodController extends Controller
      *
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => $this->foodService->getList(),
+            'data' => $this->foodService->getList($request->all()),
         ]);
     }
 

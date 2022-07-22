@@ -17,6 +17,7 @@ class OrderSeeder extends Seeder
      */
     public function run()
     {
+//        \App\Models\Order::factory(100000)->create();
         $accountIds = Account::where('role', AccountRole::CUSTOMER)->pluck('id')->toArray();
         foreach ($accountIds as $accountId) {
             Order::create([
