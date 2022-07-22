@@ -100,4 +100,15 @@ class AccountController extends Controller
             'message' => MessageStatus::ERROR
         ], 400);
     }
+
+    /**
+     * @return JsonResponse
+     */
+    public function callSOS(): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->accountService->messageSOS()
+        ]);
+    }
 }

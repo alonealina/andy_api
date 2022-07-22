@@ -3,11 +3,17 @@
 namespace App\Services;
 
 use App\Enums\AccountRole;
+use App\Enums\NotificationType;
+use App\Events\CreateNotification;
 use App\Models\Account;
 use App\Repositories\AccountRepository;
+use App\Repositories\NotificationRepository;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AccountService
 {
@@ -17,13 +23,21 @@ class AccountService
     protected $accountRepository;
 
     /**
-     * Construct function
-     *
-     * @param AccountRepository $accountRepository
+     * @var NotificationRepository
      */
-    public function __construct(AccountRepository $accountRepository)
+    protected $notificationRepository;
+
+    /**
+     * @param AccountRepository $accountRepository
+     * @param NotificationRepository $notificationRepository
+     */
+    public function __construct(
+        AccountRepository $accountRepository,
+        NotificationRepository $notificationRepository
+    )
     {
         $this->accountRepository = $accountRepository;
+        $this->notificationRepository = $notificationRepository;
     }
 
     /**
@@ -68,5 +82,21 @@ class AccountService
     {
         $account->delete();
         return $account;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function messageSOS()
+    {
+        event(new CreateNotification(NotificationType::SOS));
+        return $this->notificationRepository->create([
+            'id' => Str::uuid(),
+            'account_id' => Auth::user()->getAdminBranch()->id,
+            'type' => NotificationType::SOS,
+            'notifiable_type' => Account::class,
+            'notifiable_id' => Auth::user()->id,
+            'data' => __('messages.notification')[NotificationType::SOS]
+        ]);
     }
 }
