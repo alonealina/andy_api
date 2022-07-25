@@ -43,7 +43,6 @@ return [
     'news' => [
         'title' => '題名',
         'content' => 'コンテンツ',
-        'news_time' => 'ニュースタイム',
     ],
     'information' => [
         'title' => '題名',
