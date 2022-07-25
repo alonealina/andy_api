@@ -26,7 +26,6 @@ class NewsSeeder extends Seeder
                     'branch_id' => $branchId,
                     'title' => $faker->word(),
                     'content' => $faker->text(),
-                    'news_time' => $faker->dateTimeBetween('-1 year', '+1 year'),
                 ]);
             }
         }

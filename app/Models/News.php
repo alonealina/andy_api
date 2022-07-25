@@ -21,7 +21,6 @@ class News extends Model
         'branch_id',
         'title',
         'content',
-        'news_time',
     ];
 
     /**

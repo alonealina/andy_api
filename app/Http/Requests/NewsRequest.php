@@ -36,7 +36,6 @@ class NewsRequest extends FormRequest
         return [
             'title' => 'required|string',
             'content' => 'required|string',
-            'news_time' => 'required|date_format:Y-m-d H:i:s',
         ];
     }
 }
