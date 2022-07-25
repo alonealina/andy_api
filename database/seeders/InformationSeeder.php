@@ -25,6 +25,7 @@ class InformationSeeder extends Seeder
                     'branch_id' => $branchId,
                     'title' => $faker->word(),
                     'content' => $faker->text(),
+                    'time_event' => $faker->time("Y-m-d H-i-s"),
                 ]);
             }
         }

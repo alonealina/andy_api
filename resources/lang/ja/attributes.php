@@ -45,9 +45,10 @@ return [
         'content' => 'コンテンツ',
         'news_time' => 'ニュースタイム',
     ],
-    'informations' => [
+    'information' => [
         'title' => '題名',
         'content' => 'コンテンツ',
+        'time_event' => 'タイムイベント',
         'image' => '画像'
     ],
     'system_information' => [
