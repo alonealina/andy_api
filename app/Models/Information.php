@@ -22,6 +22,7 @@ class Information extends Model
         'branch_id',
         'title',
         'content',
+        'time_event',
     ];
 
     protected $with = [

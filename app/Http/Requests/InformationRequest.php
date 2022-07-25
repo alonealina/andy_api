@@ -28,6 +28,7 @@ class InformationRequest extends FormRequest
         return [
             'title' => 'required|string',
             'content' => 'required|string',
+            'time_event' => 'required|date',
             'images.*' => 'mimes:jpg,jpeg,png|max:5000'
         ];
     }
@@ -37,6 +38,6 @@ class InformationRequest extends FormRequest
      */
     public function attributes()
     {
-        return __('attributes.informations');
+        return __('attributes.information');
     }
 }
