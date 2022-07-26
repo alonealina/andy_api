@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Enums\AccountRole;
+use App\Enums\MaintainRole;
+use App\Enums\MaintainStatus;
 use App\Models\Branch;
 use App\Repositories\AccountRepository;
 use App\Repositories\BranchRepository;
@@ -67,6 +69,7 @@ class BranchService
                 'role' => AccountRole::ADMIN,
                 'name' => "Admin " . $data['name'],
             ]);
+            $this->createManyMaintain($newRecord);
             DB::commit();
             return $newRecord;
         } catch (\Exception $exception) {
@@ -74,6 +77,23 @@ class BranchService
             DB::rollBack();
             return null;
         }
+    }
+
+    /**
+     * @param Branch $branch
+     * @return void
+     */
+    public function createManyMaintain(Branch $branch)
+    {
+        $branch->maintenances()->createMany([
+            [
+                'role' => MaintainRole::ADMIN,
+                'maintain_status' => MaintainStatus::ACTIVE
+            ],[
+                'role' => MaintainRole::USER,
+                'maintain_status' => MaintainStatus::ACTIVE
+            ]
+        ]);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Enums\AccountRole;
 use Illuminate\Support\Facades\Auth;
 
 trait HasBranchId
@@ -37,8 +38,8 @@ trait HasBranchId
     public static function getBranchId(): int
     {
         if (Auth::check()) {
-            return Auth::user()->branch_id;
+            return Auth::user()->role->value == AccountRole::SUPER_ADMIN ? false : Auth::user()->branch_id;
         }
-        return 0;
+        return false;
     }
 }
