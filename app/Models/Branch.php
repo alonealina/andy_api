@@ -80,4 +80,12 @@ class Branch extends Model
     {
         return $this->getAdmin() ? $this->getAdmin()->id : "";
     }
+
+    /**
+     * @return HasMany
+     */
+    public function backgrounds(): HasMany
+    {
+        return $this->hasMany(Background::class);
+    }
 }

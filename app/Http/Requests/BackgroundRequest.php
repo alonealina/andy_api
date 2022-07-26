@@ -37,7 +37,6 @@ class BackgroundRequest extends FormRequest
             'images' => 'array',
             'images.*.file_name' => 'string|nullable',
             'images.*.file' => 'mimes:jpg,jpeg,png|max:5000|nullable',
-            'images.*.position' => 'numeric|min:0|max:6',
         ];
     }
 }

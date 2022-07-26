@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\PositionBackground;
 use App\Models\Branch;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -21,7 +22,9 @@ class BranchRepository extends BaseRepository
      */
     public function getList()
     {
-        return $this->model->orderBy('created_at', 'DESC')
+        return $this->model->with(['backgrounds' => function ($query) {
+            $query->select(['branch_id','file_name'])->where('position', PositionBackground::TOP1);
+        }])
             ->get()->toArray();
     }
 
