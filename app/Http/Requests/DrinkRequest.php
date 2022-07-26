@@ -37,7 +37,7 @@ class DrinkRequest extends FormRequest
         return [
             'drink_category_id' => 'required|exists:drink_categories,id',
             'name' => 'required',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
             'description' => 'nullable',
             'status' => 'in:' . implode(',', InventoryStatus::getValues()),
             'images.*' => 'mimes:jpg,jpeg,png|max:5000'
