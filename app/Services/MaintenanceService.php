@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Repositories\AccountRepository;
 use App\Repositories\MaintenanceRepository;
 
 class MaintenanceService
@@ -13,20 +12,11 @@ class MaintenanceService
     protected $maintenanceRepository;
 
     /**
-     * @var AccountRepository
-     */
-    protected $accountRepository;
-
-    /**
      * @param MaintenanceRepository $maintenanceRepository
-     * @param AccountRepository $accountRepository
      */
-    public function __construct(
-        MaintenanceRepository $maintenanceRepository,
-        AccountRepository $accountRepository
-    ) {
+    public function __construct(MaintenanceRepository $maintenanceRepository)
+    {
         $this->maintenanceRepository = $maintenanceRepository;
-        $this->accountRepository = $accountRepository;
     }
 
     /**
@@ -36,7 +26,7 @@ class MaintenanceService
     public function setMaintain($data)
     {
         return $this->maintenanceRepository
-            ->getRecordMaintain($this->accountRepository->getSuperAdmin()->id)->update($data);
+            ->getRecordMaintain()->update($data);
     }
 
     /**
@@ -44,7 +34,6 @@ class MaintenanceService
      */
     public function getMaintainStatus()
     {
-        return $this->maintenanceRepository
-            ->getRecordMaintain($this->accountRepository->getSuperAdmin()->id);
+        return $this->maintenanceRepository->getRecordMaintain();
     }
 }

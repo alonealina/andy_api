@@ -106,6 +106,10 @@ return [
         'type' => 'タイプ',
     ],
     'maintain' => [
-        'maintain_status' => '状態'
+        'branch_id' => 'ブランチ',
+        'role' => '役割',
+        'maintain_status' => '状態',
+        'start_time' => '始める時間',
+        'end_time' => '終了時間',
     ]
 ];

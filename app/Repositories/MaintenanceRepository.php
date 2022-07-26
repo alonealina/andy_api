@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Maintenance;
+use Illuminate\Support\Facades\Auth;
 
 class MaintenanceRepository extends BaseRepository
 {
@@ -18,8 +19,12 @@ class MaintenanceRepository extends BaseRepository
     /**
      * @return mixed
      */
-    public function getRecordMaintain($superAdminId)
+    public function getRecordMaintain()
     {
-        return $this->model->where('account_id', $superAdminId)->first();
+        $currentUser = Auth::user();
+        return $this->model->where([
+            'branch_id' => $currentUser->branch_id,
+            'role' => $currentUser->maintain_role
+        ])->first();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\AccountRole;
+use App\Enums\MaintainRole;
 use App\Traits\CommonScopeModel;
 use App\Traits\HasBranchId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -100,5 +101,13 @@ class Account extends Authenticatable implements JWTSubject
     public function getAdminBranch()
     {
         return $this->branch->getAdmin();
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaintainRoleAttribute(): int
+    {
+        return $this->role->value == AccountRole::ADMIN ? MaintainRole::ADMIN : MaintainRole::USER;
     }
 }

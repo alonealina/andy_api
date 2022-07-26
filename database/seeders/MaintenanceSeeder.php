@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Enums\AccountRole;
+use App\Enums\MaintainRole;
 use App\Enums\MaintainStatus;
-use App\Models\Account;
+use App\Models\Branch;
 use App\Models\Maintenance;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class MaintenanceSeeder extends Seeder
 {
@@ -17,10 +18,19 @@ class MaintenanceSeeder extends Seeder
      */
     public function run()
     {
-        $superAdmin = Account::where('role', AccountRole::SUPER_ADMIN)->first();
-        Maintenance::create([
-            'account_id' => $superAdmin->id,
-            'maintain_status' => MaintainStatus::ACTIVE
-        ]);
+        DB::table('maintenances')->truncate();
+        $branchIds = Branch::pluck('id')->toArray();
+        foreach ($branchIds as $branchId) {
+            Maintenance::create([
+                'branch_id' => $branchId,
+                'role' => MaintainRole::ADMIN,
+                'maintain_status' => MaintainStatus::ACTIVE
+            ]);
+            Maintenance::create([
+                'branch_id' => $branchId,
+                'role' => MaintainRole::USER,
+                'maintain_status' => MaintainStatus::ACTIVE
+            ]);
+        }
     }
 }
