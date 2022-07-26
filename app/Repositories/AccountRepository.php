@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\AccountRole;
 use App\Models\Account;
 
 class AccountRepository extends BaseRepository
@@ -23,5 +24,13 @@ class AccountRepository extends BaseRepository
         return $this->model->belongsToBranch()
             ->orderBy('created_at', 'DESC')
             ->get()->toArray();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSuperAdmin()
+    {
+        return $this->model->where('role', AccountRole::SUPER_ADMIN)->first();
     }
 }

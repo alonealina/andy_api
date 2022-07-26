@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\V1\FoodCategoryController;
 use App\Http\Controllers\Api\V1\BackgroundController;
 use App\Http\Controllers\Api\V1\SystemInformationController;
 use App\Http\Controllers\Api\V1\TurnoverController;
+use App\Http\Controllers\Api\V1\MaintenanceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,10 +37,12 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/refresh', [AuthController::class, 'refresh']);
         Route::get('/user-profile', [AuthController::class, 'userProfile']);
+        Route::post('/maintain', [MaintenanceController::class, 'setMaintain'])->middleware('role:SUPER_ADMIN');
+        Route::get('/maintain', [MaintenanceController::class, 'getMaintain']);
     });
 });
 
-Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDataNotFound'], function () {
+Route::group(['middleware' => ['auth','check_maintain'], 'prefix' => 'v1', 'missing' => 'responseDataNotFound'], function () {
     Route::prefix('store-categories')->group(function () {
         Route::get('/', [StoreCategoryController::class, 'index']);
         Route::post('/', [StoreCategoryController::class, 'store'])->middleware('role:ADMIN');

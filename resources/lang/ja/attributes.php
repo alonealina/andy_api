@@ -104,5 +104,8 @@ return [
     ],
     'turnover_details' => [
         'type' => 'タイプ',
+    ],
+    'maintain' => [
+        'maintain_status' => '状態'
     ]
 ];
