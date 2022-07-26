@@ -37,7 +37,7 @@ class FoodRequest extends FormRequest
         return [
             'food_category_id' => 'required|exists:food_categories,id',
             'name' => 'required',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
             'description' => 'string|nullable',
             'status' => 'in:' . implode(',', InventoryStatus::getValues()),
             'images.*' => 'mimes:jpg,jpeg,png|max:5000'
