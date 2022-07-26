@@ -7,6 +7,8 @@ use App\Models\Branch;
 use App\Repositories\AccountRepository;
 use App\Repositories\BranchRepository;
 use App\Traits\SaveImagesUpload;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -129,5 +131,24 @@ class BranchService
             DB::rollBack();
             return null;
         }
+    }
+
+    /**
+     * @return Builder[]|Collection
+     */
+    public function getMaintain()
+    {
+        return $this->branchRepository->getMaintain();
+    }
+
+    /**
+     * @param $data
+     * @param Branch $branch
+     * @return int
+     */
+    public function setMaintainBranch($data, Branch $branch): int
+    {
+        return $branch->maintenances()->where('role', $data['role'])
+            ->update($data);
     }
 }

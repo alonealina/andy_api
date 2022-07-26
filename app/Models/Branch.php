@@ -48,6 +48,14 @@ class Branch extends Model
     }
 
     /**
+     * @return HasMany
+     */
+    public function maintenances(): HasMany
+    {
+        return $this->hasMany(Maintenance::class);
+    }
+
+    /**
      * Get Admin
      *
      * @return Model|HasMany|object|null

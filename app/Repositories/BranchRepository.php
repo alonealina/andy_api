@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Branch;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class BranchRepository extends BaseRepository
 {
@@ -21,5 +23,18 @@ class BranchRepository extends BaseRepository
     {
         return $this->model->orderBy('created_at', 'DESC')
             ->get()->toArray();
+    }
+
+    /**
+     * @return Builder[]|Collection
+     */
+    public function getMaintain()
+    {
+        return $this->model->with('maintenances:branch_id,role,maintain_status,start_time,end_time')
+            ->select(['id', 'name'])
+            ->get()->map(function ($item) {
+            $item->maintain = $item->maintenances->keyBy('role')->toArray();
+            return $item;
+        });
     }
 }

@@ -13,7 +13,8 @@ class Maintenance extends Model
      * @var string[]
      */
     protected $fillable = [
-        'account_id',
+        'branch_id',
+        'role',
         'maintain_status',
         'start_time',
         'end_time',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BranchRequest;
+use App\Http\Requests\MaintainBranchRequest;
 use App\Http\Requests\UpdateBranchRequest;
 use App\Models\Branch;
 use App\Services\BranchService;
@@ -92,6 +93,35 @@ class BranchController extends Controller
     public function destroy(Branch $branch): JsonResponse
     {
         if ($record = $this->branchService->delete($branch)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $record
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function getMaintain(): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->branchService->getMaintain()
+        ]);
+    }
+
+    /**
+     * @param MaintainBranchRequest $request
+     * @param Branch $branch
+     * @return JsonResponse
+     */
+    public function setMaintainBranch(MaintainBranchRequest $request, Branch $branch): JsonResponse
+    {
+        if ($record = $this->branchService->setMaintainBranch($request->validated(), $branch)) {
             return response()->json([
                 'message' => MessageStatus::SUCCESS,
                 'data' => $record
