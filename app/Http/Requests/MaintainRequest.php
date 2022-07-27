@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\MaintainRole;
 use App\Enums\MaintainStatus;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Translation\Translator;
@@ -35,6 +36,9 @@ class MaintainRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'branch_ids' => 'required|array',
+            'branch_ids.*' => 'required|exists:branches,id',
+            'role' => 'required|in:' . implode(',', MaintainRole::getValues()),
             'maintain_status' => 'required|in:' . implode(',', MaintainStatus::getValues()),
             'start_time' => 'required_if:maintain_status,==,' . MaintainStatus::MAINTAIN . '|date_format:Y-m-d H:i',
             'end_time' => 'required_if:maintain_status,==,' . MaintainStatus::MAINTAIN . '|date_format:Y-m-d H:i',

@@ -6,6 +6,7 @@ use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BranchRequest;
 use App\Http\Requests\MaintainBranchRequest;
+use App\Http\Requests\MaintainRequest;
 use App\Http\Requests\UpdateBranchRequest;
 use App\Models\Branch;
 use App\Services\BranchService;
@@ -122,6 +123,24 @@ class BranchController extends Controller
     public function setMaintainBranch(MaintainBranchRequest $request, Branch $branch): JsonResponse
     {
         if ($record = $this->branchService->setMaintainBranch($request->validated(), $branch)) {
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $record
+            ]);
+        }
+        return response()->json([
+            'message' => MessageStatus::ERROR
+        ], 400);
+    }
+
+
+    /**
+     * @param MaintainRequest $request
+     * @return JsonResponse
+     */
+    public function setMaintain(MaintainRequest $request): JsonResponse
+    {
+        if ($record = $this->branchService->setMaintain($request->validated())) {
             return response()->json([
                 'message' => MessageStatus::SUCCESS,
                 'data' => $record
