@@ -5,15 +5,19 @@ namespace App\Services;
 use App\Enums\AccountRole;
 use App\Enums\MaintainRole;
 use App\Enums\MaintainStatus;
+use App\Enums\PositionBackground;
 use App\Models\Branch;
 use App\Repositories\AccountRepository;
+use App\Repositories\BackgroundRepository;
 use App\Repositories\BranchRepository;
 use App\Repositories\MaintenanceRepository;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class BranchService
 {
@@ -35,20 +39,26 @@ class BranchService
     protected $maintenanceRepository;
 
     /**
-     * Construct function
-     *
+     * @var BackgroundRepository
+     */
+    protected $backgroundRepository;
+
+    /**
      * @param BranchRepository $branchRepository
      * @param AccountRepository $accountRepository
      * @param MaintenanceRepository $maintenanceRepository
+     * @param BackgroundRepository $backgroundRepository
      */
     public function __construct(
         BranchRepository $branchRepository,
         AccountRepository $accountRepository,
-        MaintenanceRepository $maintenanceRepository
+        MaintenanceRepository $maintenanceRepository,
+        BackgroundRepository $backgroundRepository
     ) {
         $this->branchRepository = $branchRepository;
         $this->accountRepository = $accountRepository;
         $this->maintenanceRepository = $maintenanceRepository;
+        $this->backgroundRepository = $backgroundRepository;
     }
 
     /**
@@ -70,7 +80,8 @@ class BranchService
         DB::beginTransaction();
         try {
             $newRecord = $this->branchRepository->store($data);
-            $newRecord->images()->createMany($this->storeImages($data));
+            $this->backgroundRepository->create($this->
+            saveImagesToDisk(PositionBackground::TOP1, $data['images'][0], $newRecord));
             $this->accountRepository->create([
                 'branch_id' => $newRecord->id,
                 'username' => $data['admin_id'],
@@ -89,6 +100,24 @@ class BranchService
     }
 
     /**
+     * @param $position
+     * @param UploadedFile $file
+     * @param $record
+     * @return array
+     */
+    public function saveImagesToDisk($position, UploadedFile $file, $record): array
+    {
+        $path = Storage::disk()->put(IMAGES_PATH, $file);
+        $fileName = explode("/", $path)[2];
+        return [
+            'branch_id' => $record->id,
+            'file_name' => $fileName,
+            'position' => $position,
+            'role_background' => AccountRole::SUPER_ADMIN,
+        ];
+    }
+
+    /**
      * @param Branch $branch
      * @return void
      */
@@ -98,7 +127,8 @@ class BranchService
             [
                 'role' => MaintainRole::ADMIN,
                 'maintain_status' => MaintainStatus::ACTIVE
-            ],[
+            ],
+            [
                 'role' => MaintainRole::USER,
                 'maintain_status' => MaintainStatus::ACTIVE
             ]
@@ -114,8 +144,11 @@ class BranchService
     {
         DB::beginTransaction();
         try {
+            $oldImages = $this->backgroundRepository->where('role_background',
+                AccountRole::SUPER_ADMIN)->first();
             $branch->update($data);
-            $this->updateImage($data, $branch);
+            Storage::disk()->delete(IMAGES_PATH . '/' . $oldImages['file_name']);
+            $oldImages->update($this->saveImagesToDisk(PositionBackground::TOP1, $data['images'][0], $branch));
             $branch->getAdmin()->update([
                 'username' => $data['admin_id'],
                 'password' => Hash::make($data['admin_password']),
@@ -136,7 +169,9 @@ class BranchService
      */
     public function updateImage($data, $branch)
     {
-        if (isset($data['images']) && is_string($data['images'][0])) return;
+        if (isset($data['images']) && is_string($data['images'][0])) {
+            return;
+        }
         $this->deleteImages($branch);
         if (isset($data['images'])) {
             $branch->images()->createMany($this->storeImages($data));

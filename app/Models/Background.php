@@ -16,13 +16,15 @@ class Background extends Model
     protected $fillable = [
         'branch_id',
         'position',
-        'file_name'
+        'file_name',
+        'role_background'
     ];
 
     protected $visible = [
         'id',
         'branch_id',
         'position',
+        'role_background',
         'file_name',
         'file_url'
     ];

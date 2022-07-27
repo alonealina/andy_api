@@ -2,8 +2,11 @@
 
 namespace App\Services;
 
+use App\Enums\AccountRole;
+use App\Enums\PositionBackground;
 use App\Repositories\BackgroundRepository;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class BackgroundService
@@ -28,28 +31,14 @@ class BackgroundService
 
     /**
      * @param $data
-     * @return bool
+     * @return bool|null
      */
-    public function store($data): bool
+    public function store($data): ?bool
     {
-        $oldImages = $this->backgroundRepository->getOldImages();
-        if (empty($data['images'])) {
-            $this->deleteImages($oldImages);
-            return true;
+        if (Auth::user()->role->value == AccountRole::ADMIN) {
+            return $this->handleImagesAdmin($data);
         }
-        $saveImages = [];
-        foreach ($data['images'] as $newImage) {
-            $record = $oldImages->where('file_name', $newImage['file_name'])->first();
-            if (!empty($record)) {
-                $record->position = $newImage['position'];
-                $record->save();
-                $saveImages[] = $newImage['file_name'];
-            } else {
-                $this->backgroundRepository->create($this->saveImagesToDisk($newImage['position'], $newImage['file']));
-            }
-        }
-        $this->deleteImagesCloud($oldImages->whereNotIn('file_name', $saveImages));
-        return true;
+        return null;
     }
 
     /**
@@ -63,7 +52,8 @@ class BackgroundService
         $fileName = explode("/", $path)[2];
         return [
             'file_name' => $fileName,
-            'position' => $position
+            'position' => $position,
+            'role_background' => AccountRole::ADMIN,
         ];
     }
 
@@ -88,5 +78,35 @@ class BackgroundService
             Storage::disk()->delete(IMAGES_PATH . '/' . $image->file_name);
             $image->forceDelete();
         }
+    }
+
+    /**
+     * @param $data
+     * @return bool|null
+     */
+    public function handleImagesAdmin($data): ?bool
+    {
+        $oldImages = $this->backgroundRepository->getOldImages();
+        if (empty($data['images'])) {
+            $this->deleteImages($oldImages);
+            return true;
+        }
+        $saveImages = [];
+        foreach ($data['images'] as $key => $newImage) {
+            $record = $oldImages->where('file_name', $newImage['file_name'])->first();
+            if (!empty($record)) {
+                $record->role_background = AccountRole::ADMIN;
+                $record->position = $key;
+                $record->save();
+                $saveImages[] = $newImage['file_name'];
+            } else {
+                $this->backgroundRepository->create($this->saveImagesToDisk($key,
+                    $newImage['file']));
+            }
+        }
+        if (!empty($saveImages)) {
+            $this->deleteImagesCloud($oldImages->whereNotIn('file_name', $saveImages));
+        }
+        return true;
     }
 }
