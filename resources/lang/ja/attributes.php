@@ -107,6 +107,7 @@ return [
     ],
     'maintain' => [
         'branch_id' => 'ブランチ',
+        'branch_ids' => 'ブランチ',
         'role' => '役割',
         'maintain_status' => '状態',
         'start_time' => '始める時間',

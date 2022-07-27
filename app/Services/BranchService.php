@@ -8,6 +8,7 @@ use App\Enums\MaintainStatus;
 use App\Models\Branch;
 use App\Repositories\AccountRepository;
 use App\Repositories\BranchRepository;
+use App\Repositories\MaintenanceRepository;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -29,17 +30,25 @@ class BranchService
     protected $accountRepository;
 
     /**
+     * @var MaintenanceRepository
+     */
+    protected $maintenanceRepository;
+
+    /**
      * Construct function
      *
      * @param BranchRepository $branchRepository
      * @param AccountRepository $accountRepository
+     * @param MaintenanceRepository $maintenanceRepository
      */
     public function __construct(
         BranchRepository $branchRepository,
-        AccountRepository $accountRepository
+        AccountRepository $accountRepository,
+        MaintenanceRepository $maintenanceRepository
     ) {
         $this->branchRepository = $branchRepository;
         $this->accountRepository = $accountRepository;
+        $this->maintenanceRepository = $maintenanceRepository;
     }
 
     /**
@@ -170,5 +179,16 @@ class BranchService
     {
         return $branch->maintenances()->where('role', $data['role'])
             ->update($data);
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function setMaintain($data)
+    {
+        $branchIds = $data['branch_ids'];
+        unset($data['branch_ids']);
+        return $this->maintenanceRepository->setMaintain($branchIds, $data);
     }
 }

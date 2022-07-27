@@ -27,4 +27,17 @@ class MaintenanceRepository extends BaseRepository
             'role' => $currentUser->maintain_role
         ])->first();
     }
+
+    /**
+     * @param $branchIds
+     * @param $data
+     * @return mixed
+     */
+    public function setMaintain($branchIds, $data)
+    {
+        return $this->model
+            ->whereIn('branch_id', $branchIds)
+            ->where('role', $data['role'])
+            ->update($data);
+    }
 }
