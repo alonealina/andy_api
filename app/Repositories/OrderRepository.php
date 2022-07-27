@@ -76,13 +76,13 @@ class OrderRepository extends BaseRepository
     public function getTurnoverDetailByDay()
     {
         return $this->model
-            ->selectRaw('DATE_FORMAT(created_at, "%d/%m") as x_value, SUM(total_amount) as total_amount, count(id) as count')
+            ->selectRaw('DATE_FORMAT(created_at, "%m/%d") as x_value, SUM(total_amount) as total_amount, count(id) as count')
             ->whereHas('account', function ($query) {
                 $query->where('branch_id', Auth::user()->branch_id);
             })
             ->whereStatus(OrderStatus::PAID)
             ->whereRaw('YEAR(created_at) = YEAR(CURRENT_DATE()) AND MONTH(created_at) = MONTH(CURRENT_DATE())')
-            ->groupByRaw('DATE_FORMAT(created_at, "%d/%m")')
+            ->groupByRaw('DATE_FORMAT(created_at, "%m/%d")')
             ->get()
             ->toArray();
     }
