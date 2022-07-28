@@ -24,18 +24,27 @@ class CreateNotification implements ShouldBroadcast
      */
     public $name;
 
+    /**
+     * @var mixed
+     */
     public $message;
+
+    /**
+     * @var array|mixed
+     */
+    public $data;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($type)
+    public function __construct($type, $data = [])
     {
         $this->type = $type;
         $this->name = Auth::user()->name;
         $this->message = __('messages.notification')[$type];
+        $this->data = $data;
     }
 
     /**

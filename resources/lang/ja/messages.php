@@ -12,6 +12,7 @@ return [
         'unauthenticated' => '認証されていない',
     ],
     'notification' => [
-        NotificationType::SOS => '緊急呼び出し'
+        NotificationType::SOS => '緊急呼び出し',
+        NotificationType::NEW_ORDER => '新規注文'
     ]
 ];

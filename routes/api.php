@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\V1\FoodCategoryController;
 use App\Http\Controllers\Api\V1\BackgroundController;
 use App\Http\Controllers\Api\V1\SystemInformationController;
 use App\Http\Controllers\Api\V1\TurnoverController;
+use App\Http\Controllers\Api\V1\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -169,6 +170,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::prefix('turnover')->middleware('role:ADMIN')->group(function () {
             Route::get('/total', [TurnoverController::class, 'getTurnoverTotal']);
             Route::get('/detail', [TurnoverController::class, 'getTurnoverDetail']);
+        });
+
+        Route::prefix('notifications')->middleware('role:ADMIN')->group(function () {
+            Route::get('/', [NotificationController::class, 'index']);
+            Route::post('/read', [NotificationController::class, 'readNotify']);
         });
 
         Route::post('/sos', [AccountController::class, 'callSOS'])->middleware('role:CUSTOMER');
