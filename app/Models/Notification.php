@@ -19,12 +19,16 @@ class Notification extends Model
         'notifiable_type',
         'notifiable_id',
         'data',
+        'read_at',
+    ];
+
+    protected $dates = [
         'read_at'
     ];
 
     protected $primaryKey = 'id';
 
-    protected $hidden = [
-        'id'
+    protected $casts = [
+        'data' => 'array'
     ];
 }
