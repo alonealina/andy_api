@@ -34,6 +34,7 @@ class CheckMaintain
        if ($maintainStatus->maintain_status == MaintainStatus::MAINTAIN) {
            abort(503, json_encode([
                'data' => [
+                   'message' => $maintainStatus->message,
                    'start_time' => $maintainStatus->start_time,
                    'end_time' => $maintainStatus->end_time,
                ]
