@@ -43,11 +43,11 @@ class BackgroundService
             $record = $oldImages->where('file_name', $newImage['file_name'])->first();
             if (!empty($record)) {
                 $record->role_background = AccountRole::ADMIN;
-                $record->position = $key;
+                $record->position = $newImage['position'];
                 $record->save();
                 $saveImages[] = $newImage['file_name'];
             } else {
-                $this->backgroundRepository->create($this->saveImagesToDisk($key,
+                $this->backgroundRepository->create($this->saveImagesToDisk($newImage['position'],
                     $newImage['file']));
             }
         }
