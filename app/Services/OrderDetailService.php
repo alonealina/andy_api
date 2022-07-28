@@ -75,7 +75,6 @@ class OrderDetailService
             DB::commit();
             return true;
         } catch (\Exception $exception) {
-            dd($exception->getMessage());
             DB::rollBack();
             return null;
         }
