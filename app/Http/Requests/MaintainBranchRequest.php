@@ -38,6 +38,7 @@ class MaintainBranchRequest extends FormRequest
         return [
             'role' => 'required|in:' . implode(',', MaintainRole::getValues()),
             'maintain_status' => 'required|in:' . implode(',', MaintainStatus::getValues()),
+            'message' => 'string|nullable',
             'start_time' => 'required_if:maintain_status,==,' . MaintainStatus::MAINTAIN . '|date_format:Y-m-d H:i',
             'end_time' => 'required_if:maintain_status,==,' . MaintainStatus::MAINTAIN . '|date_format:Y-m-d H:i',
         ];

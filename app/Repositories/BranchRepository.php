@@ -30,7 +30,7 @@ class BranchRepository extends BaseRepository
      */
     public function getMaintain()
     {
-        return $this->model->with('maintenances:branch_id,role,maintain_status,start_time,end_time')
+        return $this->model->with('maintenances:branch_id,role,maintain_status,message,start_time,end_time')
             ->select(['id', 'name'])
             ->get()->map(function ($item) {
             $item->maintain = $item->maintenances->keyBy('role')->toArray();

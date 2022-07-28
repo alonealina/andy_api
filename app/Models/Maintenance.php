@@ -16,6 +16,7 @@ class Maintenance extends Model
         'branch_id',
         'role',
         'maintain_status',
+        'message',
         'start_time',
         'end_time',
     ];
