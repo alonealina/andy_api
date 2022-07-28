@@ -80,8 +80,8 @@ class BranchService
         DB::beginTransaction();
         try {
             $newRecord = $this->branchRepository->store($data);
-            $this->backgroundRepository->create($this->
-            saveImagesToDisk(PositionBackground::TOP1, $data['images'][0], $newRecord));
+            $newRecord->backgrounds()->create($this->
+            saveImagesToDisk(PositionBackground::TOP1, $data['images'][0]));
             $this->accountRepository->create([
                 'branch_id' => $newRecord->id,
                 'username' => $data['admin_id'],
@@ -105,12 +105,11 @@ class BranchService
      * @param $record
      * @return array
      */
-    public function saveImagesToDisk($position, UploadedFile $file, $record): array
+    public function saveImagesToDisk($position, UploadedFile $file): array
     {
         $path = Storage::disk()->put(IMAGES_PATH, $file);
         $fileName = explode("/", $path)[2];
         return [
-            'branch_id' => $record->id,
             'file_name' => $fileName,
             'position' => $position,
             'role_background' => AccountRole::SUPER_ADMIN,
@@ -144,11 +143,11 @@ class BranchService
     {
         DB::beginTransaction();
         try {
-            $oldImages = $this->backgroundRepository->where('role_background',
+            $oldImages = $branch->backgrounds()->where('role_background',
                 AccountRole::SUPER_ADMIN)->first();
             $branch->update($data);
             Storage::disk()->delete(IMAGES_PATH . '/' . $oldImages['file_name']);
-            $oldImages->update($this->saveImagesToDisk(PositionBackground::TOP1, $data['images'][0], $branch));
+            $oldImages->update($this->saveImagesToDisk(PositionBackground::TOP1, $data['images'][0]));
             $branch->getAdmin()->update([
                 'username' => $data['admin_id'],
                 'password' => Hash::make($data['admin_password']),
