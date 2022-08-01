@@ -34,6 +34,8 @@ class NewsRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'branch_ids' => 'required|array',
+            'branch_ids.*' => 'required|exists:branches,id',
             'title' => 'required|string',
             'content' => 'required|string',
         ];
