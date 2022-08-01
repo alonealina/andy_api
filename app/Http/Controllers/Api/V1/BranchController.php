@@ -41,6 +41,18 @@ class BranchController extends Controller
     }
 
     /**
+     * @param Branch $branch
+     * @return JsonResponse
+     */
+    public function getListNews(Branch $branch): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->branchService->getListNews($branch),
+        ]);
+    }
+
+    /**
      * @param BranchRequest $request
      * @return JsonResponse
      */

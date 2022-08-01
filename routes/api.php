@@ -186,6 +186,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::post('/maintain', [BranchController::class, 'setMaintain']);
         Route::post('/', [BranchController::class, 'store']);
         Route::get('/{branch}', [BranchController::class, 'show']);
+        Route::get('/{branch}/news', [BranchController::class, 'getListNews']);
         Route::post('/{branch}', [BranchController::class, 'update']);
         Route::post('/{branch}/delete', [BranchController::class, 'destroy']);
         Route::post('/{branch}/maintain', [BranchController::class, 'setMaintainBranch']);

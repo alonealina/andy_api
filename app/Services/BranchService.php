@@ -72,6 +72,15 @@ class BranchService
     }
 
     /**
+     * @param Branch $branch
+     * @return array
+     */
+    public function getListNews(Branch $branch): array
+    {
+        return $branch->news()->get()->toArray();
+    }
+
+    /**
      * @param $data
      * @return mixed|null
      */
