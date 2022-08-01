@@ -35,6 +35,7 @@ class BackgroundRequest extends FormRequest
     {
         return [
             'images' => 'array',
+            'images.*.position' => 'numeric|required|min:1|max:8|distinct',
             'images.*.file_name' => 'string|nullable',
             'images.*.file' => 'mimes:jpg,jpeg,png|max:5000|nullable',
         ];

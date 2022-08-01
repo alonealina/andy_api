@@ -6,6 +6,7 @@ return [
     'email' => ':attributeメール形式である必要があります。',
     'url' => ':attributeの形式が正しくありません。',
     'unique' => ':attributeが既に存在しています。',
+    'distinct' => ':attributeフィールドの値が重複しています',
     'required'             => ':attributeを入力してください。',
     'numeric'              => ':attributeには数字を入力してください',
     'min'                  => [
