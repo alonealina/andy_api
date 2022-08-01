@@ -7,8 +7,11 @@ use App\Enums\OrderDetailStatus;
 use App\Enums\OrderStatus;
 use App\Enums\TurnoverDetailType;
 use App\Events\CreateNotification;
+use App\Models\Account;
 use App\Models\Order;
+use App\Repositories\NotificationRepository;
 use App\Repositories\OrderRepository;
+use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
@@ -17,14 +20,21 @@ class OrderService
      */
     protected $orderRepository;
 
+    /**
+     * @var NotificationRepository
+     */
+    protected $notificationRepository;
 
     /**
      * @param OrderRepository $orderRepository
+     * @param NotificationRepository $notificationRepository
      */
     public function __construct(
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        NotificationRepository $notificationRepository
     ) {
         $this->orderRepository = $orderRepository;
+        $this->notificationRepository = $notificationRepository;
     }
 
     /**
@@ -61,9 +71,18 @@ class OrderService
                     ->sum('amount');
             }
             $order->save();
-            if ($data['status'] == OrderStatus::CALL_PAID)
+            if ($data['status'] == OrderStatus::CALL_PAID) {
                 event(new CreateNotification(NotificationType::PAID_ORDER,
                     $order->load('account:id,name,created_at')->toArray()));
+                $this->notificationRepository->create([
+                    'account_id' => Auth::user()->getAdminBranch()->id,
+                    'type' => NotificationType::PAID_ORDER,
+                    'notifiable_type' => Account::class,
+                    'notifiable_id' => Auth::user()->id,
+                    'data' => __('messages.notification')[NotificationType::PAID_ORDER]
+                ]);
+            }
+
             return true;
         } catch (\Exception $exception) {
             report($exception);
