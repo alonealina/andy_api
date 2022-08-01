@@ -122,11 +122,12 @@ class CastService
      * @param Cast $cast
      * @return Cast|null
      */
-    public function destroy(Cast $cast)
+    public function destroy(Cast $cast): ?Cast
     {
         DB::beginTransaction();
         try {
             $cast->delete();
+            $cast->account()->delete();
             $this->deleteImages($cast);
             DB::commit();
             return $cast;
