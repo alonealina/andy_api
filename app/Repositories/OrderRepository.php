@@ -18,18 +18,15 @@ class OrderRepository extends BaseRepository
     }
 
     /**
-     * @param $params
      * @return array
      */
-    public function getList($params): array
+    public function getList(): array
     {
         return $this->model->with('account:id,name')
             ->whereHas('account', function ($query) {
                 $query->where('branch_id', Auth::user()->branch_id);
             })
-            ->when(isset($params['status']), function ($query) use ($params) {
-                $query->whereStatus($params['status']);
-            })
+            ->whereNotIn('status', [OrderStatus::UNPAID, OrderStatus::HIDDEN])
             ->get()->toArray();
     }
 
@@ -54,7 +51,7 @@ class OrderRepository extends BaseRepository
             ->whereHas('account', function ($query) {
             $query->where('branch_id', Auth::user()->branch_id);
             })
-            ->whereStatus(OrderStatus::PAID)
+            ->where('status', '<>', OrderStatus::UNPAID)
             ->havingRaw('year = ' . Carbon::yesterday()->year);
         $yesterday = $data->get()->where('day', Carbon::yesterday()->day)
             ->where('month', Carbon::yesterday()->month);
@@ -80,7 +77,7 @@ class OrderRepository extends BaseRepository
             ->whereHas('account', function ($query) {
                 $query->where('branch_id', Auth::user()->branch_id);
             })
-            ->whereStatus(OrderStatus::PAID)
+            ->where('status', '<>', OrderStatus::UNPAID)
             ->whereRaw('YEAR(created_at) = YEAR(CURRENT_DATE()) AND MONTH(created_at) = MONTH(CURRENT_DATE())')
             ->groupByRaw('DATE_FORMAT(created_at, "%m/%d")')
             ->get()
@@ -97,7 +94,7 @@ class OrderRepository extends BaseRepository
             ->whereHas('account', function ($query) {
                 $query->where('branch_id', Auth::user()->branch_id);
             })
-            ->whereStatus(OrderStatus::PAID)
+            ->where('status', '<>', OrderStatus::UNPAID)
             ->whereRaw('YEAR(created_at) = YEAR(CURRENT_DATE())')
             ->groupByRaw('DATE_FORMAT(created_at, "%m")')
             ->get()
@@ -114,7 +111,7 @@ class OrderRepository extends BaseRepository
             ->whereHas('account', function ($query) {
                 $query->where('branch_id', Auth::user()->branch_id);
             })
-            ->whereStatus(OrderStatus::PAID)
+            ->where('status', '<>', OrderStatus::UNPAID)
             ->groupByRaw('DATE_FORMAT(created_at, "%Y")')
             ->get()
             ->toArray();
