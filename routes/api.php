@@ -190,5 +190,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
             Route::post('/{branch}/maintain', [BranchController::class, 'setMaintainBranch']);
         });
         Route::get('/{branch}/news', [BranchController::class, 'getListNews']);
+        Route::get('news/{news}', [BranchController::class, 'showNews']);
     });
 });
