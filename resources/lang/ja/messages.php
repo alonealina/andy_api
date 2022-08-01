@@ -13,6 +13,7 @@ return [
     ],
     'notification' => [
         NotificationType::SOS => '緊急呼び出し',
-        NotificationType::NEW_ORDER => '新規注文'
+        NotificationType::NEW_ORDER => '新規注文',
+        NotificationType::PAID_ORDER => '会計呼び出し'
     ]
 ];

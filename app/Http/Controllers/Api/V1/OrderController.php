@@ -26,14 +26,13 @@ class OrderController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return JsonResponse
      */
-    public function index(Request $request): JsonResponse
+    public function index(): JsonResponse
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => $this->orderService->getList($request->all())
+            'data' => $this->orderService->getList()
         ]);
     }
 
