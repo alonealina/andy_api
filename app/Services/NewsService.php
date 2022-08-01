@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\News;
 use App\Repositories\NewsRepository;
+use Illuminate\Support\Facades\DB;
 
 class NewsService
 {
@@ -34,7 +35,20 @@ class NewsService
      */
     public function store($params)
     {
-        return $this->newsRepository->store($params);
+        DB::beginTransaction();
+        try {
+            $news = $this->newsRepository->create([
+                'title' => $params['title'],
+                'content' => $params['content']
+            ]);
+            $news->branches()->sync($params['branch_ids']);
+            DB::commit();
+            return true;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return null;
+        }
     }
 
     /**
