@@ -19,8 +19,6 @@ class NewsRepository extends BaseRepository
      */
     public function getList()
     {
-        return $this->model->belongsToBranch()
-            ->orderBy('created_at', 'DESC')
-            ->get()->toArray();
+        return $this->model->orderBy('created_at', 'DESC')->get()->toArray();
     }
 }
