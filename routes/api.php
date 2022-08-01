@@ -95,13 +95,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
             Route::get('/{drink}', [DrinkController::class, 'show']);
         });
 
-        Route::prefix('news')->middleware('role:ADMIN,SUPER_ADMIN')->group(function () {
+        Route::prefix('news')->middleware('role:SUPER_ADMIN')->group(function () {
             Route::get('/', [NewsController::class, 'index']);
-            Route::middleware('role:SUPER_ADMIN')->group(function () {
-                Route::post('/', [NewsController::class, 'store']);
-                Route::post('/{news}', [NewsController::class, 'update']);
-                Route::post('/{news}/delete', [NewsController::class, 'destroy']);
-            });
+            Route::post('/', [NewsController::class, 'store']);
+            Route::post('/{news}', [NewsController::class, 'update']);
+            Route::post('/{news}/delete', [NewsController::class, 'destroy']);
         });
 
         Route::prefix('information')->group(function () {
@@ -147,7 +145,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
             Route::post('/', [DrinkCategoryController::class, 'store'])->middleware('role:ADMIN');
             Route::get('/{drinkCategory}', [DrinkCategoryController::class, 'show']);
             Route::post('/{drinkCategory}', [DrinkCategoryController::class, 'update'])->middleware('role:ADMIN');
-            Route::post('/{drinkCategory}/delete', [DrinkCategoryController::class, 'destroy'])->middleware('role:ADMIN');
+            Route::post('/{drinkCategory}/delete',
+                [DrinkCategoryController::class, 'destroy'])->middleware('role:ADMIN');
         });
 
         Route::prefix('food-categories')->middleware('role:ADMIN,CUSTOMER')->group(function () {
@@ -179,15 +178,17 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::post('/sos', [AccountController::class, 'callSOS'])->middleware('role:CUSTOMER');
     });
 
-    Route::prefix('branches')->middleware('role:SUPER_ADMIN')->group(function (){
-        Route::get('/', [BranchController::class, 'index']);
-        Route::get('/maintain', [BranchController::class, 'getMaintain']);
-        Route::post('/maintain', [BranchController::class, 'setMaintain']);
-        Route::post('/', [BranchController::class, 'store']);
-        Route::get('/{branch}', [BranchController::class, 'show']);
+    Route::prefix('branches')->middleware('role:ADMIN,SUPER_ADMIN')->group(function () {
+        Route::middleware('role:SUPER_ADMIN')->group(function () {
+            Route::get('/', [BranchController::class, 'index']);
+            Route::get('/maintain', [BranchController::class, 'getMaintain']);
+            Route::post('/maintain', [BranchController::class, 'setMaintain']);
+            Route::post('/', [BranchController::class, 'store']);
+            Route::get('/{branch}', [BranchController::class, 'show']);
+            Route::post('/{branch}', [BranchController::class, 'update']);
+            Route::post('/{branch}/delete', [BranchController::class, 'destroy']);
+            Route::post('/{branch}/maintain', [BranchController::class, 'setMaintainBranch']);
+        });
         Route::get('/{branch}/news', [BranchController::class, 'getListNews']);
-        Route::post('/{branch}', [BranchController::class, 'update']);
-        Route::post('/{branch}/delete', [BranchController::class, 'destroy']);
-        Route::post('/{branch}/maintain', [BranchController::class, 'setMaintainBranch']);
     });
 });
