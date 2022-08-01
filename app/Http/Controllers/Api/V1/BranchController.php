@@ -9,6 +9,7 @@ use App\Http\Requests\MaintainBranchRequest;
 use App\Http\Requests\MaintainRequest;
 use App\Http\Requests\UpdateBranchRequest;
 use App\Models\Branch;
+use App\Models\News;
 use App\Services\BranchService;
 use Illuminate\Http\JsonResponse;
 
@@ -37,6 +38,18 @@ class BranchController extends Controller
         return response()->json([
             'message' => MessageStatus::SUCCESS,
             'data' => $this->branchService->getList(),
+        ]);
+    }
+
+    /**
+     * @param News $news
+     * @return JsonResponse
+     */
+    public function showNews(News $news): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $news
         ]);
     }
 
