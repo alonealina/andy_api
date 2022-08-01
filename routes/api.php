@@ -97,6 +97,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
 
         Route::prefix('news')->middleware('role:SUPER_ADMIN')->group(function () {
             Route::get('/', [NewsController::class, 'index']);
+            Route::get('/{news}', [NewsController::class, 'show']);
             Route::post('/', [NewsController::class, 'store']);
             Route::post('/{news}', [NewsController::class, 'update']);
             Route::post('/{news}/delete', [NewsController::class, 'destroy']);

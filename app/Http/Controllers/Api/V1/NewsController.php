@@ -36,6 +36,18 @@ class NewsController extends Controller
     }
 
     /**
+     * @param News $news
+     * @return JsonResponse
+     */
+    public function show(News $news): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->newsService->show($news)
+        ]);
+    }
+
+    /**
      * @param NewsRequest $request
      * @return JsonResponse
      */

@@ -30,6 +30,15 @@ class NewsService
     }
 
     /**
+     * @param News $news
+     * @return array
+     */
+    public function show(News $news): array
+    {
+        return $news->with('branches:id,name')->get()->toArray();
+    }
+
+    /**
      * @param $params
      * @return bool|null
      */
