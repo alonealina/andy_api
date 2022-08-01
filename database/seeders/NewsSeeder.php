@@ -18,16 +18,15 @@ class NewsSeeder extends Seeder
     public function run()
     {
         $faker = Factory::create();
-        $branchIds = Branch::pluck('id')->toArray();
-
-        foreach ($branchIds as $branchId) {
-            for ($i=0; $i<50;$i++) {
-                News::create([
-                    'branch_id' => $branchId,
-                    'title' => $faker->word(),
-                    'content' => $faker->text(),
-                ]);
-            }
+        $branch = Branch::all();
+        for ($i = 0; $i < 50; $i++) {
+            $news = News::create([
+                'title' => $faker->word(),
+                'content' => $faker->text()
+            ]);
+            $news->branches()->attach(
+                $branch->random(rand(1, $branch->count()))->pluck('id')->toArray()
+            );
         }
     }
 }

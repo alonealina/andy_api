@@ -95,9 +95,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
             Route::get('/{drink}', [DrinkController::class, 'show']);
         });
 
-        Route::prefix('news')->group(function () {
+        Route::prefix('news')->middleware('role:ADMIN,SUPER_ADMIN')->group(function () {
             Route::get('/', [NewsController::class, 'index']);
-            Route::middleware('role:ADMIN')->group(function () {
+            Route::middleware('role:SUPER_ADMIN')->group(function () {
                 Route::post('/', [NewsController::class, 'store']);
                 Route::post('/{news}', [NewsController::class, 'update']);
                 Route::post('/{news}/delete', [NewsController::class, 'destroy']);

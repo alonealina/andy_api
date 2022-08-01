@@ -7,18 +7,18 @@ use App\Traits\HasBranchId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class News extends Model
 {
     use HasFactory, SoftDeletes;
-    use CommonScopeModel, HasBranchId;
+    use CommonScopeModel;
 
     /**
      * @var string[]
      */
     protected $fillable = [
-        'branch_id',
         'title',
         'content',
     ];
@@ -31,4 +31,11 @@ class News extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    /**
+     * @return BelongsToMany
+     */
+    public function branches(): BelongsToMany
+    {
+        return $this->belongsToMany(Branch::class, 'branch_news', 'news_id', 'branch_id');
+    }
 }
