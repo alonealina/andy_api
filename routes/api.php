@@ -172,6 +172,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
 
         Route::prefix('notifications')->middleware('role:ADMIN')->group(function () {
             Route::get('/', [NotificationController::class, 'index']);
+            Route::get('/count', [NotificationController::class, 'getCount']);
             Route::post('/read', [NotificationController::class, 'readNotify']);
         });
 

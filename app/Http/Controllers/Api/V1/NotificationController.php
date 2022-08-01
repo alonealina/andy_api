@@ -6,6 +6,7 @@ use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Services\NotificationService;
 use \Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
@@ -36,11 +37,23 @@ class NotificationController extends Controller
     /**
      * @return JsonResponse
      */
-    public function readNotify(): JsonResponse
+    public function getCount(): JsonResponse
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => $this->notificationService->readNotify()
+            'data' => $this->notificationService->getCount()
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function readNotify(Request $request): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->notificationService->readNotify($request->all())
         ]);
     }
 }

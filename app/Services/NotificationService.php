@@ -23,11 +23,15 @@ class NotificationService
     /**
      * @return mixed
      */
-    public function readNotify()
+    public function readNotify($params)
     {
-        return Auth::user()->notifications()->whereNull('read_at')->update([
-            'read_at' => now()
-        ]);
+        return Auth::user()->notifications()
+            ->when(isset($params['type']), function ($query) use ($params){
+                $query->whereType($params['type']);
+            })
+            ->whereNull('read_at')->update([
+                'read_at' => now()
+            ]);
     }
 
     /**
@@ -36,5 +40,13 @@ class NotificationService
     public function index()
     {
         return Auth::user()->notifications()->whereNull('read_at')->get()->toArray();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCount()
+    {
+        return $this->notificationRepository->getCount();
     }
 }
