@@ -150,7 +150,8 @@ class CastService
                 $query->where([
                     'year' => $params['year'],
                     'month' => $params['month'],
-                ]);
+                ])
+                ->orderBy('day');
             }
         ])->toArray();
     }
