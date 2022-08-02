@@ -1,6 +1,7 @@
 stages:
   - DeployDev
   - DeployTest
+  - DeployStaging
 
 DeployDev:
   stage: DeployDev
@@ -14,8 +15,6 @@ DeployDev:
     paths:
       - vendor/
   script:
-    - echo "$DEV_DEPLOY_SSH_KEY"
-    - php -v
     - eval $(ssh-agent -s) && echo "$DEV_DEPLOY_SSH_KEY" | ssh-add -
     - mkdir -p ~/.ssh
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\tControlMaster auto\n\tControlPath /tmp/ansible-%r@%h:%p\n\tControlPersist 15m\n\tPreferredAuthentications publickey
@@ -25,7 +24,6 @@ DeployDev:
     - composer global require hirak/prestissimo -q
     - composer require --dev knuckleswtf/scribe
     - composer install --ignore-platform-reqs --no-scripts -q && composer dump-autoload -q
-    - echo "$DEV_DEPLOY_ENV_FILE"
     - echo "$DEV_DEPLOY_ENV_FILE" > .env && echo "OK" > public/health.html
     - rsync -azPq --exclude='.git' ./ $DEV_DEPLOY_USER@$DEV_DEPLOY_HOST:$DEV_DEPLOY_DIR/
     - ssh $DEV_DEPLOY_USER@$DEV_DEPLOY_HOST "source .bash_profile && cd $DEV_DEPLOY_DIR && eb deploy $DEV_EB_ENV_NAME -l $CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
@@ -54,3 +52,28 @@ DeployTest:
     - echo "$TEST_DEPLOY_ENV_FILE" > .env && echo "OK" > public/health.html
     - rsync -azPq --exclude='.git' ./ $TEST_DEPLOY_USER@$TEST_DEPLOY_HOST:$TEST_DEPLOY_DIR/
     - ssh $TEST_DEPLOY_USER@$TEST_DEPLOY_HOST "source .bash_profile && cd $TEST_DEPLOY_DIR && eb deploy $TEST_EB_ENV_NAME -l $CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
+
+DeployStaging:
+  stage: DeployStaging
+  image: hblabvn/php-mongo:php-7.4.11
+  only:
+    - staging
+  environment:
+    name: staging
+  cache:
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - vendor/
+  script:
+    - eval $(ssh-agent -s) && echo "$STG_DEPLOY_SSH_KEY" | ssh-add -
+    - mkdir -p ~/.ssh
+    - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\tControlMaster auto\n\tControlPath /tmp/ansible-%r@%h:%p\n\tControlPersist 15m\n\tPreferredAuthentications publickey
+  \n\n" > ~/.ssh/config'
+    - chmod go-wrx ~/.ssh
+    - chmod +x -R .platform/hooks
+    - composer global require hirak/prestissimo -q
+    - composer require --dev knuckleswtf/scribe -q
+    - composer install --ignore-platform-reqs --no-scripts -q && composer dump-autoload -q
+    - echo "$STG_DEPLOY_ENV_FILE" > .env && echo "OK" > public/health.html
+    - rsync -azPq --exclude='.git' ./ $STG_DEPLOY_USER@$STG_DEPLOY_HOST:$STG_DEPLOY_DIR/
+    - ssh $STG_DEPLOY_USER@$STG_DEPLOY_HOST "source .bash_profile && cd $STG_DEPLOY_DIR && eb deploy $STG_EB_ENV_NAME -l $CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA"
