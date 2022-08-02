@@ -9,6 +9,7 @@ use App\Traits\HasBranchId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -109,5 +110,13 @@ class Account extends Authenticatable implements JWTSubject
     public function getMaintainRoleAttribute(): int
     {
         return $this->role->value == AccountRole::ADMIN ? MaintainRole::ADMIN : MaintainRole::USER;
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function casts(): HasOne
+    {
+        return $this->hasOne(Cast::class);
     }
 }
