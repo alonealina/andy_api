@@ -53,7 +53,8 @@ class AuthController extends Controller
      */
     public function userProfile(): JsonResponse
     {
-        return response()->json(auth()->user());
+
+        return response()->json(auth()->user()->load('casts:id,name,account_id'));
     }
 
     /**
