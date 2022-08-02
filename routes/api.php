@@ -117,12 +117,14 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
             Route::get('/', [CastController::class, 'index']);
             Route::get('/{cast}', [CastController::class, 'show']);
             Route::get('/{cast}/schedules', [CastController::class, 'getSchedule']);
-            Route::post('/{cast}/schedules', [CastController::class, 'updateSchedule'])->middleware('role:ADMIN,CAST');
-            Route::middleware('role:ADMIN')->group(function () {
-                Route::post('/', [CastController::class, 'store']);
+            Route::middleware('role:ADMIN,CAST')->group(function () {
+                Route::middleware('role:ADMIN')->group(function () {
+                    Route::post('/', [CastController::class, 'store']);
+                    Route::post('/{cast}/account', [CastController::class, 'updateAccount']);
+                    Route::post('/{cast}/delete', [CastController::class, 'destroy']);
+                });
+                Route::post('/{cast}/schedules', [CastController::class, 'updateSchedule']);
                 Route::post('/{cast}', [CastController::class, 'update']);
-                Route::post('/{cast}/account', [CastController::class, 'updateAccount']);
-                Route::post('/{cast}/delete', [CastController::class, 'destroy']);
             });
         });
 
