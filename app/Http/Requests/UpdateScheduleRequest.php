@@ -24,8 +24,6 @@ class UpdateScheduleRequest extends FormRequest
     public function rules()
     {
         return [
-            'is_service' => 'required|boolean',
-            'is_overtime' => 'required|boolean',
             'year' => 'required|numeric',
             'month' => 'required|numeric',
             'schedules' => 'required|array',

@@ -166,10 +166,6 @@ class CastService
         $this->checkBranch($cast);
         DB::beginTransaction();
         try {
-            $cast->update([
-                'is_service' => $data['is_service'],
-                'is_overtime' => $data['is_overtime']
-            ]);
             foreach ($data['schedules'] as $schedule) {
                 $this->scheduleRepository->updateOrCreate([
                     'cast_id' => $cast->id,

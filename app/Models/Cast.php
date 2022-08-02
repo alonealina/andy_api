@@ -33,8 +33,6 @@ class Cast extends Model
         'slogan',
         'instagram_url',
         'special_skill',
-        'is_service',
-        'is_overtime'
     ];
 
     protected $with = [
