@@ -29,6 +29,9 @@ class Information extends Model
         'images',
     ];
 
+    protected $casts = [
+        'time_event' => 'datetime:Y/m/d',
+    ];
     /**
      * @return BelongsTo
      */
