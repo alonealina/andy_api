@@ -82,10 +82,11 @@ class CastService
     /**
      * @param $data
      * @param Cast $cast
-     * @return mixed|null
+     * @return Cast|null
      */
     public function update($data, Cast $cast)
     {
+        $this->checkBranch($cast);
         DB::beginTransaction();
         try {
             $cast->update($data);
@@ -100,12 +101,23 @@ class CastService
     }
 
     /**
+     * @param Cast $cast
+     * @return Cast
+     */
+    public function show(Cast $cast): Cast
+    {
+        $this->checkBranch($cast);
+        return $cast;
+    }
+
+    /**
      * @param $data
      * @param Cast $cast
      * @return Cast|null
      */
     public function updateAccount($data, Cast $cast): ?Cast
     {
+        $this->checkBranch($cast);
         DB::beginTransaction();
         try {
             $cast->account()->update(['password' => Hash::make($data['password'])]);
@@ -124,6 +136,7 @@ class CastService
      */
     public function destroy(Cast $cast): ?Cast
     {
+        $this->checkBranch($cast);
         DB::beginTransaction();
         try {
             $cast->delete();
@@ -143,7 +156,7 @@ class CastService
      * @param $params
      * @return array
      */
-    public function getSchedule(Cast $cast, $params)
+    public function getSchedule(Cast $cast, $params): array
     {
         return $cast->load([
             'schedules' => function ($query) use ($params) {
@@ -151,7 +164,7 @@ class CastService
                     'year' => $params['year'],
                     'month' => $params['month'],
                 ])
-                ->orderBy('day');
+                    ->orderBy('day');
             }
         ])->toArray();
     }

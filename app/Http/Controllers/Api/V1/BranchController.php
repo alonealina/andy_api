@@ -49,7 +49,7 @@ class BranchController extends Controller
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => $news
+            'data' => $this->branchService->showNews($news)
         ]);
     }
 

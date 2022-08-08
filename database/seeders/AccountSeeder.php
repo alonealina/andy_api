@@ -19,7 +19,7 @@ class AccountSeeder extends Seeder
     {
         $branchIds = Branch::pluck('id')->toArray();
         \App\Models\Account::create([
-            'branch_id' => 1,
+            'branch_id' => 0,
             'username' => 'super_admin',
             'password' => Hash::make('L63K7B7QxpE7j4n'),
             'role' => AccountRole::SUPER_ADMIN,

@@ -5,13 +5,14 @@ namespace App\Services;
 use App\Models\Drink;
 use App\Repositories\DrinkCategoryRepository;
 use App\Repositories\DrinkRepository;
+use App\Traits\CheckBranch;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class DrinkService
 {
-    use SaveImagesUpload;
+    use SaveImagesUpload, CheckBranch;
 
     /**
      * @var DrinkRepository
@@ -29,8 +30,7 @@ class DrinkService
     public function __construct(
         DrinkRepository $drinkRepository,
         DrinkCategoryRepository $drinkCategoryRepository
-    )
-    {
+    ) {
         $this->drinkRepository = $drinkRepository;
         $this->drinkCategoryRepository = $drinkCategoryRepository;
     }
@@ -61,7 +61,7 @@ class DrinkService
     {
         return isset($params['drink_category_id']) ?
             $this->drinkCategoryRepository->getAllDrinkOfBranch($params['drink_category_id']) :
-        $this->drinkRepository->getList();
+            $this->drinkRepository->getList();
     }
 
     /**
@@ -71,6 +71,7 @@ class DrinkService
      */
     public function update($params, Drink $drink): ?Drink
     {
+        $this->checkBranch($drink);
         DB::beginTransaction();
         try {
             $drink->update($params);
@@ -93,6 +94,7 @@ class DrinkService
      */
     public function delete(Drink $drink): ?Drink
     {
+        $this->checkBranch($drink);
         DB::beginTransaction();
         try {
             $drink->delete();
@@ -120,6 +122,7 @@ class DrinkService
      */
     public function show(Drink $drink): array
     {
+        $this->checkBranch($drink);
         return $drink->load('drinkCategory.parent')->toArray();
     }
 }

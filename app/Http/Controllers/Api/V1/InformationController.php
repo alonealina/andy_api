@@ -8,7 +8,6 @@ use App\Http\Requests\InformationRequest;
 use App\Models\Information;
 use App\Services\InformationService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 
 class InformationController extends Controller
 {
@@ -67,7 +66,7 @@ class InformationController extends Controller
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => $information
+            'data' => $this->informationService->show($information)
         ]);
     }
 

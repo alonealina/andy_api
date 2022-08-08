@@ -69,7 +69,7 @@ class FoodController extends Controller
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => $food
+            'data' => $this->foodService->show($food)
         ]);
     }
 

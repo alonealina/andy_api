@@ -7,21 +7,24 @@ use App\Enums\MaintainRole;
 use App\Enums\MaintainStatus;
 use App\Enums\PositionBackground;
 use App\Models\Branch;
+use App\Models\News;
 use App\Repositories\AccountRepository;
 use App\Repositories\BackgroundRepository;
 use App\Repositories\BranchRepository;
 use App\Repositories\MaintenanceRepository;
+use App\Traits\CheckBranch;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class BranchService
 {
-    use SaveImagesUpload;
+    use SaveImagesUpload, CheckBranch;
 
     /**
      * @var BranchRepository
@@ -77,6 +80,7 @@ class BranchService
      */
     public function getListNews(Branch $branch): array
     {
+        $this->checkBranch($branch);
         return $branch->news()->get()->toArray();
     }
 
@@ -155,12 +159,14 @@ class BranchService
             $oldImages = $branch->backgrounds()->where('role_background',
                 AccountRole::SUPER_ADMIN)->first();
             $branch->update($data);
-            Storage::disk()->delete(IMAGES_PATH . '/' . $oldImages['file_name']);
-            $oldImages->update($this->saveImagesToDisk(PositionBackground::TOP1, $data['images'][0]));
             $branch->getAdmin()->update([
                 'username' => $data['admin_id'],
                 'password' => Hash::make($data['admin_password']),
             ]);
+            if (isset($data['images'][0])) {
+                Storage::disk()->delete(IMAGES_PATH . '/' . $oldImages['file_name']);
+                $oldImages->update($this->saveImagesToDisk(PositionBackground::TOP1, $data['images'][0]));
+            }
             DB::commit();
             return $branch;
         } catch (\Exception $exception) {
@@ -233,5 +239,16 @@ class BranchService
         $branchIds = $data['branch_ids'];
         unset($data['branch_ids']);
         return $this->maintenanceRepository->setMaintain($branchIds, $data);
+    }
+
+    /**
+     * @param News $news
+     * @return News|void
+     */
+    public function showNews(News $news)
+    {
+        $branchesIds = $news->branches()->pluck('branches.id')->toArray();
+        return in_array(Auth::user()->branch_id, $branchesIds) ?
+            $news : abort(403, __('messages.common.forbidden'));
     }
 }
