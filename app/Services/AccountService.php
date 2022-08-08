@@ -14,9 +14,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Traits\CheckBranch;
 
 class AccountService
 {
+    use CheckBranch;
+
     /**
      * @var AccountRepository
      */
@@ -70,6 +73,7 @@ class AccountService
      */
     public function update($params, Account $account): Account
     {
+        $this->checkBranch($account);
         $account->update($params);
         return $account;
     }
@@ -80,6 +84,7 @@ class AccountService
      */
     public function delete(Account $account): Account
     {
+        $this->checkBranch($account);
         $account->delete();
         return $account;
     }

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Food;
 use App\Repositories\FoodRepository;
+use App\Traits\CheckBranch;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class FoodService
 {
-    use SaveImagesUpload;
+    use SaveImagesUpload, CheckBranch;
 
     /**
      * @var FoodRepository
@@ -58,12 +59,23 @@ class FoodService
     }
 
     /**
+     * @param Food $food
+     * @return Food
+     */
+    public function show(Food $food)
+    {
+        $this->checkBranch($food);
+        return $food;
+    }
+
+    /**
      * @param $data
      * @param Food $food
      * @return Food|null
      */
     public function update($data, Food $food)
     {
+        $this->checkBranch($food);
         DB::beginTransaction();
         try {
             $food->update($data);
@@ -88,6 +100,7 @@ class FoodService
      */
     public function destroy(Food $food): ?Food
     {
+        $this->checkBranch($food);
         DB::beginTransaction();
         try {
             $food->delete();

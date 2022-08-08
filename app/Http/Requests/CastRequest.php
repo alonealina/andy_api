@@ -29,7 +29,7 @@ class CastRequest extends FormRequest
             'username' => 'required|unique:accounts,username',
             'password' => 'required|min:8|confirmed',
             'name' => 'required|string',
-            'height' => 'numeric|min:100|max:500|nullable',
+            'height' => 'numeric|nullable',
             'blood_type' => 'numeric|min:0|max:8',
             'hobbit' => 'string|nullable',
             'type_person' => 'string|nullable',

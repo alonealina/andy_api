@@ -68,7 +68,7 @@ class CastController extends Controller
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => $cast
+            'data' => $this->castService->show($cast)
         ]);
     }
 

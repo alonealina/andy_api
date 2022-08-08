@@ -4,13 +4,13 @@ namespace App\Services;
 
 use App\Models\Information;
 use App\Repositories\InformationRepository;
+use App\Traits\CheckBranch;
 use App\Traits\SaveImagesUpload;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class InformationService
 {
-    use SaveImagesUpload;
+    use SaveImagesUpload, CheckBranch;
 
     /**
      * @var InformationRepository
@@ -57,12 +57,23 @@ class InformationService
     }
 
     /**
-     * @param $params
+     * @param Information $information
+     * @return array|Information
+     */
+    public function show(Information $information): array
+    {
+        $this->checkBranch($information);
+        return $information->toArray();
+    }
+
+    /**
+     * @param $data
      * @param Information $information
      * @return Information|null
      */
     public function update($data, Information $information): ?Information
     {
+        $this->checkBranch($information);
         DB::beginTransaction();
         try {
             $information->update($data);
@@ -85,6 +96,7 @@ class InformationService
      */
     public function destroy(Information $information): ?Information
     {
+        $this->checkBranch($information);
         DB::beginTransaction();
         try {
             $information->delete();

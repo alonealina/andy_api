@@ -22,6 +22,7 @@ class AccountRepository extends BaseRepository
     public function getList()
     {
         return $this->model->belongsToBranch()
+            ->whereRole(AccountRole::CUSTOMER)
             ->orderBy('created_at', 'DESC')
             ->get()->toArray();
     }
