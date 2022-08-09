@@ -238,7 +238,7 @@ class BranchService
         DB::beginTransaction();
         try {
             $branch->maintenances()->where('role', $data['role'])->update($data);
-            if ($data['maintain_status'] == MaintainStatus::ACTIVE) {
+            if ($data['maintain_status'] == MaintainStatus::MAINTAIN) {
                 $this->createMaintainHistories($branch->id, $data);
             }
             DB::commit();
@@ -261,7 +261,7 @@ class BranchService
             $branchIds = $data['branch_ids'];
             unset($data['branch_ids']);
             $this->maintenanceRepository->setMaintain($branchIds, $data);
-            if ($data['maintain_status'] == MaintainStatus::ACTIVE) {
+            if ($data['maintain_status'] == MaintainStatus::MAINTAIN) {
                 $this->createMaintainHistories($branchIds, $data);
             }
             DB::commit();
