@@ -11,6 +11,7 @@ use App\Models\News;
 use App\Repositories\AccountRepository;
 use App\Repositories\BackgroundRepository;
 use App\Repositories\BranchRepository;
+use App\Repositories\MaintainHistoryRepository;
 use App\Repositories\MaintenanceRepository;
 use App\Traits\CheckBranch;
 use App\Traits\SaveImagesUpload;
@@ -47,21 +48,29 @@ class BranchService
     protected $backgroundRepository;
 
     /**
+     * @var MaintainHistoryRepository
+     */
+    protected $maintainHistoryRepository;
+
+    /**
      * @param BranchRepository $branchRepository
      * @param AccountRepository $accountRepository
      * @param MaintenanceRepository $maintenanceRepository
      * @param BackgroundRepository $backgroundRepository
+     * @param MaintainHistoryRepository $maintainHistoryRepository
      */
     public function __construct(
         BranchRepository $branchRepository,
         AccountRepository $accountRepository,
         MaintenanceRepository $maintenanceRepository,
-        BackgroundRepository $backgroundRepository
+        BackgroundRepository $backgroundRepository,
+        MaintainHistoryRepository $maintainHistoryRepository
     ) {
         $this->branchRepository = $branchRepository;
         $this->accountRepository = $accountRepository;
         $this->maintenanceRepository = $maintenanceRepository;
         $this->backgroundRepository = $backgroundRepository;
+        $this->maintainHistoryRepository = $maintainHistoryRepository;
     }
 
     /**
@@ -222,23 +231,46 @@ class BranchService
     /**
      * @param $data
      * @param Branch $branch
-     * @return int
+     * @return bool|null
      */
-    public function setMaintainBranch($data, Branch $branch): int
+    public function setMaintainBranch($data, Branch $branch): ?bool
     {
-        return $branch->maintenances()->where('role', $data['role'])
-            ->update($data);
+        DB::beginTransaction();
+        try {
+            $branch->maintenances()->where('role', $data['role'])->update($data);
+            if ($data['maintain_status'] == MaintainStatus::ACTIVE) {
+                $this->createMaintainHistories($branch->id, $data);
+            }
+            DB::commit();
+            return true;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return false;
+        }
     }
 
     /**
      * @param $data
-     * @return mixed
+     * @return bool|null
      */
-    public function setMaintain($data)
+    public function setMaintain($data): ?bool
     {
-        $branchIds = $data['branch_ids'];
-        unset($data['branch_ids']);
-        return $this->maintenanceRepository->setMaintain($branchIds, $data);
+        DB::beginTransaction();
+        try {
+            $branchIds = $data['branch_ids'];
+            unset($data['branch_ids']);
+            $this->maintenanceRepository->setMaintain($branchIds, $data);
+            if ($data['maintain_status'] == MaintainStatus::ACTIVE) {
+                $this->createMaintainHistories($branchIds, $data);
+            }
+            DB::commit();
+            return true;
+        } catch (\Exception $exception) {
+            report($exception);
+            DB::rollBack();
+            return false;
+        }
     }
 
     /**
@@ -250,5 +282,21 @@ class BranchService
         $branchesIds = $news->branches()->pluck('branches.id')->toArray();
         return in_array(Auth::user()->branch_id, $branchesIds) ?
             $news : abort(403, __('messages.common.forbidden'));
+    }
+
+    /**
+     * @param $branchIds
+     * @param $data
+     * @return void
+     */
+    public function createMaintainHistories($branchIds, $data)
+    {
+        $this->maintainHistoryRepository->create([
+            'branch_ids' => $branchIds,
+            'role' => $data['role'],
+            'message' => empty($data['message']) ? null : $data['message'],
+            'start_time' => $data['start_time'],
+            'end_time' => $data['end_time']
+        ]);
     }
 }
