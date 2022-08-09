@@ -106,7 +106,7 @@ class BranchService
             saveImagesToDisk(PositionBackground::TOP1, $data['images'][0]));
             $this->accountRepository->create([
                 'branch_id' => $newRecord->id,
-                'username' => $data['admin_id'],
+                'username' => $data['admin_username'],
                 'password' => Hash::make($data['admin_password']),
                 'role' => AccountRole::ADMIN,
                 'name' => "Admin " . $data['name'],
@@ -169,7 +169,7 @@ class BranchService
                 AccountRole::SUPER_ADMIN)->first();
             $branch->update($data);
             $branch->getAdmin()->update([
-                'username' => $data['admin_id'],
+                'username' => $data['admin_username'],
                 'password' => Hash::make($data['admin_password']),
             ]);
             if (isset($data['images'][0])) {
