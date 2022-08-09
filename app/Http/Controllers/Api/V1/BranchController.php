@@ -158,7 +158,6 @@ class BranchController extends Controller
         ], 400);
     }
 
-
     /**
      * @param MaintainRequest $request
      * @return JsonResponse

@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\V1\BackgroundController;
 use App\Http\Controllers\Api\V1\SystemInformationController;
 use App\Http\Controllers\Api\V1\TurnoverController;
 use App\Http\Controllers\Api\V1\NotificationController;
+use App\Http\Controllers\Api\V1\MaintainHistoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -93,14 +94,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
                 Route::post('/{drink}/delete', [DrinkController::class, 'destroy']);
             });
             Route::get('/{drink}', [DrinkController::class, 'show']);
-        });
-
-        Route::prefix('news')->middleware('role:SUPER_ADMIN')->group(function () {
-            Route::get('/', [NewsController::class, 'index']);
-            Route::get('/{news}', [NewsController::class, 'show']);
-            Route::post('/', [NewsController::class, 'store']);
-            Route::post('/{news}', [NewsController::class, 'update']);
-            Route::post('/{news}/delete', [NewsController::class, 'destroy']);
         });
 
         Route::prefix('information')->group(function () {
@@ -179,6 +172,19 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         });
 
         Route::post('/sos', [AccountController::class, 'callSOS'])->middleware('role:CUSTOMER');
+    });
+
+    Route::prefix('news')->middleware('role:SUPER_ADMIN')->group(function () {
+        Route::get('/', [NewsController::class, 'index']);
+        Route::get('/{news}', [NewsController::class, 'show']);
+        Route::post('/', [NewsController::class, 'store']);
+        Route::post('/{news}', [NewsController::class, 'update']);
+        Route::post('/{news}/delete', [NewsController::class, 'destroy']);
+    });
+
+    Route::prefix('maintenances-histories')->middleware('role:SUPER_ADMIN')->group(function () {
+        Route::get('/', [MaintainHistoryController::class, 'index']);
+        Route::get('/{maintainHistory}', [MaintainHistoryController::class, 'show']);
     });
 
     Route::prefix('branches')->middleware('role:ADMIN,SUPER_ADMIN')->group(function () {
