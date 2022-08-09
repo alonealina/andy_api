@@ -34,7 +34,7 @@ class BranchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'admin_id' => 'required|unique:accounts,username',
+            'admin_username' => 'required|unique:accounts,username',
             'admin_password' => 'required|min:8',
             'name' => 'required|string',
             'tablet_count' => 'required|numeric',

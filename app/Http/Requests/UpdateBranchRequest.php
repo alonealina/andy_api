@@ -34,7 +34,7 @@ class UpdateBranchRequest extends FormRequest
     public function rules(): array
     {
         $rule = [
-            'admin_id' => 'required|unique:accounts,username,' . $this->branch->admin_id,
+            'admin_username' => 'required|unique:accounts,username,' . $this->branch->admin_id,
             'admin_password' => 'required|min:8',
             'name' => 'required|string',
             'tablet_count' => 'required|numeric',
