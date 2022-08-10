@@ -2,16 +2,27 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\MaintainStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Models\Maintenance;
+use App\Services\MaintenanceService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     /**
+     * @var MaintenanceService
+     */
+    protected $maintenanceService;
+
+    /**
      * Construct function
      */
-    public function __construct() {
+    public function __construct(MaintenanceService $maintenanceService)
+    {
+        $this->maintenanceService = $maintenanceService;
         $this->middleware('auth:api', ['except' => ['login']]);
     }
 
@@ -23,10 +34,10 @@ class AuthController extends Controller
     {
         $credentials = $request->only('username', 'password');
 
-        if (! $token = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json(['message' => __('messages.users.login_fail')], 401);
         }
-
+        $this->checkMaintain();
         return $this->createNewToken($token);
     }
 
@@ -68,5 +79,26 @@ class AuthController extends Controller
             'token_type' => 'Bearer Token',
             'account' => auth()->user()
         ]);
+    }
+
+    /**
+     * @param $user
+     * @return void
+     */
+    protected function checkMaintain()
+    {
+        $maintainStatus = $this->maintenanceService->getMaintainStatus();
+
+        if ($maintainStatus->maintain_status == MaintainStatus::MAINTAIN) {
+            auth()->logout();
+
+            abort(503, json_encode([
+                'data' => [
+                    'message' => $maintainStatus->message,
+                    'start_time' => $maintainStatus->start_time,
+                    'end_time' => $maintainStatus->end_time,
+                ]
+            ]));
+        }
     }
 }
