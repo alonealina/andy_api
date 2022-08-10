@@ -71,7 +71,7 @@ class StoreController extends Controller
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => $store
+            'data' => $this->storeService->show($store)
         ]);
     }
 

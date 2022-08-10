@@ -39,6 +39,16 @@ class StoreService
     }
 
     /**
+     * @param Store $store
+     * @return Store
+     */
+    public function show(Store $store): Store
+    {
+        $this->checkBranch($store);
+        return $store;
+    }
+
+    /**
      * @param array $data
      * @return mixed|null
      */
@@ -64,6 +74,7 @@ class StoreService
      */
     public function update(array $data, Store $store): ?Store
     {
+        $this->checkBranch($store);
         DB::beginTransaction();
         try {
             $store->update($data);
@@ -83,6 +94,7 @@ class StoreService
      */
     public function destroy(Store $store): ?Store
     {
+        $this->checkBranch($store);
         DB::beginTransaction();
         try {
             $store->delete();
