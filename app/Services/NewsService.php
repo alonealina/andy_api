@@ -35,7 +35,7 @@ class NewsService
      */
     public function show(News $news): array
     {
-        return $news->with('branches:id,name')->get()->toArray();
+        return $news->load('branches:id,name')->toArray();
     }
 
     /**
