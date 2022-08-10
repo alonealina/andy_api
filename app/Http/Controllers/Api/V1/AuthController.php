@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\AccountRole;
 use App\Enums\MaintainStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
@@ -82,14 +83,15 @@ class AuthController extends Controller
     }
 
     /**
-     * @param $user
-     * @return void
+     * @return bool|void
      */
     protected function checkMaintain()
     {
+        if (Auth::user()->role->value == AccountRole::SUPER_ADMIN) {
+            return true;
+        }
         $maintainStatus = $this->maintenanceService->getMaintainStatus();
-
-        if (isset($maintainStatus) && $maintainStatus->maintain_status == MaintainStatus::MAINTAIN) {
+        if ($maintainStatus->maintain_status == MaintainStatus::MAINTAIN) {
             auth()->logout();
 
             abort(503, json_encode([
