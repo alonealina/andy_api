@@ -89,7 +89,7 @@ class AuthController extends Controller
     {
         $maintainStatus = $this->maintenanceService->getMaintainStatus();
 
-        if ($maintainStatus->maintain_status == MaintainStatus::MAINTAIN) {
+        if (isset($maintainStatus) && $maintainStatus->maintain_status == MaintainStatus::MAINTAIN) {
             auth()->logout();
 
             abort(503, json_encode([
