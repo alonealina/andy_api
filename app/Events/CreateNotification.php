@@ -52,9 +52,9 @@ class CreateNotification implements ShouldBroadcast
      *
      * @return Channel
      */
-    public function broadcastOn()
+    public function broadcastOn(): Channel
     {
-        return new PrivateChannel('notification.' . Auth::user()->getAdminBranch()->id);
+        return new Channel('notification.' . Auth::user()->getAdminBranch()->id);
     }
 
     /**
