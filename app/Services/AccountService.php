@@ -96,7 +96,6 @@ class AccountService
     {
         event(new CreateNotification(NotificationType::SOS));
         return $this->notificationRepository->create([
-            'id' => Str::uuid(),
             'account_id' => Auth::user()->getAdminBranch()->id,
             'type' => NotificationType::SOS,
             'notifiable_type' => Account::class,
