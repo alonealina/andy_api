@@ -35,7 +35,7 @@ class OrderDetailService
     public function __construct(
         OrderDetailRepository $orderDetailRepository,
         OrderRepository $orderRepository
-    ){
+    ) {
         $this->orderDetailRepository = $orderDetailRepository;
         $this->orderRepository = $orderRepository;
     }
@@ -60,10 +60,12 @@ class OrderDetailService
         try {
             $orderUnpaid = $this->orderRepository->getOderUnpaidByAccount();
             $newOrder = new Collection();
-            if (!empty($params['foods']))
+            if (!empty($params['foods'])) {
                 $this->storeOrderDetails($orderUnpaid, $newOrder, Food::class, $params['foods']);
-            if (!empty($params['drinks']))
+            }
+            if (!empty($params['drinks'])) {
                 $this->storeOrderDetails($orderUnpaid, $newOrder, Drink::class, $params['drinks']);
+            }
             $newOrder = $newOrder->load('orderable:id,name')->toArray();
             event(new CreateNotification(NotificationType::NEW_ORDER, $newOrder));
             $admin->notifications()->create([
@@ -87,8 +89,10 @@ class OrderDetailService
      * @param $arrayData
      * @return void
      */
-    public function storeOrderDetails(Order $order, &$collection,  $className, $arrayData)
+    public function storeOrderDetails(Order $order, &$collection, $className, $arrayData)
     {
+        $record = $className::whereIn('id', array_column($arrayData, 'id'))->onlyTrashed()->count();
+        abort_if($record != 0, 400, 'カートに無効商品があります');
         foreach ($arrayData as $item) {
             $collection->push($order->orderDetails()->create([
                 'orderable_id' => $item['id'],
