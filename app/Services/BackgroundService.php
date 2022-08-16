@@ -51,9 +51,7 @@ class BackgroundService
                     $newImage['file']));
             }
         }
-        if (!empty($saveImages)) {
-            $this->deleteImagesCloud($oldImages->whereNotIn('file_name', $saveImages));
-        }
+        $this->deleteImagesCloud($oldImages->whereNotIn('file_name', $saveImages));
         return true;
     }
 
