@@ -57,6 +57,14 @@ class Branch extends Model
     }
 
     /**
+     * @return HasMany
+     */
+    public function drinkcategories(): HasMany
+    {
+        return $this->hasMany(DrinkCategory::class);
+    }
+
+    /**
      * Get Admin
      *
      * @return Model|HasMany|object|null

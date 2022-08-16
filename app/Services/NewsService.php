@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Branch;
 use App\Models\News;
 use App\Repositories\NewsRepository;
 use Illuminate\Support\Facades\DB;
@@ -64,9 +65,9 @@ class NewsService
      * @param News $news
      * @return mixed|null
      */
-    public function delete(News $news)
+    public function delete(Branch $branch, News $news)
     {
-        $news->delete();
+        $branch->news()->detach($news->id);
         return $news;
     }
 

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\AccountRole;
+use App\Enums\DrinkCategoryBaseName;
 use App\Enums\MaintainRole;
 use App\Enums\MaintainStatus;
 use App\Enums\PositionBackground;
@@ -87,6 +88,15 @@ class BranchService
      * @param Branch $branch
      * @return array
      */
+    public function show(Branch $branch): array
+    {
+        return $this->branchRepository->show($branch);
+    }
+
+    /**
+     * @param Branch $branch
+     * @return array
+     */
     public function getListNews(Branch $branch): array
     {
         $this->checkBranch($branch);
@@ -111,6 +121,7 @@ class BranchService
                 'role' => AccountRole::ADMIN,
                 'name' => "Admin " . $data['name'],
             ]);
+            $this->createManyCategory($newRecord);
             $this->createManyMaintain($newRecord);
             DB::commit();
             return $newRecord;
@@ -136,6 +147,43 @@ class BranchService
             'position' => $position,
             'role_background' => AccountRole::SUPER_ADMIN,
         ];
+    }
+
+    /**
+     * @param Branch $branch
+     * @return void
+     */
+    public function createManyCategory(Branch $branch)
+    {
+        $branch->drinkcategories()->createMany([
+            [
+                'name' => DrinkCategoryBaseName::CHAMPAGNE
+            ],
+            [
+                'name' => DrinkCategoryBaseName::WINE
+            ],
+            [
+                'name' => DrinkCategoryBaseName::BRANDY_WHISKEY
+            ],
+            [
+                'name' => DrinkCategoryBaseName::SHOCHU
+            ],
+            [
+                'name' => DrinkCategoryBaseName::SAKE
+            ],
+            [
+                'name' => DrinkCategoryBaseName::COCKTAIL_SOUR
+            ],
+            [
+                'name' => DrinkCategoryBaseName::SOFT_DRINK
+            ],
+            [
+                'name' => DrinkCategoryBaseName::SPLIT
+            ],
+            [
+                'name' => DrinkCategoryBaseName::OTHER
+            ]
+        ]);
     }
 
     /**
@@ -210,6 +258,7 @@ class BranchService
         DB::beginTransaction();
         try {
             $branch->delete();
+            $branch->accounts()->delete();
             $this->deleteImages($branch);
             DB::commit();
             return $branch;

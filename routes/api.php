@@ -179,7 +179,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::get('/{news}', [NewsController::class, 'show']);
         Route::post('/', [NewsController::class, 'store']);
         Route::post('/{news}', [NewsController::class, 'update']);
-        Route::post('/{news}/delete', [NewsController::class, 'destroy']);
+        Route::post('/{branch}/{news}/delete', [NewsController::class, 'destroy']);
     });
 
     Route::prefix('maintenances-histories')->middleware('role:SUPER_ADMIN')->group(function () {

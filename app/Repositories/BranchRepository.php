@@ -22,10 +22,24 @@ class BranchRepository extends BaseRepository
      */
     public function getList()
     {
-        return $this->model->with(['backgrounds' => function ($query) {
-            $query->select(['branch_id','file_name'])->where('position', PositionBackground::TOP1);
-        }])
-            ->get()->toArray();
+        return $this->model->with([
+            'backgrounds' => function ($query) {
+                $query->select(['branch_id', 'file_name'])->where('position', PositionBackground::TOP1);
+            }
+        ])->get()->toArray();
+    }
+
+    /**
+     * @param Branch $branch
+     * @return array
+     */
+    public function show(Branch $branch): array
+    {
+        return $branch->load([
+            'backgrounds' => function ($query) {
+                $query->select(['branch_id', 'file_name'])->where('position', PositionBackground::TOP1);
+            }
+        ])->toArray();
     }
 
     /**
@@ -36,8 +50,8 @@ class BranchRepository extends BaseRepository
         return $this->model->with('maintenances:branch_id,role,maintain_status,message,start_time,end_time')
             ->select(['id', 'name'])
             ->get()->map(function ($item) {
-            $item->maintain = $item->maintenances->keyBy('role')->toArray();
-            return $item;
-        });
+                $item->maintain = $item->maintenances->keyBy('role')->toArray();
+                return $item;
+            });
     }
 }
