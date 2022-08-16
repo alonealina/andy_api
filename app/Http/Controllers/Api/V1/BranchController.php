@@ -108,7 +108,7 @@ class BranchController extends Controller
     {
         return response()->json([
             'message' => MessageStatus::SUCCESS,
-            'data' => $branch->toArray(),
+            'data' => $this->branchService->show($branch),
         ]);
     }
 
