@@ -348,4 +348,15 @@ class BranchService
             'end_time' => $data['end_time']
         ]);
     }
+
+    /**
+     * @param Branch $branch
+     * @param News $news
+     * @return News
+     */
+    public function deleteNews(Branch $branch, News $news): News
+    {
+        $branch->news()->detach($news->id);
+        return $news;
+    }
 }

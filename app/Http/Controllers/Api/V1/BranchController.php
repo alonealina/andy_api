@@ -174,4 +174,17 @@ class BranchController extends Controller
             'message' => MessageStatus::ERROR
         ], 400);
     }
+
+    /**
+     * @param Branch $branch
+     * @param News $news
+     * @return JsonResponse
+     */
+    public function destroyNews(Branch $branch, News $news): JsonResponse
+    {
+        return response()->json([
+            'message' => MessageStatus::SUCCESS,
+            'data' => $this->branchService->deleteNews($branch, $news)
+        ]);
+    }
 }
