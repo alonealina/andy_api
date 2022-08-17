@@ -35,8 +35,8 @@ class CheckMaintain
            abort(503, json_encode([
                'data' => [
                    'message' => $maintainStatus->message,
-                   'start_time' => $maintainStatus->start_time,
-                   'end_time' => $maintainStatus->end_time,
+                   'start_time' => $maintainStatus->start_time->format('Y-m-d H:i'),
+                   'end_time' => $maintainStatus->end_time->format('Y-m-d H:i')
                ]
            ]));
        }

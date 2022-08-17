@@ -28,7 +28,7 @@ class OrderDetailRepository extends BaseRepository
                  $query->where('branch_id', Auth::user()->branch_id);
              })
              ->whereIn('status', [OrderDetailStatus::PENDING, OrderDetailStatus::DONE, OrderDetailStatus::CLOSE])
-             ->get()->sortBy('account.id')->values()
+             ->get()->sortBy('account.id')->sortBy('created_at')->values()
              ->toArray();
     }
 
