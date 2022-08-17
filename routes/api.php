@@ -179,7 +179,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::get('/{news}', [NewsController::class, 'show']);
         Route::post('/', [NewsController::class, 'store']);
         Route::post('/{news}', [NewsController::class, 'update']);
-        Route::post('/{branch}/{news}/delete', [NewsController::class, 'destroy']);
+        Route::post('/{news}/delete', [NewsController::class, 'destroy']);
     });
 
     Route::prefix('maintenances-histories')->middleware('role:SUPER_ADMIN')->group(function () {
@@ -197,6 +197,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
             Route::post('/{branch}', [BranchController::class, 'update']);
             Route::post('/{branch}/delete', [BranchController::class, 'destroy']);
             Route::post('/{branch}/maintain', [BranchController::class, 'setMaintainBranch']);
+            Route::post('/{branch}/{news}/delete', [BranchController::class, 'destroyNews']);
         });
         Route::get('/{branch}/news', [BranchController::class, 'getListNews']);
         Route::get('news/{news}', [BranchController::class, 'showNews']);

@@ -63,11 +63,11 @@ class NewsService
 
     /**
      * @param News $news
-     * @return mixed|null
+     * @return News
      */
-    public function delete(Branch $branch, News $news)
+    public function delete(News $news): News
     {
-        $branch->news()->detach($news->id);
+        $news->delete();
         return $news;
     }
 
