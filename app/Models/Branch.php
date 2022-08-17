@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\HigherOrderBuilderProxy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -54,6 +55,14 @@ class Branch extends Model
     public function maintenances(): HasMany
     {
         return $this->hasMany(Maintenance::class);
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function systeminformation(): HasOne
+    {
+        return $this->hasOne(SystemInformation::class);
     }
 
     /**
