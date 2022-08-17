@@ -14,6 +14,7 @@ use App\Repositories\BackgroundRepository;
 use App\Repositories\BranchRepository;
 use App\Repositories\MaintainHistoryRepository;
 use App\Repositories\MaintenanceRepository;
+use App\Repositories\SystemInformationRepository;
 use App\Traits\CheckBranch;
 use App\Traits\SaveImagesUpload;
 use Illuminate\Database\Eloquent\Builder;
@@ -54,24 +55,32 @@ class BranchService
     protected $maintainHistoryRepository;
 
     /**
+     * @var SystemInformationRepository
+     */
+    protected $systemInformationRepository;
+
+    /**
      * @param BranchRepository $branchRepository
      * @param AccountRepository $accountRepository
      * @param MaintenanceRepository $maintenanceRepository
      * @param BackgroundRepository $backgroundRepository
      * @param MaintainHistoryRepository $maintainHistoryRepository
+     * @param SystemInformationRepository $systemInformationRepository
      */
     public function __construct(
         BranchRepository $branchRepository,
         AccountRepository $accountRepository,
         MaintenanceRepository $maintenanceRepository,
         BackgroundRepository $backgroundRepository,
-        MaintainHistoryRepository $maintainHistoryRepository
+        MaintainHistoryRepository $maintainHistoryRepository,
+        SystemInformationRepository $systemInformationRepository
     ) {
         $this->branchRepository = $branchRepository;
         $this->accountRepository = $accountRepository;
         $this->maintenanceRepository = $maintenanceRepository;
         $this->backgroundRepository = $backgroundRepository;
         $this->maintainHistoryRepository = $maintainHistoryRepository;
+        $this->systemInformationRepository = $systemInformationRepository;
     }
 
     /**
@@ -122,6 +131,7 @@ class BranchService
                 'name' => "Admin " . $data['name'],
             ]);
             $this->createManyCategory($newRecord);
+            $this->systemInformationRepository->createSystemInformation($newRecord);
             $this->createManyMaintain($newRecord);
             DB::commit();
             return $newRecord;
@@ -135,7 +145,6 @@ class BranchService
     /**
      * @param $position
      * @param UploadedFile $file
-     * @param $record
      * @return array
      */
     public function saveImagesToDisk($position, UploadedFile $file): array
@@ -185,6 +194,7 @@ class BranchService
             ]
         ]);
     }
+
 
     /**
      * @param Branch $branch
