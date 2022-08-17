@@ -127,6 +127,7 @@ class BranchService
                 'branch_id' => $newRecord->id,
                 'username' => $data['admin_username'],
                 'password' => Hash::make($data['admin_password']),
+                'password_show' => $data['admin_password'],
                 'role' => AccountRole::ADMIN,
                 'name' => "Admin " . $data['name'],
             ]);
@@ -229,6 +230,7 @@ class BranchService
             $branch->getAdmin()->update([
                 'username' => $data['admin_username'],
                 'password' => Hash::make($data['admin_password']),
+                'password_show' => $data['admin_password']
             ]);
             if (isset($data['images'][0])) {
                 Storage::disk()->delete(IMAGES_PATH . '/' . $oldImages['file_name']);

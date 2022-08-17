@@ -66,9 +66,7 @@ class OrderService
         try {
             $order->status = $data['status'];
             if ($data['status'] == OrderStatus::CALL_PAID || $data['status'] == OrderStatus::PAID) {
-                $order->total_amount = $order->orderDetails()
-                    ->where('status', '<>', OrderDetailStatus::PENDING)
-                    ->sum('amount');
+                $order->total_amount = $order->orderDetails()->sum('amount');
             }
             $order->save();
             if ($data['status'] == OrderStatus::CALL_PAID) {
