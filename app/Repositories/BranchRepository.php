@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\AccountRole;
 use App\Enums\PositionBackground;
 use App\Models\Branch;
 use Illuminate\Database\Eloquent\Builder;
@@ -38,6 +39,10 @@ class BranchRepository extends BaseRepository
         return $branch->load([
             'backgrounds' => function ($query) {
                 $query->select(['branch_id', 'file_name'])->where('position', PositionBackground::TOP1);
+            }
+        ])->load([
+            'accounts' => function ($query) {
+                $query->select(['branch_id', 'password_show'])->where('role', AccountRole::ADMIN);
             }
         ])->toArray();
     }
