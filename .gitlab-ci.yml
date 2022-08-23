@@ -21,7 +21,6 @@ DeployDev:
   \n\n" > ~/.ssh/config'
     - chmod go-wrx ~/.ssh
     - chmod +x -R .platform/hooks
-    - composer global require hirak/prestissimo -q
     - composer require --dev knuckleswtf/scribe
     - composer install --ignore-platform-reqs --no-scripts -q && composer dump-autoload -q
     - echo "$DEV_DEPLOY_ENV_FILE" > .env && echo "OK" > public/health.html
@@ -46,7 +45,6 @@ DeployTest:
   \n\n" > ~/.ssh/config'
     - chmod go-wrx ~/.ssh
     - chmod +x -R .platform/hooks
-    - composer global require hirak/prestissimo -q
     - composer require --dev knuckleswtf/scribe
     - composer install --ignore-platform-reqs --no-scripts -q && composer dump-autoload -q
     - echo "$TEST_DEPLOY_ENV_FILE" > .env && echo "OK" > public/health.html
@@ -71,7 +69,6 @@ DeployStaging:
   \n\n" > ~/.ssh/config'
     - chmod go-wrx ~/.ssh
     - chmod +x -R .platform/hooks
-    - composer global require hirak/prestissimo -q
     - composer require --dev knuckleswtf/scribe -q
     - composer install --ignore-platform-reqs --no-scripts -q && composer dump-autoload -q
     - echo "$STG_DEPLOY_ENV_FILE" > .env && echo "OK" > public/health.html
