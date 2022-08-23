@@ -21,7 +21,7 @@ DeployDev:
   \n\n" > ~/.ssh/config'
     - chmod go-wrx ~/.ssh
     - chmod +x -R .platform/hooks
-    - composer global require hirak/prestissimo
+    - composer global require hirak/prestissimo -q
     - composer require --dev knuckleswtf/scribe
     - composer install --ignore-platform-reqs --no-scripts -q && composer dump-autoload -q
     - echo "$DEV_DEPLOY_ENV_FILE" > .env && echo "OK" > public/health.html
