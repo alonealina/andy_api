@@ -19,6 +19,7 @@ class CastSeeder extends Seeder
      */
     public function run()
     {
+        Cast::truncate();
         $faker = Factory::create();
         $branchIds = Branch::pluck('id')->toArray();
 

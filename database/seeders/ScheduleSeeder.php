@@ -15,6 +15,7 @@ class ScheduleSeeder extends Seeder
      */
     public function run()
     {
+        Schedule::truncate();
         $castIds = Cast::pluck('id')->toArray();
         foreach ($castIds as $castId) {
             for ($i=1; $i<28; $i++) {

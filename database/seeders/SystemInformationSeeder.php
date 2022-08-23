@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Branch;
 use App\Models\SystemInformation;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class SystemInformationSeeder extends Seeder
 {
@@ -15,6 +16,7 @@ class SystemInformationSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('system_information')->truncate();
         $branchIds = Branch::pluck('id')->toArray();
         foreach ($branchIds as $branchId) {
             SystemInformation::create([

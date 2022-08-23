@@ -21,7 +21,7 @@ class AccountSeeder extends Seeder
         \App\Models\Account::create([
             'branch_id' => 0,
             'username' => 'super_admin',
-            'password' => Hash::make('L63K7B7QxpE7j4n'),
+            'password' => Hash::make('andysuperadmin'),
             'role' => AccountRole::SUPER_ADMIN,
             'name' => 'Super Admin',
             'remember_token' => Str::random(10),
@@ -30,7 +30,7 @@ class AccountSeeder extends Seeder
             \App\Models\Account::create([
                 'branch_id' => $branchId,
                 'username' => 'admin_branch_' . $branchId,
-                'password' => Hash::make('TvdaPeQmJ6p7LTj'),
+                'password' => Hash::make('andyadmin'),
                 'role' => AccountRole::ADMIN,
                 'name' => 'Admin ' . $branchId,
                 'remember_token' => Str::random(10),
@@ -39,7 +39,7 @@ class AccountSeeder extends Seeder
                 \App\Models\Account::create([
                     'branch_id' => $branchId,
                     'username' =>'branch_' . $branchId . '_room_' . $i,
-                    'password' => Hash::make('2Qq2fG9EjQGY2qP'),
+                    'password' => Hash::make('andyroom'),
                     'role' => AccountRole::CUSTOMER,
                     'name' => 'Branch ' . $branchId . ' Room ' . $i,
                     'remember_token' => Str::random(10),
