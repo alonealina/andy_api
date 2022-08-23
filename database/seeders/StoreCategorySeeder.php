@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\StoreCategory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class StoreCategorySeeder extends Seeder
 {
@@ -14,11 +15,28 @@ class StoreCategorySeeder extends Seeder
      */
     public function run()
     {
-        $arrayName = ['BAR', 'LOUNGE', '居酒屋', 'CAFE', '焼肉', '寿司', '和食', '韓国', '中華', 'インド', 'フレンチ',
-            'イタリアン', 'スイーツ', 'その他食事', 'カラオケ'];
-        foreach ($arrayName as $name) {
+        DB::table('store_categories')->truncate();
+        DB::table('images')->truncate();
+        $arrayName = ['BAR' => 'bar.jpg',
+            'LOUNGE' => 'lounge.jpg',
+            '居酒屋' => 'izakaya.jpg',
+            'CAFE' => 'cafe.jpg',
+            '焼肉' => 'yakiniku.jpg',
+            '寿司' => 'sushi.jpg',
+            '和食' => 'japanesefood.jpg',
+            '韓国' => 'koreanfood.jpg',
+            '中華' => 'chinesefood.jpg',
+            'インド' => 'india.jpg',
+            'フレンチ' => 'french.jpg',
+            'イタリアン' => 'italian.jpg',
+            'スイーツ' => 'sweets.jpg',
+            'その他食事' => 'food.jpg',
+            'カラオケ' => 'karaoke.jpg'];
+        foreach ($arrayName as $key => $value) {
             StoreCategory::create([
-                'name' => $name
+                'name' => $key
+            ])->images()->create([
+                'file_name' => $value
             ]);
         }
     }

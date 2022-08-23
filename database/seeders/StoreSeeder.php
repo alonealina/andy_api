@@ -8,6 +8,7 @@ use App\Models\Store;
 use App\Models\StoreCategory;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class StoreSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class StoreSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('stores')->truncate();
         $branchIds = Branch::pluck('id')->toArray();
         $categoriesId = StoreCategory::pluck('id')->toArray();
         $faker = Factory::create();

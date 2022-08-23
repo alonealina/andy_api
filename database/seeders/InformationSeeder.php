@@ -16,6 +16,7 @@ class InformationSeeder extends Seeder
      */
     public function run()
     {
+        Information::truncate();
         $faker = Factory::create();
         $branchIds = Branch::pluck('id')->toArray();
 
