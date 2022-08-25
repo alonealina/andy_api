@@ -37,7 +37,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'v1'], function () {
     Route::group(['middleware:auth'], function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/refresh', [AuthController::class, 'refresh']);
-        Route::get('/user-profile', [AuthController::class, 'userProfile']);
+        Route::get('/user-profile', [AuthController::class, 'userProfile'])->middleware('check_maintain');
     });
 });
 
