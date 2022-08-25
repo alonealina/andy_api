@@ -20,16 +20,16 @@ class CastSeeder extends Seeder
     public function run()
     {
         Cast::truncate();
+        \App\Models\Account::whereRole(AccountRole::CAST)->forceDelete();
         $faker = Factory::create();
         $branchIds = Branch::pluck('id')->toArray();
-
         foreach ($branchIds as $branchId) {
-            for ($i = 0; $i < 50; $i++) {
+            for ($i = 0; $i < 30; $i++) {
                 $name = $faker->name();
                 $account = Account::create([
                     'branch_id' => $branchId,
-                    'username' => $faker->unique()->userName,
-                    'password' => Hash::make('12345678'),
+                    'username' => 'branch_' . $branchId . '_cast_' . $i,
+                    'password' => Hash::make('123456'),
                     'role' => AccountRole::CAST,
                     'name' => $name,
                 ]);
