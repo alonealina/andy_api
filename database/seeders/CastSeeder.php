@@ -29,7 +29,7 @@ class CastSeeder extends Seeder
                 $account = Account::create([
                     'branch_id' => $branchId,
                     'username' => 'branch_' . $branchId . '_cast_' . $i,
-                    'password' => Hash::make('123456'),
+                    'password' => Hash::make('12345678'),
                     'role' => AccountRole::CAST,
                     'name' => $name,
                 ]);
