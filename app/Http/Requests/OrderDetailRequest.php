@@ -42,7 +42,8 @@ class OrderDetailRequest extends FormRequest
             'drinks' => 'array',
             'drinks.*.id' => 'exists:drinks,id',
             'drinks.*.price' => 'exists:drinks,price',
-            'drinks.*.quantity' => 'numeric'
+            'drinks.*.quantity' => 'numeric',
+            'images.*' => 'mimes:jpg,jpeg,png|max:5000'
         ];
     }
 }

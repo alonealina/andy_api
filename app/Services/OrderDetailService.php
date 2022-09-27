@@ -11,6 +11,7 @@ use App\Models\Drink;
 use App\Models\Order;
 use App\Repositories\OrderDetailRepository;
 use App\Repositories\OrderRepository;
+use App\Traits\SaveImagesUpload;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\DB;
 
 class OrderDetailService
 {
+    use SaveImagesUpload;
+
     /**
      * @var OrderDetailRepository
      */
@@ -59,6 +62,7 @@ class OrderDetailService
         $admin = Auth::user()->getAdminBranch();
         try {
             $orderUnpaid = $this->orderRepository->getOderUnpaidByAccount();
+            $orderUnpaid->images()->createMany($this->storeImages($params));
             $newOrder = new Collection();
             if (!empty($params['foods'])) {
                 $this->storeOrderDetails($orderUnpaid, $newOrder, Food::class, $params['foods']);
