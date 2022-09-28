@@ -130,6 +130,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'v1', 'missing' => 'responseDa
         Route::prefix('order-details')->group(function () {
             Route::post('/', [OrderDetailController::class, 'store'])->middleware('role:CUSTOMER');
             Route::middleware('role:ADMIN')->group(function () {
+                Route::get('/history', [OrderDetailController::class, 'getListOrderHistory']);
                 Route::get('/pending', [OrderDetailController::class, 'getListPending']);
                 Route::get('/new', [OrderDetailController::class, 'getNewOrder']);
                 Route::post('/{orderDetail}', [OrderDetailController::class, 'update']);

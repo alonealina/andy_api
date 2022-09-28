@@ -136,4 +136,29 @@ class OrderDetailService
     {
         return $this->orderDetailRepository->getNewOrder();
     }
+
+    public function getListOrderHistory($params)
+    {
+        $params = $this->formatInputTime($params);
+        $data = $this->orderDetailRepository->getListOrderHistory($params)->toArray();
+        return [
+            'data' => $data['data'],
+            'currentPage' => $data['current_page'],
+            'total' => $data['total'],
+            'per_page' => $data['per_page'],
+        ];
+    }
+
+    public function formatInputTime($params)
+    {
+        if (isset($params['start_date'])) {
+            $params['start_date'] = date('Y-m-d H:i:s', strtotime($params['start_date']));
+        }
+
+        if (isset($params['end_date'])) {
+            $params['end_date'] = date('Y-m-d 23:59:59', strtotime($params['end_date']));
+        }
+
+        return $params;
+    }
 }
