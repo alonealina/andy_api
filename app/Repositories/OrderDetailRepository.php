@@ -49,4 +49,34 @@ class OrderDetailRepository extends BaseRepository
         ]);
         return $dataReturn;
     }
+
+    public function getListOrderHistory($params)
+    {
+        return $this->model
+            ->with('order:id,created_at')
+            ->with('orderable:id,name')
+            ->with('account:name')
+            ->when(isset($params['table_number']), function ($query) use ($params) {
+                $query->whereHas('account', function ($subQuery) use ($params) {
+                    $subQuery->where(function (Builder $q) use ($params) {
+                        $q->where('name', $params['table_number']);
+                    });
+                });
+            })
+            ->when(isset($params['start_date']), function ($query) use ($params) {
+                $query->whereHas('order', function ($subQuery) use ($params) {
+                    $subQuery->where(function (Builder $q) use ($params) {
+                        $q->where('created_at', '>=', $params['start_date']);
+                    });
+                });
+            })
+            ->when(isset($params['end_date']), function ($query) use ($params) {
+                $query->whereHas('order', function ($subQuery) use ($params) {
+                    $subQuery->where(function (Builder $q) use ($params) {
+                        $q->where('created_at', '<=', $params['end_date']);
+                    });
+                });
+            })
+            ->paginate(config('constants.per_page'), ['*'], 'page', $params['page']);
+    }
 }

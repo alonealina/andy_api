@@ -6,9 +6,11 @@ use App\Enums\MessageStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderDetailRequest;
 use App\Http\Requests\UpdateOrderDetailRequest;
+use App\Http\Requests\OrderHistoryRequest;
 use App\Models\OrderDetail;
 use App\Services\OrderDetailService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class OrderDetailController extends Controller
 {
@@ -82,4 +84,20 @@ class OrderDetailController extends Controller
             'data' => $this->orderDetailService->getNewOrder()
         ]);
     }
+
+    public function getListOrderHistory(OrderHistoryRequest $request) {
+        try {
+            $params = $request->all();
+            return response()->json([
+                'message' => MessageStatus::SUCCESS,
+                'data' => $this->orderDetailService->getListOrderHistory($params)
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json([
+                'message' => MessageStatus::ERROR
+            ], 500);
+        }
+    }
+
 }
