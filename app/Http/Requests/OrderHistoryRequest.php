@@ -26,7 +26,7 @@ class OrderHistoryRequest extends FormRequest
         return [
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|after_or_equal:start_date',
-            'table_number' => 'nullable|number',
+            'table_number' => 'nullable|numeric',
         ];
     }
 
