@@ -70,14 +70,13 @@ class OrderDetailService
             if (!empty($params['drinks'])) {
                 $this->storeOrderDetails($orderUnpaid, $newOrder, Drink::class, $params['drinks']);
             }
-            $newOrder = $newOrder->load('orderable:id,name')->toArray();
-            $newData = array_merge($newOrder, isset($params['images']) ? $params['images'] : []);
-            event(new CreateNotification(NotificationType::NEW_ORDER, $newData));
+            $newOrder = $newOrder->load('orderable:id,name')->load('order')->toArray();
+            event(new CreateNotification(NotificationType::NEW_ORDER, $newOrder));
             $admin->notifications()->create([
                 'type' => NotificationType::NEW_ORDER,
                 'notifiable_type' => Account::class,
                 'notifiable_id' => Auth::user()->id,
-                'data' => $newData
+                'data' => $newOrder
             ]);
             DB::commit();
             return true;

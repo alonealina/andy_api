@@ -59,7 +59,7 @@ class OrderDetailRepository extends BaseRepository
             ->when(isset($params['table_number']), function ($query) use ($params) {
                 $query->whereHas('account', function ($subQuery) use ($params) {
                     $subQuery->where(function (Builder $q) use ($params) {
-                        $q->where('name', $params['table_number']);
+                        $q->where('id', $params['table_number']);
                     });
                 });
             })
