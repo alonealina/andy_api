@@ -56,24 +56,24 @@ class OrderDetailRepository extends BaseRepository
             ->with('order:id,created_at')
             ->with('orderable:id,name')
             ->with('account:name')
-            ->when(isset($params['table_number']), function ($query) use ($params) {
+            ->when(isset($params['table_number']) && $params['table_number']!= 0, function ($query) use ($params) {
                 $query->whereHas('account', function ($subQuery) use ($params) {
                     $subQuery->where(function (Builder $q) use ($params) {
-                        $q->where('id', $params['table_number']);
+                        $q->where('accounts.id', $params['table_number']);
                     });
                 });
             })
             ->when(isset($params['start_date']), function ($query) use ($params) {
                 $query->whereHas('order', function ($subQuery) use ($params) {
                     $subQuery->where(function (Builder $q) use ($params) {
-                        $q->where('created_at', '>=', $params['start_date']);
+                        $q->where('orders.created_at', '>=', $params['start_date']);
                     });
                 });
             })
             ->when(isset($params['end_date']), function ($query) use ($params) {
                 $query->whereHas('order', function ($subQuery) use ($params) {
                     $subQuery->where(function (Builder $q) use ($params) {
-                        $q->where('created_at', '<=', $params['end_date']);
+                        $q->where('orders.created_at', '<=', $params['end_date']);
                     });
                 });
             })
