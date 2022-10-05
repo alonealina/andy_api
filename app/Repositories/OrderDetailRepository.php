@@ -56,6 +56,9 @@ class OrderDetailRepository extends BaseRepository
             ->with('order:id,created_at')
             ->with('orderable:id,name')
             ->with('account:name')
+            ->whereHas('account', function ($query) {
+                $query->where('branch_id', Auth::user()->branch_id);
+            })
             ->when(isset($params['table_number']) && $params['table_number']!= 0, function ($query) use ($params) {
                 $query->whereHas('account', function ($subQuery) use ($params) {
                     $subQuery->where(function (Builder $q) use ($params) {

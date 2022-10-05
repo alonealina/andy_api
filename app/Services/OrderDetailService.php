@@ -62,13 +62,15 @@ class OrderDetailService
         $admin = Auth::user()->getAdminBranch();
         try {
             $orderUnpaid = $this->orderRepository->getOderUnpaidByAccount();
-            $orderUnpaid->images()->createMany($this->storeImages($params));
             $newOrder = new Collection();
             if (!empty($params['foods'])) {
                 $this->storeOrderDetails($orderUnpaid, $newOrder, Food::class, $params['foods']);
             }
             if (!empty($params['drinks'])) {
                 $this->storeOrderDetails($orderUnpaid, $newOrder, Drink::class, $params['drinks']);
+            }
+            foreach ($newOrder as $item) {
+                $item->images()->createMany($this->storeImages($params));
             }
             $newOrder = $newOrder->load('orderable:id,name')->load('order')->toArray();
             event(new CreateNotification(NotificationType::NEW_ORDER, $newOrder));

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
@@ -22,26 +21,12 @@ class Order extends Model
         'status'
     ];
 
-    protected $with = [
-        'images'
-    ];
-
     /**
      * @return BelongsTo
      */
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
-    }
-
-    /**
-     * Relationship to images table
-     *
-     * @return MorphMany
-     */
-    public function images(): MorphMany
-    {
-        return $this->morphMany(Image::class, 'imaginable');
     }
 
     /**
