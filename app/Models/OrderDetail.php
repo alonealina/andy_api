@@ -6,6 +6,7 @@ use App\Enums\OrderDetailStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -31,6 +32,10 @@ class OrderDetail extends Model
 
     protected $dates = [
         'read_at'
+    ];
+
+    protected $with = [
+        'images'
     ];
 
     protected $hidden = [
@@ -61,5 +66,15 @@ class OrderDetail extends Model
     public function orderable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Relationship to images table
+     *
+     * @return MorphMany
+     */
+    public function images(): MorphMany
+    {
+        return $this->morphMany(Image::class, 'imaginable');
     }
 }
