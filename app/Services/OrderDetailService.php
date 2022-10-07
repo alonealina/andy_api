@@ -71,6 +71,7 @@ class OrderDetailService
             }
             foreach ($newOrder as $item) {
                 $item->images()->createMany($this->storeImages($params));
+                $item->load('images');
             }
             $newOrder = $newOrder->load('orderable:id,name')->load('order')->toArray();
             event(new CreateNotification(NotificationType::NEW_ORDER, $newOrder));
